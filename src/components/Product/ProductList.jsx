@@ -8,7 +8,7 @@ const productData = {
             id: 1, 
             name: 'Rotari Swivale', 
             price: "80.000", 
-            image: 'swivel.png', 
+            image: 'swivel.webp', 
             rating: 4.5,
             description: 'Swivale berputar'
         },
@@ -16,7 +16,7 @@ const productData = {
             id: 2, 
             name: 'Shut-Off Valve', 
             price: '467.500', 
-            image: 'swivel2.png', 
+            image: 'swivel2.webp', 
             rating: 4.2,
             description: 'Swivale Yang diam'
         },
@@ -24,7 +24,7 @@ const productData = {
             id: 3, 
             name: 'Swevel 3/4 (BEBEK)', 
             price: '120.000', 
-            image: 'swivel3.png', 
+            image: 'swivel3.webp', 
             rating: 4.7,
             description: 'Swivale 3/4 seperti bebek kwek kwek'
         },
@@ -32,7 +32,7 @@ const productData = {
             id: 4, 
             name: 'Switch Hub', 
             price: '5.500.000', 
-            image: 'swivel4.png', 
+            image: 'swivel4.webp', 
             rating: 4.7,
             description: 'Switch hub untuk pemasangan swivale'
         }
@@ -42,7 +42,7 @@ const productData = {
             id: 5, 
             name: 'X-Printer 420B USB + Bluetooth ', 
             price: 1155000, 
-            image: 'Printer.png', 
+            image: 'Printer.webp', 
             rating: 4.3,
             description: 'printer ini bisa pakai blutut'
         },
@@ -50,7 +50,7 @@ const productData = {
             id: 6, 
             name: 'Nozzle OPW Ori', 
             price: '590.000', 
-            image: 'bensin.png', 
+            image: 'bensin.webp', 
             rating: 4.6,
             description: 'kepala untuk isi bensin'
         },
@@ -58,7 +58,7 @@ const productData = {
             id: 7, 
             name: 'Selang Tex 4M', 
             price: '275.000', 
-            image: 'selang.png', 
+            image: 'selang.webp', 
             rating: 4.4,
             description: 'Selang cuy'
         },
@@ -66,7 +66,7 @@ const productData = {
             id: 11, 
             name: 'ATG SS 160 + WindBEEL Smart Console ', 
             price: '17.500.000', 
-            image: 'atg.png', 
+            image: 'atg.webp', 
             rating: 4.4,
             description: 'mahal betul jir'
         }
@@ -76,7 +76,7 @@ const productData = {
             id: 8, 
             name: 'Seragam Operator SPBU', 
             price: '150.000', 
-            image: 'seragam.png', 
+            image: 'seragam.webp', 
             rating: 4.5,
             description: 'Seragam operator spbu'
         },
@@ -84,7 +84,7 @@ const productData = {
             id: 9, 
             name: 'Rompi Control Petugas Pertamina', 
             price: '150.000', 
-            image: 'rompi.png', 
+            image: 'rompi.webp', 
             rating: 4.3,
             description: 'Rompi control petugas pertamina terkuat di bumi'
         },
@@ -92,7 +92,7 @@ const productData = {
             id: 10, 
             name: 'Topi', 
             price: '25.000', 
-            image: 'topi.png', 
+            image: 'topi.webp', 
             rating: 4.6,
             description: 'Topi geming'
         }

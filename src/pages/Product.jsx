@@ -9,7 +9,7 @@ export default function Product() {
           {/* Background Image with Darkness Overlay */}
           <div className="absolute inset-0 overflow-hidden">
               <img 
-                  src="bg.jpg" 
+                  src="bg.webp" 
                   alt="Background" 
                   className="w-full h-full   object-cover object-bottom absolute brightness-50 contrast-75 " 
               />

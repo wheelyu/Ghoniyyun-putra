@@ -11,7 +11,7 @@ export default function Home() {
           {/* Background Image with Darkness Overlay */}
           <div className="absolute inset-0 overflow-hidden">
               <img 
-                  src="bg.jpg" 
+                  src="bg.webp" 
                   alt="Background" 
                   className="w-full h-full  object-cover object-right absolute brightness-50 contrast-75 " 
               />
@@ -31,7 +31,7 @@ export default function Home() {
                 type: "spring", 
                 stiffness: 120 
               }}
-              className="relative z-10 text-center px-4 py-10 bg-white rounded-xl shadow-lg overflow-hidden"
+              className="relative z-10 text-center px-4 py-10 bg-white border-b-[10px] border-red-400 rounded-xl shadow-lg overflow-hidden"
             >
               <motion.h1 
                 initial={{ y: 50, opacity: 0 }}
@@ -44,7 +44,7 @@ export default function Home() {
                 className="text-black font-bold text-2xl md:text-7xl w-full md:w-3/4 mx-auto leading-tight relative"
               >
                 <motion.span
-                  initial={{ backgroundSize: '0% 100%' }}
+                  initial={{ backgroundSize: '0% 200%' }}
                   animate={{ backgroundSize: '100% 100%' }}
                   transition={{ 
                     delay: 0.6, 
@@ -52,11 +52,11 @@ export default function Home() {
                     ease: "easeInOut" 
                   }}
                   style={{
-                    backgroundImage: 'linear-gradient(to right, transparent 50%, #3B82F6 50%)',
+                    backgroundImage: 'linear-gradient(to right, transparent 0%, #f87171 0%)',
                     backgroundPosition: '100% 0',
                     backgroundRepeat: 'no-repeat',
                     WebkitBackgroundClip: 'text',
-                    color: 'transparent'
+                    color: 'transparent',
                   }}
                 >
                   Welcome to
@@ -79,13 +79,13 @@ export default function Home() {
           </AnimatePresence>
       </div>
       <div className=" bg-white bg-cover bg-no-repeat"
-      style={{backgroundImage: 'url("bg-white.jpg")' }}>
+      style={{backgroundImage: 'url("bg-white.webp")' }}>
         <Profil />
         <AboutUs />
       </div>
       <div className="h-fit">
         
-        <div style={{backgroundImage: 'url("bg-product.jpg")' }}>
+        <div style={{backgroundImage: 'url("bg-product.webp")' }}>
         <Product />
         </div>
       </div>
