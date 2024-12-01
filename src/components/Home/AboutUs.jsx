@@ -25,7 +25,7 @@ const About = () => {
     ];
 
     return (
-        <div className="bg-gray-50 py-16 px-4 h-fit ">
+        <div className=" py-16 px-4 h-fit ">
             <h1 className="text-5xl font-bold text-center mb-12 text-gray-800">Why Choose Us?</h1>
             <div className="flex flex-col md:flex-row justify-center gap-8">
                 {cardData.map((card, index) => (

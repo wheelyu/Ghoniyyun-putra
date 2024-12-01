@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faHome, faInfoCircle, faBox, faTools, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-
-const Navbar = () => {
+import { motion, AnimatePresence } from 'framer-motion';
+const Navbar = ({active}) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -28,22 +28,28 @@ const Navbar = () => {
     };
 
     const navLinks = [
-        { to: "/", label: "Home", icon: faHome },
-        { to: "#", label: "About Us", icon: faInfoCircle },
-        { to: "/Product", label: "Product", icon: faBox },
-        { to: "#", label: "Services", icon: faTools },
-        { to: "#", label: "Contact", icon: faEnvelope },
+        { to: "/",          label: "Home",      icon: faHome,        active: active === "Home" },
+        { to: "#",          label: "About Us",  icon: faInfoCircle, active: active === "About" },
+        { to: "/Product",   label: "Product",   icon: faBox,        active: active === "Product" },
+        { to: "#",          label: "Services",  icon: faTools,      active: active === "Services" },
+        { to: "#",          label: "Contact",   icon: faEnvelope,   active: active === "Contact" },
     ];
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full transition-all duration-300 z-50 ${
-                isScrolled ? "bg-white shadow-md" : "bg-gradient-to-b from-black to-transparent"
+            className={`fixed  transition-all duration-500 z-50 mx-auto left-0 right-0  ${
+                isScrolled 
+                    ? "bg-white shadow-lg rounded-[50px] w-[80%]   top-10 border-b-[4px] border-red-400" 
+                    : "w-full top-0 rounded-none  border-transparent"
             }`}
         >
-            <div className="container mx-auto flex items-center justify-between p-4 md:p-6 lg:p-10 font-bold">
+            <div className={`container mx-auto flex items-center justify-between transition-all duration-300 z-50 ${
+                isScrolled ? "p-3 md:p-4" : "p-4 md:p-6 lg:p-10"
+            } font-bold`}>
                 {/* Logo */}
-                <div className={`text-xl font-bold transition-colors ${isScrolled ? "text-black" : "text-white"}`}>
+                <div className={`text-xl font-bold transition-colors ${
+                    isScrolled ? "text-black" : "text-white"
+                }`}>
                     <Link to="/">LOGO GP</Link>
                 </div>
 
@@ -53,11 +59,16 @@ const Navbar = () => {
                         <Link
                             key={link.to}
                             to={link.to}
-                            className={`px-4 py-2 rounded transition flex items-center space-x-2 ${
-                                isScrolled 
-                                    ? "text-black hover:bg-gray-200" 
-                                    : "text-white hover:text-red-400"
-                            }`}
+                            className={`
+                                px-4 py-2 rounded transition 
+                                flex items-center space-x-2 
+                                ${link.active 
+                                    ? "bg-red-400 text-white" 
+                                    : isScrolled 
+                                        ? "text-gray-800 hover:bg-gray-200" 
+                                        : "text-white hover:bg-white/20"
+                                }
+                            `}
                         >
                             
                             <span>{link.label}</span>
@@ -82,33 +93,68 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu */}
-            {isMobileMenuOpen && (
-                <div 
-                    className={`md:hidden absolute  left-0 w-full transition-all duration-300 ${
-                        isScrolled 
-                            ? "bg-white shadow-md" 
-                            : "bg-black bg-opacity-90"
-                    }`}
-                >
-                    <div className="flex flex-col space-y-4 p-4">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.to}
-                                to={link.to}
-                                onClick={toggleMobileMenu}
-                                className={`w-full  py-3 rounded transition  space-x-2 ${
-                                    isScrolled 
-                                        ? "text-black hover:bg-gray-200" 
-                                        : "text-white hover:bg-gray-800"
-                                }`}
-                            >
-                                <FontAwesomeIcon icon={link.icon} className="mx-4"/>
-                                <span>{link.label}</span>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            )}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ 
+                            height: 'auto', 
+                            opacity: 1 
+                        }}
+                        exit={{ 
+                            height: 0, 
+                            opacity: 0,
+                            transition: {
+                                duration: 0.3,
+                                ease: "easeInOut"
+                            }
+                        }}
+                        className={`md:hidden absolute left-0 w-full overflow-hidden ${
+                            isScrolled 
+                                ? "bg-white shadow-md top-5 -z-10 rounded-xl" 
+                                : "bg-black bg-opacity-90 "
+                        }`}
+                    >
+                        <div className="flex flex-col space-y-4 p-4 mt-10">
+                            {navLinks.map((link, index) => (
+                                <motion.div
+                                    key={link.to}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ 
+                                        opacity: 1, 
+                                        x: 0,
+                                        transition: { 
+                                            delay: index * 0.1,
+                                            type: "spring",
+                                            stiffness: 300
+                                        }
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        x: -20,
+                                        transition: {
+                                            duration: 0.2
+                                        }
+                                    }}
+                                >
+                                    <Link
+                                        to={link.to}
+                                        onClick={toggleMobileMenu}
+                                        className={`w-full py-3 rounded transition space-x-2 flex items-center ${
+                                            isScrolled 
+                                                ? "text-black hover:bg-gray-200" 
+                                                : "text-white hover:bg-gray-800"
+                                        }`}
+                                    >
+                                        <FontAwesomeIcon icon={link.icon} className="mx-4"/>
+                                        <span>{link.label}</span>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 };
