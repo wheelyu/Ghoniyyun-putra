@@ -28,11 +28,11 @@ const Navbar = ({active}) => {
     };
 
     const navLinks = [
-        { to: "/",          label: "Home",      icon: faHome,        active: active === "Home" },
-        { to: "#",          label: "About Us",  icon: faInfoCircle, active: active === "About" },
-        { to: "/Product",   label: "Product",   icon: faBox,        active: active === "Product" },
-        { to: "#",          label: "Services",  icon: faTools,      active: active === "Services" },
-        { to: "#",          label: "Contact",   icon: faEnvelope,   active: active === "Contact" },
+        { id: 1, to: "/",          label: "Home",      icon: faHome,       active: active === "Home" },
+        { id: 2, to: "#",          label: "About Us",  icon: faInfoCircle, active: active === "About" },
+        { id: 3, to: "/Product",   label: "Product",   icon: faBox,        active: active === "Product" },
+        { id: 4, to: "#",          label: "Services",  icon: faTools,      active: active === "Services" },
+        { id: 5, to: "#",          label: "Contact",   icon: faEnvelope,   active: active === "Contact" },
     ];
 
     return (
@@ -118,7 +118,7 @@ const Navbar = ({active}) => {
                         <div className="flex flex-col space-y-4 p-4 mt-10">
                             {navLinks.map((link, index) => (
                                 <motion.div
-                                    key={link.to}
+                                    key={index}
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ 
                                         opacity: 1, 

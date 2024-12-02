@@ -20,7 +20,7 @@ export default function Product() {
           <Navbar active="Product"/>
           
       </div>
-        <h1 className="ml-96  text-black font-bold  justify-center text-[40px] w-[851px]">Our Product</h1>
+        <h1 className="ml-96  text-black font-bold  justify-center text-[40px] w-[851px] py-10">Our Product</h1>
         <div className="px-2 md:px-20 h-fit">
           <ProductList />
         </div>

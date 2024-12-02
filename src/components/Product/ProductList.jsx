@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faStar, faFilter, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faStar, faSearch } from '@fortawesome/free-solid-svg-icons';
 // Product data with categories
 const productData = {
-    contractor: [
+    Contractor: [
         { 
             id: 1, 
             name: 'Rotari Swivale', 
-            price: "80.000", 
+            price: 80000, 
             image: 'swivel.webp', 
             rating: 4.5,
             description: 'Swivale berputar'
@@ -15,7 +15,7 @@ const productData = {
         { 
             id: 2, 
             name: 'Shut-Off Valve', 
-            price: '467.500', 
+            price: 467500, 
             image: 'swivel2.webp', 
             rating: 4.2,
             description: 'Swivale Yang diam'
@@ -23,7 +23,7 @@ const productData = {
         { 
             id: 3, 
             name: 'Swevel 3/4 (BEBEK)', 
-            price: '120.000', 
+            price: 120000, 
             image: 'swivel3.webp', 
             rating: 4.7,
             description: 'Swivale 3/4 seperti bebek kwek kwek'
@@ -31,7 +31,7 @@ const productData = {
         { 
             id: 4, 
             name: 'Switch Hub', 
-            price: '5.500.000', 
+            price: 5500000, 
             image: 'swivel4.webp', 
             rating: 4.7,
             description: 'Switch hub untuk pemasangan swivale'
@@ -49,7 +49,7 @@ const productData = {
         { 
             id: 6, 
             name: 'Nozzle OPW Ori', 
-            price: '590.000', 
+            price: 590000, 
             image: 'bensin.webp', 
             rating: 4.6,
             description: 'kepala untuk isi bensin'
@@ -57,7 +57,7 @@ const productData = {
         { 
             id: 7, 
             name: 'Selang Tex 4M', 
-            price: '275.000', 
+            price: 275000, 
             image: 'selang.webp', 
             rating: 4.4,
             description: 'Selang cuy'
@@ -65,7 +65,7 @@ const productData = {
         { 
             id: 11, 
             name: 'ATG SS 160 + WindBEEL Smart Console ', 
-            price: '17.500.000', 
+            price: 17500000, 
             image: 'atg.webp', 
             rating: 4.4,
             description: 'mahal betul jir'
@@ -75,7 +75,7 @@ const productData = {
         { 
             id: 8, 
             name: 'Seragam Operator SPBU', 
-            price: '150.000', 
+            price: 150000, 
             image: 'seragam.webp', 
             rating: 4.5,
             description: 'Seragam operator spbu'
@@ -83,7 +83,7 @@ const productData = {
         { 
             id: 9, 
             name: 'Rompi Control Petugas Pertamina', 
-            price: '150.000', 
+            price: 150000, 
             image: 'rompi.webp', 
             rating: 4.3,
             description: 'Rompi control petugas pertamina terkuat di bumi'
@@ -91,7 +91,7 @@ const productData = {
         { 
             id: 10, 
             name: 'Topi', 
-            price: '25.000', 
+            price: 25000, 
             image: 'topi.webp', 
             rating: 4.6,
             description: 'Topi geming'
@@ -102,143 +102,166 @@ const productData = {
 
 const ProductPage = () => {
     // State to manage selected category and mobile menu
-    const [selectedCategory, setSelectedCategory] = useState('contractor');
-    const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(""); // State untuk kata kunci pencarian
+    const [sortOrder, setSortOrder] = useState(""); // State untuk sorting
 
-    // Categories for sidebar
-    const categories = Object.keys(productData);
+    // Inisialisasi produk saat halaman pertama kali dimuat
+    React.useEffect(() => {
+        const allProducts = Object.values(productData).flat();
+        setFilteredProducts(allProducts);
+    }, []);
 
-    // Mobile-friendly category selector
-    const MobileCategorySelector = () => (
-        <div className="md:hidden mb-4 relative">
-            <button 
-                onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg flex justify-between items-center"
-            >
-                <span className="capitalize">
-                    {selectedCategory} Products
-                </span>
-                <FontAwesomeIcon icon={faFilter} />
-            </button>
-        </div>
-    );
-
-    // Sidebar Component (used for both mobile and desktop)
-    const CategorySidebar = ({ mobile = false }) => (
-        <div className={`
-            ${mobile 
-                ? `fixed inset-0 z-50 bg-white transform transition-transform duration-300 ${
-                    isMobileSidebarOpen ? 'translate-x-0' : 'translate-x-full'
-                }` 
-                : 'hidden md:block w-64 bg-white p-6 shadow-md rounded-xl'
+    const handleCategorySubmit = (e) => {
+        e.preventDefault(); // Mencegah reload halaman
+        
+            // Filter berdasarkan kategori
+            let filtered = selectedCategory
+            ? productData[selectedCategory] || []
+            : Object.values(productData).flat();
+        
+            // Filter berdasarkan kata kunci pencarian
+            if (searchQuery.trim() !== "") {
+            filtered = filtered.filter((product) =>
+                product.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
             }
-        `}>
-            {mobile && (
-                <div className="flex justify-between items-center p-4 border-b">
-                    <h2 className="text-2xl font-bold text-gray-800">Categories</h2>
-                    <button 
-                        onClick={() => setIsMobileSidebarOpen(false)}
-                        className="text-gray-600"
-                    >
-                        <FontAwesomeIcon icon={faTimes} className="text-2xl" />
-                    </button>
-                </div>
-            )}
-            <h1 className=" hidden md:flex text-2xl font-bold mb-4 text-gray-800">Categories</h1>
-            <ul className={`${mobile ? 'p-4' : ''} space-y-2`}>
-                {categories.map((category) => (
-                    <li 
-                        key={category}
-                        className={`
-                            cursor-pointer 
-                            px-4 py-2 
-                            rounded-lg 
-                            transition duration-300 
-                            ${selectedCategory === category 
-                                ? 'bg-blue-500 text-white' 
-                                : 'hover:bg-blue-100 text-gray-700'}
-                        `}
-                        onClick={() => {
-                            setSelectedCategory(category);
-                            setIsMobileSidebarOpen(false);
-                        }}
-                    >
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+        
+            // Sorting berdasarkan harga
+            if (sortOrder === "low-to-high") {
+            filtered = filtered.sort((a, b) => a.price - b.price);
+            } else if (sortOrder === "high-to-low") {
+            filtered = filtered.sort((a, b) => b.price - a.price);
+            }
+        
+            setFilteredProducts(filtered); // Update produk yang ditampilkan
+        };
+        
+        
+        
 
     return (
-        <div className="flex flex-col md:flex-row min-h-fit md:min-h-screen p-4 md:p-10">
-            {/* Desktop Sidebar */}
-            <CategorySidebar />
+        <div>
+        <div className=" bg-[#FAFAFA] border border-gray-200 shadow-sm rounded-xl p-4 md:p-5 md:w-[1222px] w-[390px] ml-3  md:mx-auto ">
+            <form action="" className="flex md:flex-row flex-col">
+            <div className="w-[353px]">
+                <label htmlFor="search" className="block text-base font-bold mb-2">
+                    Cari Produk
+                </label>
+                <input
+                    id="search"
+                    type="text"
+                    placeholder="Cari Produk"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="py-3 px-4 block w-full text-[#1F2937] font-medium bg-white rounded-lg text-sm border outline-none placeholder:text-[#6B7280] placeholder:font-semibold placeholder:text-sm"
+                />
+            </div>
 
-            {/* Mobile Category Selector */}
-            <MobileCategorySelector />
+            <div className="w-[353px] ml-10">
+                <label htmlFor="category-select" className="block text-base font-bold mb-2">
+                Kategori
+                </label>
+                <select
+                id="category-select"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)} // Simpan kategori sementara
+                className="py-3 px-4 block w-full rounded-lg text-sm border outline-none bg-white placeholder:text-[#6B7280] placeholder:font-semibold placeholder:text-sm border-gray-200 focus:border-blue-500 focus:ring-blue-500 focus:outline-blue-500"
+                >
+                <option value="">Pilih Kategori</option>
+                <option value="Contractor">Contractor</option>
+                <option value="tradingwholesaler">Trading Wholesaler</option>
+                <option value="operator">Operator</option>
+                </select>
+            </div>
+            <div className="w-[353px] mx-0 md:mx-5 my-5 md:my-0">
+            <label htmlFor="sort-select" className="block text-base font-bold mb-2">
+                Urutkan
+            </label>
+            <select
+                id="sort-select"
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="py-3 px-4 block w-full rounded-lg text-sm border outline-none bg-white placeholder:text-[#6B7280] placeholder:font-semibold placeholder:text-sm border-gray-200 focus:border-blue-500 focus:ring-blue-500 focus:outline-blue-500"
+            >
+                <option value="">Pilih Urutan</option>
+                <option value="low-to-high">Harga: Rendah ke Tinggi</option>
+                <option value="high-to-low">Harga: Tinggi ke Rendah</option>
+            </select>
+            </div>
+            <button
+                type="submit"
+                className="md:w-[45px] md:h-[45px] w-[353px] h-[52px] bg-red-400 rounded-lg flex items-center justify-center mt-8 mx-0 md:mx-5"
+                onClick={handleCategorySubmit}
+            >
+                <FontAwesomeIcon icon={faSearch} className="text-white" />
+            </button>
+            </form>
+        </div>
 
-            {/* Mobile Sidebar Overlay */}
-            <CategorySidebar mobile={true} />
-
-            {/* Main Content */}
+        <div className="flex flex-col md:flex-row min-h-fit md:min-h-screen p-4 md:p-10 w-[1222px] mx-auto">
             <div className="flex-1 md:p-10">
-                <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 capitalize hidden md:block">
-                    {selectedCategory} Products
-                </h1>
+            
 
-                {/* Product Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                    {productData[selectedCategory].map((product) => (
-                        <div 
-                            key={product.id} 
-                            className="bg-white rounded-lg shadow-md overflow-hidden 
-                                        transform transition duration-300 
-                                        hover:cursor-pointer hover:shadow-xl"
-                        >
-                            {/* Product Image */}
-                            <div className="relative">
-                                <img 
-                                    src={product.image} 
-                                    alt={product.name} 
-                                    className="w-full h-32 md:h-48 object-cover"
-                                />
-                                <button 
-                                    className="absolute top-2 right-2 
-                                                bg-white rounded-full p-1 md:p-2 
-                                                shadow-md hover:bg-gray-100"
-                                >
-                                    <FontAwesomeIcon icon={faHeart} className="text-xs md:text-base" />
-                                </button>
-                            </div>
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                {filteredProducts.map((product, index) => (
+                <div 
+                key={index} 
+                className="bg-white rounded-lg shadow-md overflow-hidden 
+                            transform transition duration-300 
+                            hover:cursor-pointer hover:shadow-xl"
+            >
+                {/* Product Image */}
+                <div className="relative">
+                    <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="w-full h-32 md:h-48 object-cover"
+                    />
+                    <button 
+                        className="absolute top-2 right-2 
+                                    bg-white rounded-full p-1 md:p-2 
+                                    shadow-md hover:bg-gray-100"
+                    >
+                        <FontAwesomeIcon icon={faHeart} className="text-xs md:text-base" />
+                    </button>
+                </div>
 
-                            {/* Product Details */}
-                            <div className="p-2 md:p-4">
-                                <div className="flex justify-between items-center mb-1 md:mb-2">
-                                    <h3 className="text-sm md:text-lg font-semibold text-gray-800 truncate">
-                                        {product.name}
-                                    </h3>
-                                    <div className="flex items-center text-yellow-500">
-                                        <FontAwesomeIcon icon={faStar} className="mr-1 text-xs md:text-base" />
-                                        <span className="text-xs md:text-sm">{product.rating}</span>
-                                    </div>
-                                </div>
-
-                                <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-4 line-clamp-2">
-                                    {product.description}
-                                </p>
-
-                                <div className="flex justify-between items-center">
-                                    <span className="text-sm md:text-xl font-bold text-blue-600">
-                                        Rp{product.price}
-                                    </span>
-                                </div>
-                            </div>
+                {/* Product Details */}
+                <div className="p-2 md:p-4">
+                    <div className="flex justify-between items-center mb-1 md:mb-2">
+                        <h3 className="text-sm md:text-lg font-semibold text-gray-800 truncate">
+                            {product.name}
+                        </h3>
+                        <div className="flex items-center text-yellow-500">
+                            <FontAwesomeIcon icon={faStar} className="mr-1 text-xs md:text-base" />
+                            <span className="text-xs md:text-sm">{product.rating}</span>
                         </div>
-                    ))}
+                    </div>
+
+                    <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-4 line-clamp-2">
+                        {product.description}
+                    </p>
+
+                    <div className="flex justify-between items-center">
+                        <span className="text-sm md:text-xl font-bold text-blue-600">
+                            Rp{(product.price).toLocaleString("id-ID")}
+                        </span>
+                    </div>
                 </div>
             </div>
+                ))}
+            </div>
+            {filteredProducts.length === 0 && (
+                        <div className="text-center text-gray-500 mt-10">
+                            Tidak ada produk yang ditemukan.
+                        </div>
+                    )}
+            </div>
+            
         </div>
+    </div>
     );
 };
 
