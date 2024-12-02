@@ -22,18 +22,7 @@ const About = () => {
             title: "High Commitment", 
             description: "Our team is committed to delivering the best results for your success."
         },
-        {
-            icon: faBullseye,
-            iconColor: "text-blue-500",
-            title: "Measurable Target",
-            description: "We help you set clear and measurable goals to track your progress effectively."
-        },
-        {
-            icon: faHandshake,
-            iconColor: "text-green-500", 
-            title: "Best Partnership",
-            description: "Build strong and long-lasting partnerships with our expertise and support."
-        },
+
         
     ];
 

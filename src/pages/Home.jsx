@@ -9,7 +9,7 @@ export default function Home() {
     <div>
         <div className="relative h-screen flex items-center justify-center overflow-hidden">
           {/* Background Image with Darkness Overlay */}
-          <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden ">
               <img 
                   src="bg.webp" 
                   alt="Background" 
@@ -79,7 +79,7 @@ export default function Home() {
           </AnimatePresence>
       </div>
       <div className=" bg-white bg-cover bg-no-repeat"
-      style={{backgroundImage: 'url("bg-white.webp")' }}>
+      >
         <Profil />
         <AboutUs />
       </div>

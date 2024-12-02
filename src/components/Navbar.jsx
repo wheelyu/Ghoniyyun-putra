@@ -29,10 +29,10 @@ const Navbar = ({active}) => {
 
     const navLinks = [
         { id: 1, to: "/",          label: "Home",      icon: faHome,       active: active === "Home" },
-        { id: 2, to: "#",          label: "About Us",  icon: faInfoCircle, active: active === "About" },
+        { id: 2, to: "/about",          label: "About Us",  icon: faInfoCircle, active: active === "About" },
         { id: 3, to: "/Product",   label: "Product",   icon: faBox,        active: active === "Product" },
         { id: 4, to: "#",          label: "Services",  icon: faTools,      active: active === "Services" },
-        { id: 5, to: "#",          label: "Contact",   icon: faEnvelope,   active: active === "Contact" },
+        { id: 5, to: "/contact",          label: "Contact",   icon: faEnvelope,   active: active === "Contact" },
     ];
 
     return (
