@@ -138,7 +138,7 @@ const ProductPage = () => {
               >
                 <div className="relative">
                   <img
-                    src={product.image}
+                    src={`http://localhost:5000/uploads/products/${product.image}`}
                     alt={product.name}
                     className="w-full h-32 md:h-48 object-cover"
                   />

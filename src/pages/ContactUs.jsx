@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
+import ContactForm from "../components/Contact/ContactForm";
 export default function Product() {
     return (
         <div className="">
@@ -18,9 +18,10 @@ export default function Product() {
             </div>
             {/* Navbar */}
             <Navbar active="Contact"/>
-            
-        </div>
 
+            </div>
+
+            <ContactForm /> 
         <Footer />
         </div>
     );
