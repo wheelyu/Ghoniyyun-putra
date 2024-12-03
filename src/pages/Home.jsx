@@ -4,7 +4,7 @@ import AboutUs from "../components/Home/AboutUs";
 import Product from "../components/Home/product";
 import Footer from "../components/Footer";
 import Hero from "../components/Home/Hero";
-import { motion, AnimatePresence } from 'framer-motion';
+
 export default function Home() {
   return (
     <div>

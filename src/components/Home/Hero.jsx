@@ -1,5 +1,6 @@
 import React from "react";
-
+import Navbar from "../Navbar";
+import { motion, AnimatePresence } from 'framer-motion';
 const Hero = () => {
     return (
         <div className="relative h-screen flex items-center justify-center overflow-hidden">
