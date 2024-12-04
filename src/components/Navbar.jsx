@@ -39,7 +39,7 @@ const Navbar = ({active}) => {
         <nav
             className={`fixed  transition-all duration-500 z-50 mx-auto left-0 right-0  ${
                 isScrolled 
-                    ? "bg-white shadow-lg rounded-[50px] w-[80%]   top-10 border-b-[4px] border-red-400" 
+                    ? "bg-white shadow-lg rounded-[50px] w-[80%]   top-10 border-b-[4px] border-primary" 
                     : "w-full top-0 rounded-none  border-transparent"
             }`}
         >
@@ -63,7 +63,7 @@ const Navbar = ({active}) => {
                                 px-4 py-2 rounded transition 
                                 flex items-center space-x-2 
                                 ${link.active 
-                                    ? "bg-red-400 text-white" 
+                                    ? "bg-primary text-white" 
                                     : isScrolled 
                                         ? "text-gray-800 hover:bg-gray-200" 
                                         : "text-white hover:bg-white/20"

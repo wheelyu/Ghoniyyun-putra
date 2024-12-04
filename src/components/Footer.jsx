@@ -1,82 +1,70 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa';
 
 import { Link } from "react-router-dom";
 const Footer = () => {
+    const social = [
+        {
+            icon: <FaFacebook />,
+            link: "https://facebook.com",
+            color: "hover:text-[#3b5998]",
+        },
+        {
+            icon: <FaTwitter />,
+            link: "https://twitter.com",
+            color: "hover:text-[#1da1f2]",
+        },
+        {
+            icon: <FaInstagram />,
+            link: "https://instagram.com",
+            color: "hover:text-[#c13584]",
+        },
+        {
+            icon: <FaLinkedin />,
+            link: "https://linkedin.com",
+            color: "hover:text-[#0077b5]",
+        },
+        {
+            icon: <FaGithub />,
+            link: "https://github.com",
+            color: "#333333",
+        },
+    ]
     return (
-        <footer className="bg-gray-100 text-black py-8">
+        <footer className="bg-white  text-black py-8">
+            <hr className="w-[90%] mx-auto"/>
         <div className="container mx-auto px-5 md:px-48">
-            <div className="flex flex-col md:flex-row justify-between items-center mb-5">
-            {/* Nama Perusahaan */}
-            <div className="mb-4 md:mb-0">
-                <h1 className="text-xl font-bold">PT. GHONIYYUN PUTRA </h1>
-                <p className="text-sm text-gray-400 mt-1"><FontAwesomeIcon icon={faLocationDot  } /> Jl. Raya No. 123, Kota, Provinsi, 12345</p>
-                <p className="text-sm text-gray-400 mt-1"><FontAwesomeIcon icon={faEnvelope} /> info@perusahaan.com</p>
-                <p className="text-sm text-gray-400 mt-1"><FontAwesomeIcon icon={faPhone} /> +62 123 4567 890</p>
-            </div>
-
-            {/* Alamat */}
-            <div className="mb-4 md:mb-0">
-                <h2 className="text-lg font-semibold">Jelajahi</h2>
-                <div className="flex flex-col">
-                <Link to="/" className="text-sm text-gray-400 mt-1 hover:text-red-400">
-                Home
-                </Link>
-                <Link to="/product" className="text-sm text-gray-400 mt-1 hover:text-red-400">
-                Product
-                </Link>
-                <Link to="/product" className="text-sm text-gray-400 mt-1 hover:text-red-400">
-                Contact
-                </Link>
+            <div className="container mx-auto flex flex-col items-center py-10">
+        {/* Social Media Icons */}
+                <div className="flex space-x-6 mb-4">
+                    {social.map((item, index) => (
+                        <a
+                            key={index}
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`text-3xl   text-gray-700 ${item.color} bg-white p-4 rounded-full`}
+                        >
+                            <span className="sr-only">{item.icon}</span>
+                            {item.icon}
+                        </a>
+                    ))}
                 </div>
+
+                {/* Navigation Links */}
+                <nav className="flex space-x-4 text-sm">
+                <Link to="/" className="text-gray-700 hover:text-primary">Home</Link>
+                <Link to="/about" className="text-gray-700 hover:text-primary">About</Link>
+                <Link to="/services" className="text-gray-700 hover:text-primary">Services</Link>
+                <Link to="/contact" className="text-gray-700 hover:text-primary">Contact</Link>
+                <Link to="/login" className="text-gray-700 hover:text-primary">Login</Link>
+                </nav>
             </div>
 
-            {/* Kontak */}
-            <div>
-                <h2 className="text-lg font-semibold">Social Media</h2>
-                <div className="flex space-x-4 mt-2">
-                <a
-                    href="https://www.instagram.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-red-400"
-                >
-                    <FaInstagram />
-                </a>
-                <a
-                    href="https://twitter.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-red-400"
-                >
-                    <FaTwitter />
-                </a>
-                <a
-                    href="https://www.facebook.com/"    
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-red-400"
-                >
-                    <FaFacebook />
-                </a>
-                <a
-                    href="https://www.linkedin.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"    
-                    className="text-gray-400 hover:text-red-400"
-                >
-                    <FaLinkedin />
-                </a>
-                </div>
-            </div>
-            </div>
-
-            {/* Copyright */}
-            <hr></hr>
+            <hr/>
             <div className="text-center mt-8  text-sm text-gray-400">
-                
             PT. GHONIYYUN PUTRA © {new Date().getFullYear()} All rights reserved.
             </div>
         </div>

@@ -20,7 +20,7 @@ const Profil = () => {
                 <div className="flex justify-center md:justify-start">
                     <a 
                         href="#" 
-                        className="inline-flex items-center font-bold text-red-600 hover:text-red-500 transition-colors duration-300"
+                        className="inline-flex items-center font-bold text-primary hover:text-red-500 transition-colors duration-300"
                     >
                         See more 
                         <FontAwesomeIcon icon={faChevronRight} className="ml-2" />

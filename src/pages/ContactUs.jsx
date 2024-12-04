@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ContactForm from "../components/Contact/ContactForm";
+import Faq from "../components/Contact/Faq";
 export default function Product() {
     return (
         <div className="">
@@ -22,6 +23,7 @@ export default function Product() {
             </div>
 
             <ContactForm /> 
+            <Faq />
         <Footer />
         </div>
     );

@@ -50,19 +50,29 @@ const ProductPage = () => {
     }
 
     // Sorting berdasarkan harga
-    if (sortOrder === "low-to-high") {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (sortOrder === "high-to-low") {
-      filtered.sort((a, b) => b.price - a.price);
-    }
+    if (sortOrder) {
+      if (sortOrder === "low-to-high") {
+          filtered.sort((a, b) => a.price - b.price);
+      } else if (sortOrder === "high-to-low") {
+          filtered.sort((a, b) => b.price - a.price);
+      } else if (sortOrder === "a-to-z") {
+          filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sortOrder === "z-to-a") {
+          filtered.sort((a, b) => b.name.localeCompare(a.name));
+      } else if (sortOrder === "newest") {
+          filtered.sort((a, b) => new Date(b.update_at) - new Date(a.update_at));
+      } else if (sortOrder === "oldest") {
+          filtered.sort((a, b) => new Date(a.update_at) - new Date(b.update_at));
+      }
+  }
 
     setFilteredProducts(filtered); // Update produk yang ditampilkan
   };
 
   return (
     <div>
-      <div className="bg-[#FAFAFA] border border-gray-200 shadow-sm rounded-xl p-4 md:p-5 md:w-[1222px] w-[390px] ml-3 md:mx-auto">
-        <form action="" className="flex md:flex-row flex-col">
+      <div className="bg-[#FAFAFA] border border-gray-200 shadow-sm rounded-xl p-4 md:p-5 md:w-[1500px] w-[390px] ml-3 md:mx-auto">
+        <form action="" className="flex md:flex-row flex-col items-center justify-center">
           <div className="w-[353px]">
             <label htmlFor="search" className="block text-base font-bold mb-2">
               Cari Produk
@@ -70,7 +80,7 @@ const ProductPage = () => {
             <input
               id="search"
               type="text"
-              placeholder="Cari Produk"
+              placeholder="Contoh : Rotari Swivale"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="py-3 px-4 block w-full text-[#1F2937] font-medium bg-white rounded-lg text-sm border outline-none placeholder:text-[#6B7280] placeholder:font-semibold placeholder:text-sm"
@@ -109,6 +119,10 @@ const ProductPage = () => {
               <option value="">Pilih Urutan</option>
               <option value="low-to-high">Harga: Rendah ke Tinggi</option>
               <option value="high-to-low">Harga: Tinggi ke Rendah</option>
+              <option value="a-to-z">A-Z</option>
+              <option value="z-to-a">Z-A</option>
+              <option value="newest">Terbaru</option>
+              <option value="oldest">Terlama</option>
             </select>
           </div>
 
@@ -128,13 +142,16 @@ const ProductPage = () => {
       </div>
     
   ) : (
-    <div className="flex flex-col md:flex-row min-h-fit md:min-h-screen p-4 md:p-10 w-[1222px] mx-auto">
+    <div className='w-[1500px] mx-auto'>
+      <h1 className='text-2xl py-10'>Menampilkan {filteredProducts.length} dari {productData.length} produk</h1>
+    <div className="flex flex-col md:flex-row min-h-fit md:min-h-screen p-4 md:p-10 bg-white]">
+        
         <div className="flex-1 md:p-10">
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredProducts.map((product, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:cursor-pointer hover:shadow-xl"
+                className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:cursor-pointer hover:shadow-xl"
               >
                 <div className="relative">
                   <img
@@ -142,11 +159,6 @@ const ProductPage = () => {
                     alt={product.name}
                     className="w-full h-32 md:h-48 object-cover"
                   />
-                  <button
-                    className="absolute top-2 right-2 bg-white rounded-full p-1 md:p-2 shadow-md hover:bg-gray-100"
-                  >
-                    <FontAwesomeIcon icon={faHeart} className="text-xs md:text-base" />
-                  </button>
                 </div>
 
                 <div className="p-2 md:p-4">
@@ -175,6 +187,7 @@ const ProductPage = () => {
             </div>
           )}
         </div>
+      </div>
       </div>
     )
   }

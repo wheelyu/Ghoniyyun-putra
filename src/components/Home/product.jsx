@@ -20,7 +20,7 @@ const OurProduct = () => {
 
     return (
         <div className="bg-white bg-opacity-90 py-16 px-4 md:px-48">
-        <h1 className="text-4xl font-bold mb-12 text-red-400">
+        <h1 className="text-4xl font-bold mb-12 text-primary">
             Our Category Products
         </h1>
         <div className="bg-white p-10 rounded-xl shadow-2xl">
@@ -46,7 +46,7 @@ const OurProduct = () => {
                 ))}
             </div>
             <div className="flex justify-end">
-            <a href='/product' className="border-red-400 hover:bg-red-400 hover:text-white border text-red-400 py-2 px-4 rounded mt-8  transition-all duration-300 ">See More Product</a>
+            <a href='/product' className="border-primary hover:bg-primary hover:text-white border text-primary py-2 px-4 rounded mt-8  transition-all duration-300 ">See More Product</a>
             </div>
         </div>
         </div>

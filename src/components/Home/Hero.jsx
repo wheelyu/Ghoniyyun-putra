@@ -12,22 +12,22 @@ const Hero = () => {
                     className="w-full h-full  object-cover object-right absolute brightness-50 contrast-75 " 
                 />
                 {/* Tambahan overlay gelap */}
-                <div className="absolute inset-0 bg-red-400 opacity-50"></div>
+                <div className="absolute inset-0 bg-primary opacity-50"></div>
             </div>
             {/* Navbar */}
             <Navbar active="Home"/>
             {/* Content */}
             <AnimatePresence>
                 <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 200 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ 
                     duration: 0.6, 
                     type: "spring", 
                     stiffness: 120 
                 }}
-                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-red-400 rounded-xl shadow-lg overflow-hidden w-full top-56 "
+                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-primary rounded-xl shadow-lg overflow-hidden w-full top-56 "
                 >
                 <motion.h1 
                     initial={{ y: 50, opacity: 0 }}

@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
+import AboutUs from "../components/AboutUs/aboutus";
 export default function Product() {
     return (
         <div className="">
@@ -20,7 +20,10 @@ export default function Product() {
             <Navbar active="About"/>
             
         </div>
-
+            <div className="border-t-[10px] border-t-primary">
+                
+                <AboutUs />
+            </div>
         <Footer />
         </div>
     );

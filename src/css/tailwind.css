@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.custom-swiper .swiper-button-next,
+.custom-swiper .swiper-button-prev {
+  color: #f87171;
+}
+
+.custom-swiper .swiper-pagination-bullet {
+  background: #f87171;
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+  background: #f87171;
+}

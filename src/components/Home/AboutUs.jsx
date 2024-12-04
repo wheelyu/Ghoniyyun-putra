@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBullseye, faHandshake, faAward } from "@fortawesome/free-solid-svg-icons";
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 const About = () => {
+    useEffect(() => {
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    })
     const cardData = [
         {
             icon: faBullseye,
@@ -27,7 +34,7 @@ const About = () => {
     ];
 
     return (
-        <div className=" bg-gradient-to-r from-red-500 to-pink-500 bg-opacity-85 py-32 px-4 h-fit w-full mx-auto flex flex-col md:flex-row items-center justify-center">
+        <div className=" bg-gradient-to-r from-primary to-pink-500 bg-opacity-85 py-32 px-4 h-fit w-full mx-auto flex flex-col md:flex-row items-center justify-center">
             <div 
                 className="grid grid-cols-1 gap-8 w-full md:w-1/3 md:pr-12 items-center"
             >
@@ -36,8 +43,10 @@ const About = () => {
                     key={index} 
                     className="bg-white shadow-lg rounded-lg p-6 flex flex-row items-center h-[200px]
                             transition-all duration-300 ease-in-out 
-                            border-s-[10px] hover:border-red-400 
+                            border-s-[10px] hover:border-primary 
                             hover:shadow-xl hover:cursor-pointer"
+                    data-aos="fade-up"
+                    data-aos-delay={index * 400}
                 >
                     <FontAwesomeIcon 
                     icon={card.icon} 
