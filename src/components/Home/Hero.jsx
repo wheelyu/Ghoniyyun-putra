@@ -3,7 +3,7 @@ import Navbar from "../Navbar";
 import { motion, AnimatePresence } from 'framer-motion';
 const Hero = () => {
     return (
-        <div className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="relative h-[600px] flex items-center justify-center overflow-hidden">
           {/* Background Image with Darkness Overlay */}
             <div className="absolute inset-0 overflow-hidden ">
                 <img 
@@ -12,7 +12,7 @@ const Hero = () => {
                     className="w-full h-full  object-cover object-right absolute brightness-50 contrast-75 " 
                 />
                 {/* Tambahan overlay gelap */}
-                <div className="absolute inset-0 bg-black opacity-50"></div>
+                <div className="absolute inset-0 bg-red-400 opacity-50"></div>
             </div>
             {/* Navbar */}
             <Navbar active="Home"/>
@@ -27,7 +27,7 @@ const Hero = () => {
                     type: "spring", 
                     stiffness: 120 
                 }}
-                className="relative z-10 text-center px-4 py-10 bg-white border-b-[10px] border-red-400 rounded-xl shadow-lg overflow-hidden"
+                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-red-400 rounded-xl shadow-lg overflow-hidden w-full top-56 "
                 >
                 <motion.h1 
                     initial={{ y: 50, opacity: 0 }}

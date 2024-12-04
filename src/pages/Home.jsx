@@ -10,12 +10,13 @@ export default function Home() {
     <div>
         <Hero/>
         <Profil />
+        
+      
+        
         <AboutUs />
-      <div className="h-fit">
-        <div style={{backgroundImage: 'url("bg-product.webp")' }}>
-        <Product />
-        </div>
-      </div>
+
+      
+      <Product />
       <Footer />
 
     </div>

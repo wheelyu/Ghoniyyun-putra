@@ -27,29 +27,36 @@ const About = () => {
     ];
 
     return (
-        <div className="py-16 px-4 h-fit w-[80%] mx-auto">
-            <h1 className="text-5xl font-bold text-center mb-12 text-gray-800">Why Choose Us?</h1>
+        <div className=" bg-gradient-to-r from-red-500 to-pink-500 bg-opacity-85 py-32 px-4 h-fit w-full mx-auto flex flex-col md:flex-row items-center justify-center">
             <div 
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center"
+                className="grid grid-cols-1 gap-8 w-full md:w-1/3 md:pr-12 items-center"
             >
                 {cardData.map((card, index) => (
                 <div 
                     key={index} 
-                    className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center 
+                    className="bg-white shadow-lg rounded-lg p-6 flex flex-row items-center h-[200px]
                             transition-all duration-300 ease-in-out 
-                            hover:border-b-4 hover:border-red-400 
+                            border-s-[10px] hover:border-red-400 
                             hover:shadow-xl hover:cursor-pointer"
                 >
                     <FontAwesomeIcon 
                     icon={card.icon} 
-                    className={`${card.iconColor} text-4xl mb-4`} 
+                    className={`${card.iconColor} text-4xl mr-16 ml-10`} 
                     />
-                    <p className="text-lg font-semibold text-gray-800">{card.title}</p>
-                    <p className="text-sm text-gray-600 mt-2 pre-line">
-                    {card.description}
-                    </p>
+                    <div className="text-left  items-center justify-center">
+                        <p className="text-3xl font-semibold text-gray-800">{card.title}</p>
+                        <p className="text-sm text-gray-600 mt-2 pre-line">
+                        {card.description}
+                        </p>
+                    </div>
                 </div>
                 ))}
+            </div>
+            
+            <div className="w-full md:w-1/3 mt-8 md:mt-0">
+                <h1 className="text-7xl font-bold text-center text-white">
+                    Why Choose Us?
+                </h1>
             </div>
         </div>
 

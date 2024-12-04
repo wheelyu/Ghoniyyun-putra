@@ -19,7 +19,7 @@ const OurProduct = () => {
     ];
 
     return (
-        <div className="bg-black bg-opacity-90 py-16 px-4 md:px-48">
+        <div className="bg-white bg-opacity-90 py-16 px-4 md:px-48">
         <h1 className="text-4xl font-bold mb-12 text-red-400">
             Our Category Products
         </h1>
