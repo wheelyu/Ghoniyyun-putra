@@ -26,4 +26,24 @@ export const getCategories = async () => {
     }
   };
 
+export const postProduct = async (data) => {
+    try {
+      const response = await api.post('/products', data); // Endpoint POST data
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      throw error;
+    }
+  };
+
+export const getPostsbyId = async (id) => {
+    try {
+      const response = await api.get(`/products/${id}`); // Endpoint GET data
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      throw error;
+    }
+  };
+
 export default api;

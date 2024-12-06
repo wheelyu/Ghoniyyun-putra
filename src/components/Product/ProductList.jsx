@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { getPosts, getCategories } from '../../services/api';
-
+import ProductDetail from './ProductDetail';
 const ProductPage = () => {
   // State untuk produk dan kategori
   const [productData, setProductData] = useState([]);
@@ -151,7 +151,7 @@ const ProductPage = () => {
             {filteredProducts.map((product, index) => (
               <div
                 key={index}
-                className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:cursor-pointer hover:shadow-xl"
+                className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:cursor-pointer hover:shadow-xl relative z-0"
               >
                 <div className="relative">
                   <img
@@ -167,15 +167,15 @@ const ProductPage = () => {
                       {product.name}
                     </h3>
                   </div>
-
-                  <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-4 line-clamp-2">
-                    {product.description}
-                  </p>
-
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm md:text-xl font-bold text-blue-600">
-                      Rp{(product.price).toLocaleString("id-ID")}
-                    </span>
+                  <div className='flex flex-row'>
+                    <div className="flex justify-between items-center w-full">
+                      <span className="text-sm md:text-xl font-bold text-blue-600">
+                        Rp{(product.price).toLocaleString("id-ID")}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center w-1/2 ">
+                    <ProductDetail id={product.id}/>
+                    </div>
                   </div>
                 </div>
               </div>
