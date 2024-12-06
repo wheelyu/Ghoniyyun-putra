@@ -4,7 +4,7 @@ import AboutUs from "../components/Home/AboutUs";
 import Product from "../components/Home/product";
 import Footer from "../components/Footer";
 import Hero from "../components/Home/Hero";
-
+import StickyCtaButton from "../components/stickyCtaButton";
 export default function Home() {
   return (
     <div>
@@ -13,7 +13,7 @@ export default function Home() {
       <AboutUs />
       <Product />
       <Footer />
-
+      <StickyCtaButton />
     </div>
   );
 }

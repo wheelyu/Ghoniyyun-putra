@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { getCategories, postProduct } from "../../services/api";
+import { getCategories, updatePosts, getPostsbyId } from "../../services/api";
 import Swal from 'sweetalert2';
-const AddProductModal = () => {
+const EditProductModal = ({ id }) => {
     const [categories, setCategories] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [errors, setErrors] = useState({});
     const [productData, setProductData] = useState({
-        name: '',
-        price: '',
-        stock: '',
-        description: '',
-        category_id: '',
-        image: null
     });
-
+    useEffect(() => {
+        const fetchProductData = async () => {
+            try {
+                const response = await getPostsbyId(id);
+                setProductData(response.data);
+            } catch (error) {
+                console.error('Error fetching product data:', error);
+            }
+        };
+        fetchProductData();
+    }, [id]);
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -31,7 +35,6 @@ const AddProductModal = () => {
         setProductData((prev) => ({ ...prev, [name]: value }));
         validateField(name, value);
     };
-
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         setProductData((prev) => ({ ...prev, image: file }));
@@ -87,13 +90,13 @@ const AddProductModal = () => {
                 formData.append("category_id", productData.category_id);
                 formData.append("image", productData.image);
                 
-                await postProduct(formData);
+                await updatePosts(id, formData);
                 
                 // SweetAlert success notification with page reload
                 Swal.fire({
                     icon: 'success',
                     title: 'Product Added Successfully!',
-                    text: `${productData.name} has been added to the product list.`,
+                    text: `${productData.name} has been edited.`,
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -115,10 +118,9 @@ const AddProductModal = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong while adding the product!',
+                    text: 'Something went wrong while Editing the product!',
                     confirmButtonText: 'Try Again'
                 });
-                console.error("Error submitting product:", error);
             }
         }
     };
@@ -129,9 +131,9 @@ const AddProductModal = () => {
         <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-            Tambah Produk
+            Edit
         </button>
 
         {/* Modal */}
@@ -234,6 +236,11 @@ const AddProductModal = () => {
                                 />
                                 {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
                             </div>
+                            {productData.image && (
+                                <div className="mb-4">
+                                    <img src={`http://localhost:5000/uploads/products/${productData.image}`} alt="Product" className="w-32 h-20 object-top object-cover rounded-lg" />
+                                </div>
+                            )}
 
                             <div className="flex justify-end gap-x-2">
                                 <button
@@ -260,4 +267,4 @@ const AddProductModal = () => {
     );
 };
 
-export default AddProductModal;
+export default EditProductModal;

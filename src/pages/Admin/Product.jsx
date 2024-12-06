@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Admin/sidebar";
 import Header from "../../components/Admin/Header";
-import { getCategories, getPosts } from "../../services/api";
+import { getCategories, getPosts, deletePosts } from "../../services/api";
 import { formatWIBTime } from "../../hooks/useFormatTime";
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import AddProductModal from "../../components/Admin/AddProduct";
+import EditProductModal from "../../components/Admin/EditProduct";
+import Swal from 'sweetalert2';
 
 const Product = () => {
     const [products, setProducts] = useState([]);
@@ -83,6 +85,48 @@ const Product = () => {
     };
 
     const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const handleDeleteProduct = async (id) => {
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        // Proceed with deletion only if confirmed
+        if (result.isConfirmed) {
+            try {
+                await deletePosts(id);
+                
+                // Remove the product from the lists
+                const updatedProducts = products.filter(product => product.id !== id);
+                setProducts(updatedProducts);
+                setFilteredProducts(updatedProducts);
+    
+                // Show success message
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'The product has been deleted.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } catch (error) {
+                // Show error message if deletion fails
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to delete the product.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                console.error("Error deleting product:", error);
+            }   
+        }
+    }
 
     return (
         <div className="flex h-screen">
@@ -106,7 +150,7 @@ const Product = () => {
                         <select
                             value={sortCategory}
                             onChange={handleSort}
-                            className="py-2 px-4 border rounded-lg"
+                            className="py-2 px-4 border rounded-lg mr-10"
                         >
                             <option value="">Sort by</option>
                             <option value="name">Name</option>
@@ -118,7 +162,7 @@ const Product = () => {
                         <AddProductModal />
                     </div>
 
-                    <div className="overflow-x-auto h-[500px]">
+                    <div className="overflow-x-auto h-[600px]">
                         <table className="w-full table-auto bg-white rounded-xl">
                             <thead className="bg-primary">
                                 <tr>
@@ -141,15 +185,15 @@ const Product = () => {
                                         <td className="w-60 px-4 py-2">{item.description}</td>
                                         <td className="w-32 px-4 py-2">{getCategoryName(item.category_id)}</td>
                                         <td className="w-32 px-4 py-2">
-                                            <img src={`http://localhost:5000/uploads/products/${item.image}`} alt={item.name} className="w-[100px] h-[100px]" />
+                                            <img src={`http://localhost:5000/uploads/products/${item.image}`} alt={item.name} className="w-[100px] h-[80px]" />
                                         </td>
                                         <td className="w-24 px-4 py-2">{item.is_active ? "Yes" : "No"}</td>
                                         <td className="w-40 px-4 py-2">{item.stock}</td>
                                         <td className="w-40 px-4 py-2">{formatWIBTime(item.updatedAt)}</td>
                                         <td className="w-40 px-4 py-2">
                                             <div className="flex gap-2">
-                                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
-                                                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                                                <EditProductModal id={item.id} />
+                                                <button onClick={() => handleDeleteProduct(item.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
                                             </div>
                                         </td>
                                     </tr>

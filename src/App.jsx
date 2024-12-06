@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Contact from "./pages/ContactUs";
 import About from "./pages/AboutUs";
-import StickyCtaButton from "./components/stickyCtaButton";
 import Login from "./pages/Login";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminRoute from "./routes/AdminRoute";
@@ -40,7 +39,6 @@ function App() {
           <Route path="/admin/kategori" element={<CategoryAdmin />} />
         </Route>
       </Routes>
-      {path !== "/login" && <StickyCtaButton onClick={handleClick}/>}
       
     </Router>
   );

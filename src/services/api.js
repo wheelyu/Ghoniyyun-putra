@@ -45,5 +45,22 @@ export const getPostsbyId = async (id) => {
       throw error;
     }
   };
-
+export const deletePosts = async (id) => {
+    try {
+      const response = await api.delete(`/products/${id}`); // Endpoint GET data
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      throw error;
+    }
+}
+export const updatePosts = async (id, data) => {
+    try {
+      const response = await api.put(`/products/${id}`, data); // Endpoint GET data
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      throw error;
+    }
+}
 export default api;

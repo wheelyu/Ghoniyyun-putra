@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ContactForm from "../components/Contact/ContactForm";
 import Faq from "../components/Contact/Faq";
+import StickyCtaButton from "../components/stickyCtaButton";
 export default function Product() {
     return (
         <div className="">
@@ -25,6 +26,7 @@ export default function Product() {
             <ContactForm /> 
             <Faq />
         <Footer />
+        <StickyCtaButton />
         </div>
     );
 }

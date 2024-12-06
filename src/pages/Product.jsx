@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductList from "../components/Product/ProductList";
+import StickyCtaButton from "../components/stickyCtaButton";
 export default function Product() {
   return (
     <div className="">
@@ -27,6 +28,7 @@ export default function Product() {
         </div>
         </div>
       <Footer />
+      <StickyCtaButton />
     </div>
   );
 }

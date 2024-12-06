@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { getPosts, getCategories } from '../../services/api';
 import ProductDetail from './ProductDetail';
+import { formatIDR } from "../../hooks/useFormatIDR";
 const ProductPage = () => {
   // State untuk produk dan kategori
   const [productData, setProductData] = useState([]);
@@ -151,7 +152,7 @@ const ProductPage = () => {
             {filteredProducts.map((product, index) => (
               <div
                 key={index}
-                className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:cursor-pointer hover:shadow-xl relative z-0"
+                className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300  hover:shadow-xl relative z-0"
               >
                 <div className="relative">
                   <img
@@ -170,7 +171,7 @@ const ProductPage = () => {
                   <div className='flex flex-row'>
                     <div className="flex justify-between items-center w-full">
                       <span className="text-sm md:text-xl font-bold text-blue-600">
-                        Rp{(product.price).toLocaleString("id-ID")}
+                        {formatIDR(product.price)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center w-1/2 ">
