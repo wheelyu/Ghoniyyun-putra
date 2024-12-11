@@ -25,9 +25,9 @@ export default function Home() {
       <Product />
       <Founder />
       <Story />
-      <div ref={contactRef}>
+      <div >
       
-      <ContactForm /> 
+      <ContactForm ref={contactRef} /> 
       </div>
       <Footer />
       <StickyCtaButton />
