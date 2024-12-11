@@ -3,7 +3,7 @@ import Navbar from "../Navbar";
 import { motion, AnimatePresence } from 'framer-motion';
 const Hero = () => {
     return (
-        <div className="relative h-[600px] flex items-center justify-center overflow-hidden">
+        <div className="relative h-[350px] flex items-center justify-center overflow-hidden">
           {/* Background Image with Darkness Overlay */}
             <div className="absolute inset-0 overflow-hidden ">
                 <img 
@@ -27,7 +27,7 @@ const Hero = () => {
                     type: "spring", 
                     stiffness: 120 
                 }}
-                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-primary rounded-xl shadow-lg overflow-hidden w-full top-56 "
+                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-primary rounded-xl shadow-lg overflow-hidden w-full top-20 "
                 >
                 <motion.h1 
                     initial={{ y: 50, opacity: 0 }}
@@ -55,7 +55,7 @@ const Hero = () => {
                         color: 'transparent',
                     }}
                     >
-                    Welcome to
+                    Your Trusted Partner 
                     </motion.span>
                     <br/>
                     <motion.span
@@ -68,7 +68,7 @@ const Hero = () => {
                     }}
                     className="inline-block"
                     >
-                    PT. GHONIYYUN PUTRA
+                    in Fuel Retail
                     </motion.span>
                 </motion.h1>
                 </motion.div>
