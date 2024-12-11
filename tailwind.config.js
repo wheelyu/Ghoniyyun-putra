@@ -8,7 +8,7 @@ export default {
           12: "3rem",
       },
       colors: {
-          primary: "#f87171",
+          primary: "#dc2626",
           secondary: "#F9F9EB",
           third: "#E0E0E0",
       },
