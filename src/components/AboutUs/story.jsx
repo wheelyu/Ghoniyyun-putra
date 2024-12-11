@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import Pertamina1 from "../../assets/Lowongan-Pertamina.webp"
+import Pertamina2 from "../../assets/promo-pertamina.webp"
+import Pertamina3 from "../../assets/pertamina1.webp"
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 // Import Swiper styles
@@ -15,11 +18,11 @@ const AboutUs = () => {
         });
     }, []);
     const images = [
-        'bg.webp',
-        'bg.webp',
-        'bg.webp',
-        'bg.webp',
-        'bg.webp',
+        Pertamina1,
+        Pertamina2,
+        Pertamina3,
+        Pertamina1,
+        Pertamina2,
     ];
     return (
         <div className="pt-48 pb-10">
@@ -40,11 +43,11 @@ const AboutUs = () => {
             {images.map((image, index) => (
                 <SwiperSlide key={index} className="flex items-center justify-center relative">
                 {/* Dark overlay */}
-                <div className="absolute inset-0 w-[90%] mx-auto bg-black opacity-60 z-10"></div>
+                <div className="absolute inset-0 w-[90%] mx-auto bg-black opacity-20 z-10"></div>
                 <img
                     src={image}
                     alt={`Slide ${index + 1}`}
-                    className="max-w-[90%] object-cover rounded-xl z-0"
+                    className="max-w-[90%] object-cover rounded-xl z-0 object-top"
                 />
                 </SwiperSlide>  
             ))}
