@@ -127,7 +127,7 @@ const ContactForm = ({ ref }) => {
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="p-8 w-1/2 ml-28 justify-start items-start shadow-lg relative  z-40 rounded-xl bg-white"
+                    className="p-12 w-full  justify-start items-start shadow-lg relative  z-40 rounded-xl bg-white"
                 >
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <h1 className='text-4xl font-bold mb-4 text-primary'>Fill in Form</h1>
