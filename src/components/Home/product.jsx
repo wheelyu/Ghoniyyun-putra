@@ -14,7 +14,7 @@ const OurProduct = () => {
         {
         id: 3,
         title: "Operator",
-        image: "operator.webp", // Ganti dengan URL gambar produk Anda
+        image: "../src/assets/pertamina1.webp", // Ganti dengan URL gambar produk Anda
         },
     ];
 
