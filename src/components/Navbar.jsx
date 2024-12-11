@@ -29,18 +29,15 @@ const Navbar = ({active}) => {
 
     const navLinks = [
         { id: 1, to: "/",          label: "Home",      icon: faHome,       active: active === "Home" },
-        { id: 2, to: "/about",          label: "About Us",  icon: faInfoCircle, active: active === "About" },
-        { id: 3, to: "/Product",   label: "Product",   icon: faBox,        active: active === "Product" },
-        { id: 4, to: "#",          label: "Services",  icon: faTools,      active: active === "Services" },
-        { id: 5, to: "/contact",          label: "Contact",   icon: faEnvelope,   active: active === "Contact" },
+        { id: 2, to: "/Product",   label: "Product",   icon: faBox,        active: active === "Product" },
     ];
 
     return (
         <nav
-            className={`fixed  transition-all duration-500 z-50 mx-auto left-0 right-0  ${
+            className={`fixed  transition-all duration-500 z-50 mx-auto w-full top-0  ${
                 isScrolled 
-                    ? "bg-white shadow-lg rounded-[50px] w-[80%]   top-10 border-b-[4px] border-primary" 
-                    : "w-full top-0 rounded-none  border-transparent"
+                    ? "bg-white shadow-lg py-3  border-b-[4px] border-primary" 
+                    : "  rounded-none  border-transparent"
             }`}
         >
             <div className={`container mx-auto flex items-center justify-between transition-all duration-300 z-50 ${
