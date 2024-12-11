@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import Swal from 'sweetalert2'; 
 import emailjs from "@emailjs/browser";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUser, faComment, faPaperPlane, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faUser, faComment, faPaperPlane, faPhone, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 
-const ContactForm = () => {
+const ContactForm = ({ ref }) => {
     const [formData, setFormData] = useState({
+        topic: '',
         name: '',
         email: '',
         number: '',
@@ -14,6 +15,7 @@ const ContactForm = () => {
     });
 
     const [errors, setErrors] = useState({
+        topic: '',
         name: '',
         email: '',
         number: '',
@@ -21,9 +23,13 @@ const ContactForm = () => {
     });
 
     const validateForm = () => {
-        let tempErrors = { name: '', email: '', number: '', message: '' };
+        let tempErrors = { topic: '', name: '', email: '', number: '', message: '' };
         let formIsValid = true;
-
+        // Topic validation
+        if (!formData.topic) {
+            tempErrors.topic = "Please select a topic";
+            formIsValid = false;
+        }
         // Name validation
         if (formData.name.trim().length < 3) {
             tempErrors.name = "Name must be at least 3 characters long";
@@ -85,6 +91,7 @@ const ContactForm = () => {
                     confirmButtonColor: '#166534'
                 })
                 setFormData({
+                    topic: '',
                     name: '',
                     email: '',
                     number: '',
@@ -103,41 +110,55 @@ const ContactForm = () => {
     };
 
     return (
-        <div className="h-[900px] bg-gray-100 flex justify-center py-20 border-t-[10px] border-t-primary">
-            <div className="container mx-auto grid md:grid-cols-2 gap-8 bg-white shadow-lg rounded-xl overflow-hidden">
+        <div className="h-fit  w-1/2 mx-auto flex justify-center" ref={ref}>
+            <div className="container mx-auto  gap-8 bg-white  rounded-xl overflow-hidden">
                 {/* Left Side - Contact Information */}
                 <motion.div 
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="bg-gradient-to-br from-primary to-red-500 text-white p-8 flex flex-col "
+                    className="bg-gradient-to-br from-primary to-red-500 text-white p-8 flex flex-col h-fit z-10 "
                 >
-                    <h2 className="text-7xl font-bold mb-4 italic p-10">Reach Us</h2>
+                    <h2 className="text-7xl font-bold mb-4 italic ">Get in Touch</h2>
                     <p className="mb-6 text-gray-200 pl-10">
                         Have a question or want to work together? Fill out the form and we'll get back to you as soon as possible.
                     </p>
-                    <div className="space-y-4 pl-10">
-                        <div className="flex items-center">
-                            <FontAwesomeIcon icon={faEnvelope} className="mr-3" />
-                            <span>contact@example.com</span>
-                        </div>
-                        <div className="flex items-center">
-                            <FontAwesomeIcon icon={faUser} className="mr-3" />
-                            <span>+1 (123) 456-7890</span>
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Right Side - Contact Form */}
-                <motion.div
+                    <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="p-8"
+                    className="p-8 w-1/2 ml-28 justify-start items-start shadow-lg relative  z-40 rounded-xl bg-white"
                 >
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <h1 className='text-4xl font-bold mb-4 text-primary'>Fill in Form</h1>
-                        
+                        <div className="relative mr-10">
+                            <label htmlFor="topic" className="block mb-2 text-sm font-medium text-gray-700">
+                                Topic
+                            </label>
+                            <div className="relative">
+                                <select
+                                    id="topic"
+                                    name="topic"
+                                    value={formData.topic}
+                                    onChange={handleChange}
+                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-gray-400
+                                        ${errors.topic ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
+                                    
+                                >
+                                    <option value="" disabled>Pilih Topic</option>
+                                    <option value="teknologi">Teknologi</option>
+                                    <option value="olahraga">Olahraga</option>
+                                    <option value="kesehatan">Kesehatan</option>
+                                    <option value="pendidikan">Pendidikan</option>
+                                    <option value="hiburan">Lainnya</option>
+                                </select>
+                                <FontAwesomeIcon 
+                                    icon={faNewspaper} 
+                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                                />
+                            </div>
+                            {errors.topic && <p className="text-red-500 text-sm mt-1">{errors.topic}</p>}
+                        </div>
                         {/* Name Input */}
                         <div className="relative mr-10">
                             <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">
@@ -153,7 +174,7 @@ const ContactForm = () => {
                                     className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none 
                                         ${errors.name ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     placeholder="Masukkan nama lengkap Anda"
-                                    required
+                                    
                                 />
                                 <FontAwesomeIcon 
                                     icon={faUser} 
@@ -178,7 +199,7 @@ const ContactForm = () => {
                                     className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none 
                                         ${errors.email ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     placeholder="example@email.com"
-                                    required
+                                    
                                 />
                                 <FontAwesomeIcon 
                                     icon={faEnvelope} 
@@ -195,7 +216,7 @@ const ContactForm = () => {
                             </label>
                             <div className="relative">
                                 <input
-                                    type="text"  // Changed to text to allow custom validation
+                                    type="number"  // Changed to text to allow custom validation
                                     id="number"
                                     name="number"
                                     value={formData.number}
@@ -203,7 +224,7 @@ const ContactForm = () => {
                                     className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none 
                                         ${errors.number ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     placeholder="+6281234567890"
-                                    required
+                                    
                                 />
                                 <FontAwesomeIcon 
                                     icon={faPhone} 
@@ -228,7 +249,7 @@ const ContactForm = () => {
                                     className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none 
                                         ${errors.message ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     placeholder="Your Message"
-                                    required
+                                    
                                 ></textarea>
                                 <FontAwesomeIcon 
                                     icon={faComment} 
@@ -251,6 +272,10 @@ const ContactForm = () => {
                         </div>
                     </form>
                 </motion.div>
+                </motion.div>
+
+                {/* Right Side - Contact Form */}
+                
             </div>
         </div>
     );
