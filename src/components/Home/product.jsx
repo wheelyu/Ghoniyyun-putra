@@ -19,9 +19,9 @@ const OurProduct = () => {
     ];
 
     return (
-        <div className="bg-white bg-opacity-90 py-16 px-4 md:px-48">
+        <div className="bg-white bg-opacity-90 mb-56 pt-20 px-4 md:px-48">
         <h1 className="text-4xl font-bold mb-12 text-primary">
-            Our Category Products
+            Our Products and services
         </h1>
         <div className="bg-white p-10 rounded-xl shadow-2xl">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
