@@ -3,13 +3,14 @@ import { motion } from 'framer-motion';
 import Swal from 'sweetalert2'; 
 import emailjs from "@emailjs/browser";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUser, faComment, faPaperPlane, faPhone, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faUser, faComment, faPaperPlane, faPhone, faNewspaper, faCity } from '@fortawesome/free-solid-svg-icons';
 
-const ContactForm = ({ ref }) => {
+const ContactForm = () => {
     const [formData, setFormData] = useState({
         topic: '',
         name: '',
         email: '',
+        company: '',
         number: '',
         message: ''
     });
@@ -18,12 +19,13 @@ const ContactForm = ({ ref }) => {
         topic: '',
         name: '',
         email: '',
+        company: '',
         number: '',
         message: ''
     });
 
     const validateForm = () => {
-        let tempErrors = { topic: '', name: '', email: '', number: '', message: '' };
+        let tempErrors = { topic: '', name: '', email: '',company: '', number: '', message: '' };
         let formIsValid = true;
         // Topic validation
         if (!formData.topic) {
@@ -40,6 +42,12 @@ const ContactForm = ({ ref }) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
             tempErrors.email = "Please enter a valid email address";
+            formIsValid = false;
+        }
+
+        // Company validation
+        if (formData.company.trim().length < 3) {
+            tempErrors.company = "Company name must be at least 3 characters long";
             formIsValid = false;
         }
 
@@ -75,7 +83,7 @@ const ContactForm = ({ ref }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
+        console.log(formData)
         if (validateForm()) {
             emailjs.send(
                 import.meta.env.VITE_SERVICE_EY,
@@ -84,6 +92,7 @@ const ContactForm = ({ ref }) => {
                 import.meta.env.VITE_PUBLIC_KEY
             )
             .then((result) => {
+                console.log("Success:", result);
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -94,11 +103,12 @@ const ContactForm = ({ ref }) => {
                     topic: '',
                     name: '',
                     email: '',
+                    company: '',
                     number: '',
                     message: ''
                 });
             }, (error) => {
-                
+                console.log(error.text);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -110,7 +120,7 @@ const ContactForm = ({ ref }) => {
     };
 
     return (
-        <div className="h-fit  w-1/2 mx-auto flex justify-center" ref={ref}>
+        <div className="h-fit  w-1/2 mx-auto flex justify-center" >
             <div className="container mx-auto  gap-8 bg-white  rounded-xl overflow-hidden">
                 {/* Left Side - Contact Information */}
                 <motion.div 
@@ -171,7 +181,7 @@ const ContactForm = ({ ref }) => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none 
+                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
                                         ${errors.name ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     placeholder="Masukkan nama lengkap Anda"
                                     
@@ -196,7 +206,7 @@ const ContactForm = ({ ref }) => {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none 
+                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
                                         ${errors.email ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     placeholder="example@email.com"
                                     
@@ -207,6 +217,30 @@ const ContactForm = ({ ref }) => {
                                 />
                             </div>
                             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                        </div>
+                        {/* Company Input */}
+                        <div className="relative mr-10">
+                            <label htmlFor="company" className="block mb-2 text-sm font-medium text-gray-700">
+                                Company
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    id="company"
+                                    name="company"
+                                    value={formData.company}
+                                    onChange={handleChange}
+                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
+                                        ${errors.company ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
+                                    placeholder="Masukkan nama perusahaan Anda"
+                                    
+                                />
+                                <FontAwesomeIcon 
+                                    icon={faCity} 
+                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                                />
+                            </div>
+                            {errors.company && <p className="text-red-500 text-sm mt-1">{errors.company}</p>}
                         </div>
 
                         {/* Number Input */}
@@ -221,7 +255,7 @@ const ContactForm = ({ ref }) => {
                                     name="number"
                                     value={formData.number}
                                     onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none 
+                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
                                         ${errors.number ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     placeholder="+6281234567890"
                                     
@@ -246,7 +280,7 @@ const ContactForm = ({ ref }) => {
                                     value={formData.message}
                                     onChange={handleChange}
                                     rows="4"
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none 
+                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
                                         ${errors.message ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     placeholder="Your Message"
                                     

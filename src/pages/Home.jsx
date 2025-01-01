@@ -10,16 +10,11 @@ import Partnership from "../components/Home/Partnership";
 import StickyCtaButton from "../components/stickyCtaButton";
 import ContactForm from "../components/Contact/ContactForm";
 export default function Home() {
-  const section1Ref = useRef(null);
-  const contactRef = useRef(null);
 
-  const scrollToSection = (sectionRef) => {
-    sectionRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
   return (
     <div>
       <Hero/>
-      <Profil scrollToSection={scrollToSection} contactRef={contactRef}/>
+      <Profil  />
       <AboutUs />
       <Partnership />
       <Product />
@@ -27,7 +22,7 @@ export default function Home() {
       <Story />
       <div >
       
-      <ContactForm ref={contactRef} /> 
+      <ContactForm  /> 
       </div>
       <Footer />
       <StickyCtaButton />
