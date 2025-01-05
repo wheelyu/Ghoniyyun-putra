@@ -6,7 +6,7 @@ import {
     } from 'lucide-react';
 const Header = () => {
     return (
-        <header className="bg-white shadow-md h-16 flex items-center justify-between px-6">
+        <header className="bg-white shadow-md h-20 flex items-center justify-between px-6">
             <div className="flex items-center space-x-4">
                 <Menu className="text-gray-600 cursor-pointer" />
                 <div className="relative">
