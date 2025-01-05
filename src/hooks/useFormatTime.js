@@ -1,5 +1,5 @@
 export  const formatWIBTime = (utcTime) => {
-    return new Date(utcTime).toLocaleDateString('id-ID', {
+    return new Date(utcTime).toLocaleDateString('en-US', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
