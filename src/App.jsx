@@ -9,6 +9,7 @@ import AdminRoute from "./routes/AdminRoute";
 import Dashboard from "./pages/Admin/dashboard";
 import ProductAdmin from "./pages/Admin/Product";
 import CategoryAdmin from "./pages/Admin/Category";
+import Client from "./pages/Admin/Client";
 function App() {
   const phoneNumber = "6285175174984"; // Ganti dengan nomor WhatsApp Anda, pastikan menggunakan format internasional
   const message = "Halo! Saya ingin bertanya tentang..."; // Pesan default yang akan dikirim
@@ -29,14 +30,15 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
 
-        <Route element={<AdminRoute />}>
+        <Route element={<AdminRoute redirectPath="/admin/dashboard"/>}>
           <Route path="/login" element={<Login />} />
         </Route>
 
         <Route element={<ProtectedRoute />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/produk" element={<ProductAdmin />} />
-          <Route path="/admin/kategori" element={<CategoryAdmin />} />
+          <Route path="/admin/product" element={<ProductAdmin />} />
+          <Route path="/admin/category" element={<CategoryAdmin />} />
+          <Route path="/admin/client" element={<Client />} />
         </Route>
       </Routes>
       
