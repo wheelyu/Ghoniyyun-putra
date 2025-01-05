@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import emailjs from "@emailjs/browser";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faUser, faComment, faPaperPlane, faPhone, faNewspaper, faCity } from '@fortawesome/free-solid-svg-icons';
-
+import { supabase } from '../../services/supabaseConfig';
 const ContactForm = () => {
     const [formData, setFormData] = useState({
         topic: '',
@@ -81,43 +81,88 @@ const ContactForm = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData)
-        if (validateForm()) {
-            emailjs.send(
-                import.meta.env.VITE_SERVICE_EY,
-                import.meta.env.VITE_TEMPLATE_KEY,
-                formData,
-                import.meta.env.VITE_PUBLIC_KEY
-            )
-            .then((result) => {
-                console.log("Success:", result);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Your message has been sent successfully!',
-                    confirmButtonColor: '#166534'
-                })
-                setFormData({
-                    topic: '',
-                    name: '',
-                    email: '',
-                    company: '',
-                    number: '',
-                    message: ''
-                });
-            }, (error) => {
-                console.log(error.text);
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Mencegah reload halaman
+    
+        // Validasi Form
+        if (!validateForm()) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please fill out all required fields.',
+                confirmButtonColor: '#FF0000'
+            });
+            return;
+        }
+    
+        console.log("Form Data:", formData);
+    
+        // Simpan data ke Supabase
+        try {
+            const { data, error } = await supabase.from('client').insert([formData]);
+    
+            if (error) {
+                console.error("Supabase Error:", error.message);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'There was an error sending your message. Please try again later.',
+                    text: 'Failed to save data to the database. Please try again later.',
                     confirmButtonColor: '#FF0000'
-                })
+                });
+                return;
+            }
+    
+            console.log("Data Saved to Supabase:", data);
+    
+            // Kirim email menggunakan EmailJS
+            emailjs
+                .send(
+                    import.meta.env.VITE_SERVICE_KEY,
+                    import.meta.env.VITE_TEMPLATE_KEY,
+                    formData,
+                    import.meta.env.VITE_PUBLIC_KEY
+                )
+                .then(
+                    (result) => {
+                        console.log("Email Sent Successfully:", result);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Your message has been sent successfully!',
+                            confirmButtonColor: '#166534'
+                        });
+    
+                        // Reset form setelah sukses
+                        setFormData({
+                            topic: '',
+                            name: '',
+                            email: '',
+                            company: '',
+                            number: '',
+                            message: ''
+                        });
+                    },
+                    (error) => {
+                        console.error("EmailJS Error:", error.text);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'There was an error sending your message. Please try again later.',
+                            confirmButtonColor: '#FF0000'
+                        });
+                    }
+                );
+        } catch (error) {
+            console.error("Unexpected Error:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred. Please try again later.',
+                confirmButtonColor: '#FF0000'
             });
         }
     };
+    
 
     return (
         <div className="h-fit  w-1/2 mx-auto flex justify-center" >
@@ -127,10 +172,10 @@ const ContactForm = () => {
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="bg-gradient-to-br from-primary to-red-500 text-white p-8 flex flex-col h-fit z-10 "
+                    className="bg-white text-primary p-8 flex flex-col h-fit z-10 "
                 >
                     <h2 className="text-7xl font-bold mb-4 italic ">Get in Touch</h2>
-                    <p className="mb-6 text-gray-200 pl-10">
+                    <p className="mb-6 text-gray-400 pl-10">
                         Have a question or want to work together? Fill out the form and we'll get back to you as soon as possible.
                     </p>
                     <motion.div
