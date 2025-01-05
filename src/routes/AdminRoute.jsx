@@ -1,10 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
+import useAuthStore from "../stores/authStore";
 
-const GuestRoute = () => {
-    const  token  = localStorage.getItem('token');
+const GuestRoute = ({ redirectPath }) => {
+    const { token } = useAuthStore();
 
     if (token) {
-        return <Navigate to="/admin/dashboard" replace />;
+        return <Navigate to={redirectPath} replace />;
     }
 
     return <Outlet />;
