@@ -1,224 +1,164 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Admin/sidebar";
 import Header from "../../components/Admin/Header";
-import { getCategories, getPosts, deletePosts } from "../../services/api";
-import { formatWIBTime } from "../../hooks/useFormatTime";
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import AddProductModal from "../../components/Admin/AddProduct";
-import EditProductModal from "../../components/Admin/EditProduct";
+import { ChevronRight } from 'lucide-react';
+import DataTable from "react-data-table-component";
+import { supabase } from "../../services/supabaseConfig";
 import Swal from 'sweetalert2';
-
+import { formatWIBTime } from "../../hooks/useFormatTime";
+import { Link } from "react-router-dom";
+import AddProductModal from "../../components/Admin/Product/add";
 const Product = () => {
     const [products, setProducts] = useState([]);
+    const [search, setSearch] = useState("");
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [categoryMap, setCategoryMap] = useState({});
-    const [searchTerm, setSearchTerm] = useState("");
-    const [sortCategory, setSortCategory] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
-
+    const [loading, setLoading] = useState(true);
+    const [modalAdd, setModalAdd] = useState(false);
+    const [modalEdit, setModalEdit] = useState(false);
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const productsResponse = await getPosts();
-                const allProducts = productsResponse.data;
-                setProducts(allProducts);
-                setFilteredProducts(allProducts);
-
-                const categoriesResponse = await getCategories();
-                setCategories(categoriesResponse.data);
-
-                const categoriesMap = categoriesResponse.data.reduce((map, category) => {
-                    map[category.id] = category.name;
-                    return map;
-                }, {});
-                setCategoryMap(categoriesMap);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
+        getProducts();
     }, []);
 
-    const getCategoryName = (categoryId) => {
-        return categoryMap[categoryId] || 'Tidak Diketahui';
-    };
-
-    const handleSearch = (e) => {
-        const value = e.target.value;
-        setSearchTerm(value);
-        const filtered = products.filter(product =>
-            product.name.toLowerCase().includes(value.toLowerCase())
+    useEffect(() => {
+        const filtered = products.filter(
+            (row) =>
+                row.name.toLowerCase().includes(search.toLowerCase()) 
         );
         setFilteredProducts(filtered);
-        setCurrentPage(1);
-    };
+    }, [search, products]);
 
-    const handleSort = (e) => {
-        const value = e.target.value;
-        setSortCategory(value);
-        let sorted = [...filteredProducts];
+    const getProducts = async () => {
+        setLoading(true);
+        try {
+            // Menggunakan join untuk mengambil data category
+            const { data: products, error } = await supabase
+                .from("product")
+                .select(`
+                    *,
+                    category:category_id (
+                        id,
+                        name
+                    )
+                `);
 
-        if (value === "name") {
-            sorted.sort((a, b) => a.name.localeCompare(b.name));
-        } else if (value === "category") {
-            sorted.sort((a, b) => getCategoryName(a.category_id).localeCompare(getCategoryName(b.category_id)));
-        } else if (value === "stock desc") {
-            sorted.sort((a, b) => b.stock - a.stock);
-        } else if (value === "stock asc") {
-            sorted.sort((a, b) => a.stock - b.stock);
+            if (error) {
+                console.log(error);
+            }
+            
+            // Transform data untuk menyesuaikan dengan format yang dibutuhkan
+            const transformedProducts = products.map(product => ({
+                ...product,
+                category_name: product.category?.name || 'Uncategorized' // Mengambil nama kategori
+            }));
+
+            setProducts(transformedProducts);
+            setFilteredProducts(transformedProducts);
+        } catch (error) {
+            console.log(error);
         }
-        
-        setFilteredProducts(sorted);
-    };
-
-    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-
-    const handleChangePage = (direction) => {
-        if (direction === "next" && currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        } else if (direction === "prev" && currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
-    const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-    const handleDeleteProduct = async (id) => {
-        // Show confirmation dialog
-        const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: 'You won\'t be able to revert this!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        });
-    
-        // Proceed with deletion only if confirmed
-        if (result.isConfirmed) {
-            try {
-                await deletePosts(id);
-                
-                // Remove the product from the lists
-                const updatedProducts = products.filter(product => product.id !== id);
-                setProducts(updatedProducts);
-                setFilteredProducts(updatedProducts);
-    
-                // Show success message
-                Swal.fire({
-                    title: 'Deleted!',
-                    text: 'The product has been deleted.',
-                    icon: 'success',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            } catch (error) {
-                // Show error message if deletion fails
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Failed to delete the product.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-                console.error("Error deleting product:", error);
-            }   
-        }
+        setLoading(false);
     }
+
+    const columns = [
+        {
+            name: "Name",
+            selector: (row) => row.name,
+            sortable: true,
+        },
+        {
+            name: "Description",
+            selector: (row) => row.description,
+            sortable: true,
+        },
+        {
+            name: "Price",
+            selector: (row) => row.price,
+            sortable: true,
+        },
+        {
+            name: "Image",
+            selector: (row) => (
+                <img
+                    src={row.image}
+                    alt={row.name}
+                    className="w-24 h-24 object-cover rounded"
+                />
+            ),
+            sortable: true,
+        },
+        {
+            name: "Category",
+            selector: (row) => row.category_name, // Menampilkan nama kategori
+            sortable: true,
+        },
+        {
+            name: "Updated_at",
+            selector: (row) => formatWIBTime(row.updated_at),
+            sortable: true,
+        },
+        {
+            name: "Actions",
+            cell: (row) => (
+                <div>
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                        onClick={() => handleEdit(row)}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        className="bg-red-500 text-white px-4 py-2 rounded"
+                        onClick={() => handleDelete(row.id)}
+                    >
+                        Delete
+                    </button>
+                </div>
+            ),
+        },
+    ];
 
     return (
         <div className="flex h-screen">
-            <Sidebar />
+            <Sidebar active="Product"/>
             <div className="flex-1 flex flex-col">
                 <Header />
                 <main className="flex-1 p-6 bg-gray-100">
-                    <h1 className="text-2xl font-bold mb-4">Produk yang ada di website</h1>
-                    <div className="flex justify-between items-center my-5">
-                        <div className="relative flex-grow mr-4">
-                            <input
-                                type="text"
-                                placeholder="Cari produk..."
-                                value={searchTerm}
-                                onChange={handleSearch}
-                                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <Search className="absolute left-3 top-3 text-gray-400" />
-                        </div>
-
-                        <select
-                            value={sortCategory}
-                            onChange={handleSort}
-                            className="py-2 px-4 border rounded-lg mr-10"
-                        >
-                            <option value="">Sort by</option>
-                            <option value="name">Name</option>
-                            <option value="category">Category</option>
-                            <option value="stock asc">Stock terendah</option>
-                            <option value="stock desc">Stock tertinggi</option>
-                        </select>
-
-                        <AddProductModal />
+                    <div className="flex items-center space-x-4 mb-3">
+                        <Link to="/admin/dashboard">
+                            <h1 className="text-sm font-bold hover:underline">Dashboard</h1>
+                        </Link>
+                        <ChevronRight size={16} />
+                        <h1 className="text-sm font-bold">Product</h1>
                     </div>
-
-                    <div className="overflow-x-auto h-[600px]">
-                        <table className="w-full table-auto bg-white rounded-xl">
-                            <thead className="bg-primary">
-                                <tr>
-                                    <th className="w-12 px-4 text-start py-2 border">No</th>
-                                    <th className="w-40 px-4 text-start py-2 border">Name</th>
-                                    <th className="w-60 px-4 text-start py-2 border">Description</th>
-                                    <th className="w-32 px-4 text-start py-2 border">Category</th>
-                                    <th className="w-32 px-4 text-start py-2 border">Image</th>
-                                    <th className="w-24 px-4 text-start py-2 border">Active</th>
-                                    <th className="w-40 px-4 text-start py-2 border">Stok</th>
-                                    <th className="w-40 px-4 text-start py-2 border">Updated At</th>
-                                    <th className="w-40 px-4 text-start py-2 border">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {paginatedProducts.map((item, index) => (
-                                    <tr key={index} className="border-b">
-                                        <td className="w-12 px-4 py-2">{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                                        <td className="w-40 px-4 py-2">{item.name}</td>
-                                        <td className="w-60 px-4 py-2">{item.description}</td>
-                                        <td className="w-32 px-4 py-2">{getCategoryName(item.category_id)}</td>
-                                        <td className="w-32 px-4 py-2">
-                                            <img src={`http://localhost:5000/uploads/products/${item.image}`} alt={item.name} className="w-[100px] h-[80px]" />
-                                        </td>
-                                        <td className="w-24 px-4 py-2">{item.is_active ? "Yes" : "No"}</td>
-                                        <td className="w-40 px-4 py-2">{item.stock}</td>
-                                        <td className="w-40 px-4 py-2">{formatWIBTime(item.updatedAt)}</td>
-                                        <td className="w-40 px-4 py-2">
-                                            <div className="flex gap-2">
-                                                <EditProductModal id={item.id} />
-                                                <button onClick={() => handleDeleteProduct(item.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className="flex justify-between items-center mt-4">
-                        <button
-                            onClick={() => handleChangePage("prev")}
-                            disabled={currentPage === 1}
-                            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+                    <div className="flex mb-4 gap-1">
+                        <input
+                            type="text"
+                            className="border border-gray-300 rounded p-2 w-full"
+                            placeholder="Search by name"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <button 
+                            className="w-[150px] bg-green-500 text-white p-2 rounded hover:bg-green-600" 
+                            onClick={() => setModalAdd(true)}
                         >
-                            <ChevronLeft />
-                        </button>
-                        <span>Page {currentPage} of {totalPages}</span>
-                        <button
-                            onClick={() => handleChangePage("next")}
-                            disabled={currentPage === totalPages}
-                            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-                        >
-                            <ChevronRight />
+                            Add Product
                         </button>
                     </div>
+                    <DataTable
+                        title="List Products"
+                        columns={columns}
+                        data={filteredProducts}
+                        progressPending={loading}
+                        pagination
+                        highlightOnHover
+                        selectableRows
+                        responsive
+                    />
+                    {modalAdd && 
+                    <AddProductModal 
+                    onClose={() => setModalAdd(false)} 
+                    onProductAdded={getProducts} /> }
                 </main>
             </div>
         </div>
