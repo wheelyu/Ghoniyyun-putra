@@ -26,7 +26,7 @@ const AboutUs = () => {
     ];
     return (
         <div className="pt-48 pb-10">
-            <h1 className='text-7xl font-bold text-primary text-center relative  z-50 py-10 '>Our Story</h1>
+            <h1 className='text-7xl font-bold text-primary text-center relative   py-10 '>Our Story</h1>
         <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             spaceBetween={10}
@@ -62,7 +62,7 @@ const AboutUs = () => {
                     standards but also provide in-depth consulting services to help clients
                     achieve operational efficiency and boost productivity."
                 </p>
-                <div className='bg-primary py-10'>
+                <div className='bg-gradient-to-l from-primary to-pink-500 bg-opacity-85 py-10'>
                 <div className='flex flex-row w-[1500px] mx-auto gap-5'>
                     <div className='bg-white shadow-xl p-10 w-1/2 hover:cursor-pointer rounded-xl' data-aos="fade-up" data-aos-delay="300">
                         <h1 className='text-3xl font-bold'>Vision</h1>
