@@ -53,9 +53,17 @@ const Category = () => {
             sortable: true,
         },
         {
-            name: "Active",
-            selector: (row) => row.is_active ? "Yes" : "No",
-            sortable: true,
+            name: "active",
+                selector: (row) => (
+                    <div>
+                        {row.is_active ? (
+                            <span className="text-green-500">Active</span>
+                        ) : (
+                            <span className="text-red-500">Not Active</span>
+                        )}
+                    </div>
+                ),
+                sortable: true,
         },
         {
             name: "Action",
