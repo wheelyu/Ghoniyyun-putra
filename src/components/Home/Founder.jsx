@@ -1,5 +1,5 @@
 import React from "react";
-import Mark from "../../assets/Mark.jpg";
+import Mark from "../../assets/mark.jpg";
 const Founder = () => {
     return (
         <div className="w-full flex justify-center items-center bg-primary h-[300px] top-10">
