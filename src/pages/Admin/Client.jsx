@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/Admin/sidebar";
+import Sidebar from "../../components/Admin/Sidebar";
 import Header from "../../components/Admin/Header";
 import { supabase } from "../../services/supabaseConfig";
 import DataTable from "react-data-table-component"; // Import library data table
@@ -170,7 +170,7 @@ const Client = () => {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                     <DataTable
-                        title="Daftar Client"
+                        title="List Client"
                         columns={columns}
                         data={filteredClient}
                         progressPending={loading}
