@@ -10,7 +10,8 @@ import {
     ListCheckIcon,
     ChevronLeft, 
     ChevronRight,
-    Settings
+    Settings,
+    Handshake
 } from 'lucide-react';
 import { Link } from "react-router-dom";
 const Sidebar = ({ active }) => {
@@ -35,6 +36,11 @@ const Sidebar = ({ active }) => {
             name: "Client",
             icon: <Users />,
         },
+        {
+            path: "/admin/partnership",
+            name: "Partnership",
+            icon: <Handshake />
+        }
     ]
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const navigate = useNavigate();
