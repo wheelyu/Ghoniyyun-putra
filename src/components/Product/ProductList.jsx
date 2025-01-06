@@ -1,74 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { getPosts, getCategories } from '../../services/api';
+import { supabase } from '../../services/supabaseConfig';
 import ProductDetail from './ProductDetail';
 import { formatIDR } from "../../hooks/useFormatIDR";
 const ProductPage = () => {
-  // State untuk produk dan kategori
   const [productData, setProductData] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [searchQuery, setSearchQuery] = useState(""); // State untuk kata kunci pencarian
-  const [sortOrder, setSortOrder] = useState(""); // State untuk sorting
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  // Ambil data produk dan kategori
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [products, categories] = await Promise.all([getPosts(), getCategories()]);
-        console.log(products);
-        setProductData(products.data);
-        setCategories(categories.data);
-        setFilteredProducts(products.data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-    fetchData();
+          getCategories();
+      }, []);
+  
+      const getCategories = async () => {
+          try {
+              const { data, error } = await supabase
+                  .from('categories')
+                  .select('id, name').eq('is_active', true);;
+              
+              if (error) {
+                  Swal.error('Failed to fetch categories');
+                  return;
+              }
+              setCategories(data);
+          } catch (error) {
+              console.error('Error:', error);
+              Swal.error('An error occurred while fetching categories');
+          }
+      };
+
+  useEffect(() => {
+    getProducts();
   }, []);
 
-  // Filter produk berdasarkan kategori, pencarian, dan urutan
-  const handleCategorySubmit = (e) => {
-    e.preventDefault(); // Mencegah reload halaman
-
-    let filtered = [...productData];
-
-    // Filter berdasarkan kategori
-    if (selectedCategory) {
-      const selectedCategoryId = parseInt(selectedCategory, 10);
-      filtered = filtered.filter(product => product.category_id === selectedCategoryId);
-    }
-
-    // Filter berdasarkan kata kunci pencarian
-    if (searchQuery.trim() !== "") {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Sorting berdasarkan harga
-    if (sortOrder) {
-      if (sortOrder === "low-to-high") {
-          filtered.sort((a, b) => a.price - b.price);
-      } else if (sortOrder === "high-to-low") {
-          filtered.sort((a, b) => b.price - a.price);
-      } else if (sortOrder === "a-to-z") {
-          filtered.sort((a, b) => a.name.localeCompare(b.name));
-      } else if (sortOrder === "z-to-a") {
-          filtered.sort((a, b) => b.name.localeCompare(a.name));
-      } else if (sortOrder === "newest") {
-          filtered.sort((a, b) => new Date(b.update_at) - new Date(a.update_at));
-      } else if (sortOrder === "oldest") {
-          filtered.sort((a, b) => new Date(a.update_at) - new Date(b.update_at));
-      }
-  }
-
-    setFilteredProducts(filtered); // Update produk yang ditampilkan
-  };
+  const getProducts = async () => {
+          setLoading(true);
+          try {
+              // Menggunakan join untuk mengambil data category
+              const { data: products, error } = await supabase
+                  .from("product")
+                  .select(`
+                      *,
+                      category:category_id (
+                          id,
+                          name
+                      )
+                  `);
+  
+              if (error) {
+                  console.log(error);
+              }
+              
+              // Transform data untuk menyesuaikan dengan format yang dibutuhkan
+              const transformedProducts = products.map(product => ({
+                  ...product,
+                  category_name: product.category?.name || 'Uncategorized' // Mengambil nama kategori
+              }));
+  
+              setProductData(transformedProducts);
+              setFilteredProducts(transformedProducts);
+          } catch (error) {
+              console.log(error);
+          }
+          setLoading(false);
+      };
 
   return (
     <div>
@@ -127,13 +127,6 @@ const ProductPage = () => {
             </select>
           </div>
 
-          <button
-            type="submit"
-            className="md:w-[45px] md:h-[45px] w-[353px] h-[52px] bg-red-400 rounded-lg flex items-center justify-center mt-8 mx-0 md:mx-5"
-            onClick={handleCategorySubmit}
-          >
-            <FontAwesomeIcon icon={faSearch} className="text-white" />
-          </button>
         </form>
       </div>
       {loading ? (
@@ -156,7 +149,7 @@ const ProductPage = () => {
               >
                 <div className="relative">
                   <img
-                    src={`http://localhost:5000/uploads/products/${product.image}`}
+                    src={product.image_url}
                     alt={product.name}
                     className="w-full h-32 md:h-48 object-cover"
                   />
