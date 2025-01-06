@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/Admin/sidebar";
+import Sidebar from "../../components/Admin/Sidebar";
 import Header from "../../components/Admin/Header";
 import { supabase } from "../../services/supabaseConfig";
 import DataTable from "react-data-table-component"; // Import library data table
