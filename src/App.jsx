@@ -10,17 +10,9 @@ import Dashboard from "./pages/Admin/dashboard";
 import ProductAdmin from "./pages/Admin/Product";
 import CategoryAdmin from "./pages/Admin/Category";
 import Client from "./pages/Admin/Client";
+import Partnership from "./pages/Admin/Partnership";
 function App() {
-  const phoneNumber = "6285175174984"; // Ganti dengan nomor WhatsApp Anda, pastikan menggunakan format internasional
-  const message = "Halo! Saya ingin bertanya tentang..."; // Pesan default yang akan dikirim
-
-  const handleClick = () => {
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      message
-    )}`;
-    window.open(url, "_blank"); // Membuka WhatsApp di tab baru
-  };
-  const path = window.location.pathname;
+ 
   return (
     
     <Router>
@@ -39,6 +31,7 @@ function App() {
           <Route path="/admin/product" element={<ProductAdmin />} />
           <Route path="/admin/category" element={<CategoryAdmin />} />
           <Route path="/admin/client" element={<Client />} />
+          <Route path="/admin/partnership" element={<Partnership />} />
         </Route>
       </Routes>
       
