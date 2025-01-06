@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../../components/Admin/sidebar";
+import Sidebar from "../../components/Admin/Sidebar";
 import Header from "../../components/Admin/Header";
 import useAuthStore from "../../stores/authStore";
 const Dashboard = () => {
