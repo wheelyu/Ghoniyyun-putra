@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { supabase } from "../../../services/supabaseConfig";
-
-const AddProductModal = ({ onClose }) => {
+import { Toast } from "../../alert/toast";
+const AddProductModal = ({ onClose, onProductAdded }) => {
     const [categories, setCategories] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
@@ -22,7 +22,7 @@ const AddProductModal = ({ onClose }) => {
         try {
             const { data, error } = await supabase
                 .from('categories')
-                .select('id, name');
+                .select('id, name').eq('is_active', true);;
             
             if (error) {
                 Swal.error('Failed to fetch categories');
@@ -100,21 +100,6 @@ const AddProductModal = ({ onClose }) => {
         }
     };
 
-    const handleImageChange = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            setFormData(prev => ({
-                ...prev,
-                image: e.target.files[0]
-            }));
-            // Clear error when user selects a file
-            if (errors.image) {
-                setErrors(prev => ({
-                    ...prev,
-                    image: ''
-                }));
-            }
-        }
-    };
     const handleImageUpload = async (file) => {
         try {
             const fileExt = file.name.split('.').pop();
@@ -155,7 +140,7 @@ const AddProductModal = ({ onClose }) => {
             // Handle image upload first
             let imageUrl = null;
             if (formData.image) {
-                imageUrl = await handleImageUpload(image);
+                imageUrl = await handleImageUpload(formData.image);
             }
 
             // Insert product data
@@ -166,21 +151,25 @@ const AddProductModal = ({ onClose }) => {
                         name: formData.name,
                         description: formData.description,
                         price: Number(formData.price),
-                        image: imageUrl,
+                        image_url: imageUrl,
                         category_id: formData.category_id
                     }
                 ]);
 
             if (insertError) {
-                Swal.error('Failed to add product');
+                console.error('Error inserting product:', insertError.message);
                 return;
             }
 
-            Swal.success('Product added successfully');
+            Toast.fire({
+                icon: 'success',
+                title: 'Product added successfully',
+            });
             onClose();
+            onProductAdded();
         } catch (error) {
             console.error('Error:', error);
-            Swal.error('An error occurred while adding the product');
+            
         } finally {
             setLoading(false);
         }
@@ -233,7 +222,7 @@ const AddProductModal = ({ onClose }) => {
                             id="image"
                             accept="image/*"
                             className={`w-full p-2 border rounded-md ${errors.image ? 'border-red-500' : ''}`}
-                            onChange={handleImageChange}
+                            onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
                         />
                         {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
                     </div>
