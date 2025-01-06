@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import { formatWIBTime } from "../../hooks/useFormatTime";
 import { Link } from "react-router-dom";
 import AddProductModal from "../../components/Admin/Product/add";
+import { Toast } from "../../components/alert/toast";
+import { formatIDR } from "../../hooks/useFormatIDR";
 const Product = () => {
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState("");
@@ -72,14 +74,14 @@ const Product = () => {
         },
         {
             name: "Price",
-            selector: (row) => row.price,
+            selector: (row) => formatIDR(row.price),
             sortable: true,
         },
         {
             name: "Image",
             selector: (row) => (
                 <img
-                    src={row.image}
+                    src={row.image_url}
                     alt={row.name}
                     className="w-24 h-24 object-cover rounded"
                 />
@@ -116,6 +118,86 @@ const Product = () => {
             ),
         },
     ];
+    const handleDelete = async (id) => {
+        try {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete!",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    // Step 1: Ambil data produk berdasarkan ID
+                    const { data: product, error: fetchError } = await supabase
+                        .from("product")
+                        .select("image_url") // Ambil hanya kolom image_url
+                        .eq("id", id)
+                        .single(); // Pastikan hanya satu produk yang diambil
+    
+                    if (fetchError) {
+                        console.error("Error fetching product:", fetchError);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed to fetch product details",
+                            text: fetchError.message,
+                        });
+                        return;
+                    }
+    
+                    // Step 2: Hapus file gambar dari storage jika image_url tersedia
+                    if (product?.image_url) {
+                        // Ekstrak nama file dari URL publik (misalnya: path/to/file.jpg)
+                        const filePath = product.image_url.split('/').slice(-1)[0];
+                        const { error: deleteImageError } = await supabase.storage
+                            .from("product") // Sesuaikan nama bucket Anda
+                            .remove([filePath]); // Hapus file berdasarkan path
+    
+                        if (deleteImageError) {
+                            console.error("Error deleting image:", deleteImageError);
+                            Swal.fire({
+                                icon: "error",
+                                title: "Failed to delete product image",
+                                text: deleteImageError.message,
+                            });
+                            return;
+                        }
+                    }
+    
+                    // Step 3: Hapus data produk dari tabel
+                    const { error: deleteError } = await supabase
+                        .from("product")
+                        .delete()
+                        .eq("id", id);
+    
+                    if (deleteError) {
+                        console.error("Error deleting product:", deleteError);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed to delete product",
+                            text: deleteError.message,
+                        });
+                    } else {
+                        Toast.fire({
+                            icon: "success",
+                            title: "Product deleted successfully",
+                        });
+                        getProducts(); // Refresh daftar produk
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error:", error);
+            Swal.fire({
+                icon: "error",
+                title: "An error occurred",
+                text: error.message,
+            });
+        }
+    };
+    
 
     return (
         <div className="flex h-screen">
