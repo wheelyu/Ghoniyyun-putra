@@ -165,185 +165,189 @@ const ContactForm = () => {
     
 
     return (
-        <div className="h-fit  w-1/2 mx-auto flex justify-center" >
-            <div className="container mx-auto  gap-8 bg-white  rounded-xl overflow-hidden">
-                {/* Left Side - Contact Information */}
-                <motion.div 
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="bg-white text-primary p-8 flex flex-col h-fit z-10 "
-                >
-                    <h2 className="text-7xl font-bold mb-4 italic ">Get in Touch</h2>
-                    <p className="mb-6 text-gray-400 pl-10">
-                        Have a question or want to work together? Fill out the form and we'll get back to you as soon as possible.
-                    </p>
-                    <motion.div
+        <div className="w-full lg:w-4/5 xl:w-1/2 mx-auto px-4 py-8">
+        <div className="container mx-auto bg-white rounded-xl overflow-hidden">
+            {/* Contact Information Section */}
+            <motion.div 
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="bg-white text-primary p-4 sm:p-6 md:p-8 flex flex-col h-fit z-10"
+            >
+                <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 italic">Get in Touch</h2>
+                <p className="mb-6 text-gray-400 pl-0 sm:pl-5 md:pl-10 text-sm sm:text-base">
+                    Have a question or want to work together? Fill out the form and we'll get back to you as soon as possible.
+                </p>
+
+                {/* Form Section */}
+                <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="p-12 w-full  justify-start items-start shadow-lg relative  z-40 rounded-xl bg-white"
+                    className="p-4 sm:p-8 md:p-12 w-full justify-start items-start shadow-lg relative z-40 rounded-xl bg-white"
                 >
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <h1 className='text-4xl font-bold mb-4 text-primary'>Fill in Form</h1>
-                        <div className="relative mr-10">
-                            <label htmlFor="topic" className="block mb-2 text-sm font-medium text-gray-700">
-                                Topic
-                            </label>
+                    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                        <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-primary'>Fill in Form</h1>
+
+                        {/* Form Fields */}
+                        <div className="space-y-4">
+                            {/* Topic Select */}
                             <div className="relative">
-                                <select
-                                    id="topic"
-                                    name="topic"
-                                    value={formData.topic}
-                                    onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-gray-400
-                                        ${errors.topic ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
-                                    
-                                >
-                                    <option value="" disabled>Pilih Topic</option>
-                                    <option value="teknologi">Teknologi</option>
-                                    <option value="olahraga">Olahraga</option>
-                                    <option value="kesehatan">Kesehatan</option>
-                                    <option value="pendidikan">Pendidikan</option>
-                                    <option value="hiburan">Lainnya</option>
-                                </select>
-                                <FontAwesomeIcon 
-                                    icon={faNewspaper} 
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
-                                />
+                                <label htmlFor="topic" className="block mb-2 text-sm font-medium text-gray-700">
+                                    Topic
+                                </label>
+                                <div className="relative">
+                                    <select
+                                        id="topic"
+                                        name="topic"
+                                        value={formData.topic}
+                                        onChange={handleChange}
+                                        className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-gray-400
+                                            ${errors.topic ? 'border-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
+                                    >
+                                        <option value="" disabled>Pilih Topic</option>
+                                        <option value="teknologi">Teknologi</option>
+                                        <option value="olahraga">Olahraga</option>
+                                        <option value="kesehatan">Kesehatan</option>
+                                        <option value="pendidikan">Pendidikan</option>
+                                        <option value="hiburan">Lainnya</option>
+                                    </select>
+                                    <FontAwesomeIcon 
+                                        icon={faNewspaper} 
+                                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                                    />
+                                </div>
+                                {errors.topic && <p className="text-red-500 text-sm mt-1">{errors.topic}</p>}
                             </div>
-                            {errors.topic && <p className="text-red-500 text-sm mt-1">{errors.topic}</p>}
-                        </div>
-                        {/* Name Input */}
-                        <div className="relative mr-10">
-                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">
-                                Name
-                            </label>
+
+                            {/* Name Input */}
                             <div className="relative">
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
-                                        ${errors.name ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
-                                    placeholder="Masukkan nama lengkap Anda"
-                                    
-                                />
-                                <FontAwesomeIcon 
-                                    icon={faUser} 
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
-                                />
+                                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">
+                                    Name
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
+                                            ${errors.name ? 'border-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
+                                        placeholder="Masukkan nama lengkap Anda"
+                                    />
+                                    <FontAwesomeIcon 
+                                        icon={faUser} 
+                                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                                    />
+                                </div>
+                                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                             </div>
-                            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+
+                            {/* Email Input */}
+                            <div className="relative">
+                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
+                                    Email
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
+                                            ${errors.email ? 'border-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
+                                        placeholder="example@email.com"
+                                    />
+                                    <FontAwesomeIcon 
+                                        icon={faEnvelope} 
+                                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                                    />
+                                </div>
+                                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                            </div>
+
+                            {/* Company Input */}
+                            <div className="relative">
+                                <label htmlFor="company" className="block mb-2 text-sm font-medium text-gray-700">
+                                    Company
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        id="company"
+                                        name="company"
+                                        value={formData.company}
+                                        onChange={handleChange}
+                                        className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
+                                            ${errors.company ? 'border-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
+                                        placeholder="Masukkan nama perusahaan Anda"
+                                    />
+                                    <FontAwesomeIcon 
+                                        icon={faCity} 
+                                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                                    />
+                                </div>
+                                {errors.company && <p className="text-red-500 text-sm mt-1">{errors.company}</p>}
+                            </div>
+
+                            {/* Phone Number Input */}
+                            <div className="relative">
+                                <label htmlFor="number" className="block mb-2 text-sm font-medium text-gray-700">
+                                    Number
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type="number"
+                                        id="number"
+                                        name="number"
+                                        value={formData.number}
+                                        onChange={handleChange}
+                                        className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
+                                            ${errors.number ? 'border-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
+                                        placeholder="+6281234567890"
+                                    />
+                                    <FontAwesomeIcon 
+                                        icon={faPhone} 
+                                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                                    />
+                                </div>
+                                {errors.number && <p className="text-red-500 text-sm mt-1">{errors.number}</p>}
+                            </div>
+
+                            {/* Message Textarea */}
+                            <div className="relative">
+                                <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-700">
+                                    Message
+                                </label>
+                                <div className="relative">
+                                    <textarea
+                                        id="message"
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        rows="4"
+                                        className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
+                                            ${errors.message ? 'border-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
+                                        placeholder="Your Message"
+                                    ></textarea>
+                                    <FontAwesomeIcon 
+                                        icon={faComment} 
+                                        className="absolute left-3 top-3 text-gray-400" 
+                                    />
+                                </div>
+                                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+                            </div>
                         </div>
 
-                        {/* Email Input */}
-                        <div className="relative mr-10">
-                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
-                                Email
-                            </label>
-                            <div className="relative">
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
-                                        ${errors.email ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
-                                    placeholder="example@email.com"
-                                    
-                                />
-                                <FontAwesomeIcon 
-                                    icon={faEnvelope} 
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
-                                />
-                            </div>
-                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-                        </div>
-                        {/* Company Input */}
-                        <div className="relative mr-10">
-                            <label htmlFor="company" className="block mb-2 text-sm font-medium text-gray-700">
-                                Company
-                            </label>
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    id="company"
-                                    name="company"
-                                    value={formData.company}
-                                    onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
-                                        ${errors.company ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
-                                    placeholder="Masukkan nama perusahaan Anda"
-                                    
-                                />
-                                <FontAwesomeIcon 
-                                    icon={faCity} 
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
-                                />
-                            </div>
-                            {errors.company && <p className="text-red-500 text-sm mt-1">{errors.company}</p>}
-                        </div>
-
-                        {/* Number Input */}
-                        <div className="relative mr-10">
-                            <label htmlFor="number" className="block mb-2 text-sm font-medium text-gray-700">
-                                Number
-                            </label>
-                            <div className="relative">
-                                <input
-                                    type="number"  // Changed to text to allow custom validation
-                                    id="number"
-                                    name="number"
-                                    value={formData.number}
-                                    onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
-                                        ${errors.number ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
-                                    placeholder="+6281234567890"
-                                    
-                                />
-                                <FontAwesomeIcon 
-                                    icon={faPhone} 
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
-                                />
-                            </div>
-                            {errors.number && <p className="text-red-500 text-sm mt-1">{errors.number}</p>}
-                        </div>
-
-                        {/* Message Input */}
-                        <div className="relative mr-10">
-                            <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-700">
-                                Message
-                            </label>
-                            <div className="relative">
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    rows="4"
-                                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none text-black 
-                                        ${errors.message ? 'border-red-500 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
-                                    placeholder="Your Message"
-                                    
-                                ></textarea>
-                                <FontAwesomeIcon 
-                                    icon={faComment} 
-                                    className="absolute left-3 top-3 text-gray-400" 
-                                />
-                            </div>
-                            {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
-                        </div>
-
-                        <div className='w-full'>
+                        {/* Submit Button */}
+                        <div className='w-full flex justify-end mt-6'>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 type="submit"
-                                className="bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-md hover:opacity-90 transition-all float-right mr-10 px-10"
+                                className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 sm:py-3 px-6 sm:px-10 rounded-md hover:opacity-90 transition-all"
                             >
                                 <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
                                 Send Message
@@ -351,12 +355,9 @@ const ContactForm = () => {
                         </div>
                     </form>
                 </motion.div>
-                </motion.div>
-
-                {/* Right Side - Contact Form */}
-                
-            </div>
+            </motion.div>
         </div>
+    </div>
     );
 };
 

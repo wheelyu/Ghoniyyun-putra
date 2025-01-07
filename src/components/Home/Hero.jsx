@@ -1,13 +1,14 @@
 import React from "react";
 import Navbar from "../Navbar";
 import { motion, AnimatePresence } from 'framer-motion';
+import Bg from '../../assets/bg.webp'
 const Hero = () => {
     return (
         <div className="relative h-[350px] flex items-center justify-center overflow-hidden">
           {/* Background Image with Darkness Overlay */}
             <div className="absolute inset-0 overflow-hidden ">
                 <img 
-                    src="bg.webp" 
+                    src={Bg} 
                     alt="Background" 
                     className="w-full h-full  object-cover object-right absolute brightness-50 contrast-75 " 
                 />
@@ -27,7 +28,7 @@ const Hero = () => {
                     type: "spring", 
                     stiffness: 120 
                 }}
-                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-primary rounded-xl shadow-lg overflow-hidden w-full top-20 "
+                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-primary rounded-xl shadow-lg overflow-hidden w-full top-28 md:top-20 "
                 >
                 <motion.h1 
                     initial={{ y: 50, opacity: 0 }}

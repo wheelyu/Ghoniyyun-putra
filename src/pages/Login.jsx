@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabaseConfig";
 import useAuthStore from "../stores/authStore"; // Import auth store
 import { Toast } from "../components/alert/toast";
-import Bg from "../assets/bg.jpeg";
+import { motion } from 'framer-motion';
+import { Link } from "react-router-dom";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -75,55 +75,117 @@ function Login() {
     };
 
     return (
-        <div className="h-screen bg-primary flex flex-row "
-        >
-            <div className=" w-[700px] bg-white  h-screen  rounded-xl p-2 flex flex-row shadow-2xl">
-                
-                <div className="w-full bg-transparent h-full rounded-xl p-20 flex flex-col">
-                    <div className="">
-                        <h1 className="text-4xl font-bold mx-auto text-center items-center mb-20">Welcome Back</h1>
+        <div className="min-h-screen bg-gradient-to-br from-primary to-pink-500 flex items-center justify-center p-4">
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+            >
+                {/* Login Form Container */}
+                <div className="p-8 sm:p-12">
+                    {/* Header Section */}
+                    <div className="text-center mb-8">
+                        <motion.h1 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3"
+                        >
+                            Welcome Back
+                        </motion.h1>
+                        <p className="text-gray-500">Please sign in to your account</p>
                     </div>
-                    <div className="">
-                        <form>
-                            <div className="">
-                                <label className="block text-gray-700 font-bold mb-2">Email:</label>
-                                <div className="flex items-center ">
-                                    <input
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        type="email"
-                                        className={`bg-gray-100 w-full text-gray-900  rounded-md p-2 mb-4  transition ease-in-out duration-150 ${errors.email ? "border-red-500 border-2" : ""}`}
-                                        placeholder="Enter your email"
-                                    />
-                                </div>
-                                {errors.email && (
-                                    <p className="text-red-500 text-xs italic">{errors.email}</p>
-                                )}
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 font-bold mb-2">Password:</label>
-                                <div className="flex items-center ">
-                                    <input
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        type="password"
-                                        className="bg-gray-100 w-full text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-                                        placeholder="Enter your password"
-                                    />
-                                </div>
-                                {errors.password && (
-                                    <p className="text-red-500 text-xs italic">{errors.password}</p>
-                                )}
-                            </div>
-                            <button
-                                onClick={handleSubmit}
-                                className="bg-primary text-white rounded-lg p-2 px-5 float-right"
-                            >
-                                Submit
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
 
+                    {/* Form Section */}
+                    <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+                        {/* Email Field */}
+                        <div>
+                            <label className="block text-gray-700 font-semibold mb-2">
+                                Email
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <FontAwesomeIcon icon={faEnvelope} className="text-gray-400" />
+                                </div>
+                                <input
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    type="email"
+                                    className={`w-full pl-10 pr-4 py-3 rounded-lg bg-gray-50 border focus:outline-none focus:ring-2 transition-all
+                                        ${errors.email 
+                                            ? 'border-red-500 focus:ring-red-200' 
+                                            : 'border-gray-200 focus:ring-primary/20 focus:border-primary'
+                                        }`}
+                                    placeholder="Enter your email"
+                                />
+                                {errors.email && (
+                                    <motion.p 
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="text-red-500 text-sm mt-1"
+                                    >
+                                        {errors.email}
+                                    </motion.p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Password Field */}
+                        <div>
+                            <label className="block text-gray-700 font-semibold mb-2">
+                                Password
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <FontAwesomeIcon icon={faLock} className="text-gray-400" />
+                                </div>
+                                <input
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    type="password"
+                                    className={`w-full pl-10 pr-4 py-3 rounded-lg bg-gray-50 border focus:outline-none focus:ring-2 transition-all
+                                        ${errors.password 
+                                            ? 'border-red-500 focus:ring-red-200' 
+                                            : 'border-gray-200 focus:ring-primary/20 focus:border-primary'
+                                        }`}
+                                    placeholder="Enter your password"
+                                />
+                                {errors.password && (
+                                    <motion.p 
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="text-red-500 text-sm mt-1"
+                                    >
+                                        {errors.password}
+                                    </motion.p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Submit Button */}
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleSubmit}
+                            className="w-full py-3 bg-gradient-to-r from-primary to-pink-500 text-white rounded-lg 
+                                    font-semibold shadow-lg hover:shadow-xl transition-all duration-200
+                                    focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        >
+                            Sign In
+                        </motion.button>
+
+                        {/* Sign Up Link */}
+                        <Link to="/">
+                            <motion.p 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-center mt-4 text-sm text-gray-600 hover:underline"
+                            >
+                                Back to Home
+                            </motion.p>
+                        </Link>
+                    </form>
+                </div>
+            </motion.div>
         </div>
     );
 }

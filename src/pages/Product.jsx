@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductList from "../components/Product/ProductList";
-import StickyCtaButton from "../components/stickyCtaButton";
+import Bg from "../assets/bg.webp";
 export default function Product() {
   return (
     <div className="">
@@ -10,7 +10,7 @@ export default function Product() {
           {/* Background Image with Darkness Overlay */}
           <div className="absolute inset-0 overflow-hidden">
               <img 
-                  src="bg.webp" 
+                  src={Bg}
                   alt="Background" 
                   className="w-full h-full   object-cover object-bottom absolute brightness-50 contrast-75 " 
               />
@@ -28,7 +28,6 @@ export default function Product() {
         </div>
         </div>
       <Footer />
-      <StickyCtaButton />
     </div>
   );
 }

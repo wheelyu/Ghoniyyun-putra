@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
-import Contact from "./pages/ContactUs";
-import About from "./pages/AboutUs";
 import Login from "./pages/Login";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminRoute from "./routes/AdminRoute";
@@ -19,9 +17,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Product />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
-
         <Route element={<AdminRoute redirectPath="/admin/dashboard"/>}>
           <Route path="/login" element={<Login />} />
         </Route>

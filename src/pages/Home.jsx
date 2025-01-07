@@ -7,7 +7,6 @@ import Hero from "../components/Home/Hero";
 import Founder from "../components/Home/Founder";
 import Story from "../components/AboutUs/story";
 import Partnership from "../components/Home/Partnership";
-import StickyCtaButton from "../components/stickyCtaButton";
 import ContactForm from "../components/Contact/ContactForm";
 export default function Home() {
 
@@ -25,7 +24,6 @@ export default function Home() {
       <ContactForm  /> 
       </div>
       <Footer />
-      <StickyCtaButton />
     </div>
   );
 }
