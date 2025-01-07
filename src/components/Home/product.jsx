@@ -7,17 +7,17 @@ const OurProduct = () => {
         {
         id: 1,
         title: "Contractor",
-        image: {Contractor}, // Ganti dengan URL gambar produk Anda
+        image: Contractor, // Ganti dengan URL gambar produk Anda
         },
         {
         id: 2,
         title: "Trading Wholesaler",
-        image: {Bg}, // Ganti dengan URL gambar produk Anda
+        image: Bg, // Ganti dengan URL gambar produk Anda
         },
         {
         id: 3,
         title: "Operator",
-        image: {Pertamina}, // Ganti dengan URL gambar produk Anda
+        image: Pertamina, // Ganti dengan URL gambar produk Anda
         },
     ];
 
