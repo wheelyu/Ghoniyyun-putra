@@ -1,20 +1,23 @@
 import React from "react";
+import Contractor from "../../assets/contactor.webp";
+import Bg from "../../assets/bg.webp";
+import Pertamina from "../../assets/pertamina1.webp";
 const OurProduct = () => {
     const products = [
         {
         id: 1,
         title: "Contractor",
-        image: "../src/assets/contactor.webp", // Ganti dengan URL gambar produk Anda
+        image: {Contractor}, // Ganti dengan URL gambar produk Anda
         },
         {
         id: 2,
         title: "Trading Wholesaler",
-        image: "../src/assets/bg.webp", // Ganti dengan URL gambar produk Anda
+        image: {Bg}, // Ganti dengan URL gambar produk Anda
         },
         {
         id: 3,
         title: "Operator",
-        image: "../src/assets/pertamina1.webp", // Ganti dengan URL gambar produk Anda
+        image: {Pertamina}, // Ganti dengan URL gambar produk Anda
         },
     ];
 
