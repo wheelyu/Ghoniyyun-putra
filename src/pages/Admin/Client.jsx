@@ -142,8 +142,10 @@ const Client = () => {
             console.log(error);
         }
     };
-    const handleReach = (number) => {
-        window.open(`https://wa.me/${number}`);
+    const handleReach = (number, name) => {
+        const message = `Halo ${name}, saya dari customer service Ghoniyyun Petrol Teknik.`;
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`https://wa.me/${number}?text=${encodedMessage}`);
     };
 
     return (
@@ -211,7 +213,7 @@ const Client = () => {
                                 </button>
                                 <button
                                     className="bg-green-500 text-white px-4 py-2 rounded ml-2"
-                                    onClick={() => handleReach(selectedClient.number)}
+                                    onClick={() => handleReach(selectedClient.number, selectedClient.name)}
                                 >
                                     Reach Client
                                 </button>
