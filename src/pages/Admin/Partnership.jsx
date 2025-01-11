@@ -137,7 +137,7 @@ const Partnership = () => {
             
             }
 
-    return <div className="flex h-screen">
+    return <div className="flex">
         <Sidebar active="Partnership" />
         <div className="flex-1 flex flex-col">
             <Header />
@@ -172,6 +172,7 @@ const Partnership = () => {
                         highlightOnHover
                         selectableRows
                         responsive
+                        
                     />
                     {/* Modal Add */}
                     {modalAdd && (

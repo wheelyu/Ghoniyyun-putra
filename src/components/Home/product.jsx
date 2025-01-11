@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Contractor from "../../assets/contactor.webp";
 import Bg from "../../assets/bg.webp";
 import Pertamina from "../../assets/pertamina1.webp";
+import { supabase } from "../../services/supabaseConfig";
 const OurProduct = () => {
+    const [category, setCategory] = useState([]);
+    const fetchCategory = async () => {
+        try {
+            const { data, error } = await supabase
+                .from("categories")
+                .select("*")
+                .eq("is_active", true)
+                .limit(3); // Hanya mengambil 3 data
+    
+            if (error) {
+                throw error;
+            }
+    
+            setCategory(data);
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+    
+    useEffect(() => {
+        fetchCategory();
+    }, []);
     const products = [
         {
         id: 1,
@@ -28,20 +51,20 @@ const OurProduct = () => {
         </h1>
         <div className="bg-white p-10 rounded-xl shadow-2xl">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
-            {products.map((product, index) => (
-                <a href={`/product/${product.id}`} key={`product-${product.id}-${index}`}>
+            {category.map((category, index) => (
+                <a href={`/product`} key={index}>
                     <div
                         className="relative group overflow-hidden rounded-lg shadow-lg hover:cursor-pointer"
                     >
                         {/* Gambar Produk */}
                         <img
-                            src={product.image}
-                            alt={product.title}
+                            src={Contractor}
+                            alt={category.name}
                             className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         {/* Overlay dengan Judul */}
                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-                            <h2 className="text-white text-lg font-bold">{product.title}</h2>
+                            <h2 className="text-white text-lg font-bold">{category.name}</h2>
                         </div>
                     </div>
                 </a>

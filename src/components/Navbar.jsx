@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faHome, faInfoCircle, faBox, faTools, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { motion, AnimatePresence } from 'framer-motion';
+import Logo from "../assets/Logo_company.png";
 const Navbar = ({active}) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -47,7 +48,7 @@ const Navbar = ({active}) => {
                 <div className={`text-xl font-bold transition-colors ${
                     isScrolled ? "text-black" : "text-white"
                 }`}>
-                    <Link to="/">LOGO GP</Link>
+                    <Link to="/"><img src={Logo} alt="Logo" className={`${isScrolled ? "h-12" : "h-20"} rounded-xl transition-all duration-300`} /></Link>
                 </div>
 
                 {/* Desktop Navigation */}

@@ -64,13 +64,7 @@ const AboutUs = () => {
 
             {/* Description Text */}
             <p className="mb-6 w-full md:max-w-[70%] lg:max-w-[50%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10 md:py-20">
-                "[Your Company Name] specializes in consulting and providing products for gas stations (SPBU). 
-                With years of experience, we are committed to delivering innovative and tailored solutions 
-                to our partners in the energy and fuel industry.
-                <br/><br />
-                We not only offer high-quality products that meet industry 
-                standards but also provide in-depth consulting services to help clients
-                achieve operational efficiency and boost productivity."
+                "Ghoniyyun Petrol Teknik is a company specializing in providing innovative solutions and services in the oil and gas industry. Founded in early 2024, the company began as a small enterprise focusing on technical support and equipment maintenance for petroleum operations. Over the years, it expanded its portfolio to include engineering consultancy, installation of advanced technology systems, and supply chain services tailored to the energy sector."
             </p>
 
             {/* Vision & Mission Section */}
@@ -82,7 +76,7 @@ const AboutUs = () => {
                          data-aos-delay="300">
                         <h1 className='text-2xl md:text-3xl font-bold mb-3'>Vision</h1>
                         <p className='hover:text-primary transition duration-300 text-base md:text-lg lg:text-xl'>
-                            To become a trusted partner in delivering comprehensive solutions for gas station operations, supporting sustainable business growth.
+                        To be a leading company in the oil and gas industry, recognized for innovation, quality, and dedication to creating value for our clients, employees, and communities
                         </p>
                     </div>
 
@@ -92,9 +86,11 @@ const AboutUs = () => {
                          data-aos-delay="800">
                         <h1 className='text-2xl md:text-3xl font-bold mb-3'>Mission</h1>
                         <ul className='hover:text-primary transition duration-300 text-base md:text-lg lg:text-xl space-y-2'>
-                            <li>- To supply high-quality products that enhance gas station management efficiency.</li>
-                            <li>- To offer professional consulting services to maximize clients business potential.</li>
-                            <li>- To innovate and introduce the latest technologies and solutions in the gas station industry.</li>
+                            <li>- To provide top-tier products and services that meet the evolving needs of our clients.</li>
+                            <li>- To foster a culture of innovation and continuous improvement in all aspects of our business.</li>
+                            <li>- To establish long-term relationships with stakeholders based on trust, integrity, and mutual success.</li>
+                            <li>- To prioritize sustainability and social responsibility in all operations, contributing positively to the environment and society.
+                            </li>
                         </ul>
                     </div>
                 </div>

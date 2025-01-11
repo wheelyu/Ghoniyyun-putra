@@ -17,19 +17,30 @@ const About = () => {
             icon: faBullseye,
             iconColor: "text-blue-500",
             title: "Measurable Target",
-            description: "We help you set clear and measurable goals to track your progress effectively."
+            description:[
+                "Maintain a customer satisfaction score of 90% or higher based on regular feedback surveys.",
+                "We provide our clients with high-quality products.",
+                "We innovate to become a national supplier across various regions in Indonesia."
+            ]
         },
         {
             icon: faHandshake,
             iconColor: "text-green-500", 
             title: "Best Partnership",
-            description: "Build strong and long-lasting partnerships with our expertise and support."
+            description:[
+                "Partner with leading manufacturers and suppliers of petroleum equipment to ensure high-quality and cost-effective solutions",
+                "Build strong relationships with international companies to exchange knowledge and enhance service offerings.",
+                "Collaborate with Pertamina to support the digitalization program of gas stations in this digital era."
+            ]
         },
         {
             icon: faAward,
             iconColor: "text-yellow-500",
             title: "High Commitment", 
-            description: "Our team is committed to delivering the best results for your success."
+            description:[
+                "Maintain open communication with clients to ensure their needs are met promptly and effectively, fostering long-term relationships.",
+                "Commit to maintaining the highest quality standards in all services and products provided to clients.",
+            ]
         },
     ];
 
@@ -47,7 +58,7 @@ const About = () => {
                         key={index} 
                         className="bg-white shadow-lg rounded-lg p-4 md:p-6 
                                 flex flex-col sm:flex-row items-center
-                                min-h-[180px] md:h-[200px]
+                                min-h-[180px] 
                                 transition-all duration-300 ease-in-out 
                                 border-b-[10px] hover:border-primary 
                                 hover:shadow-xl hover:cursor-pointer"
@@ -60,8 +71,10 @@ const About = () => {
                             <p className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800">
                                 {card.title}
                             </p>
-                            <p className="text-sm text-gray-600 mt-2 max-w-sm">
-                                {card.description}
+                            <p className="text-sm text-gray-600 mt-2 max-w-sm text-justify">
+                                {card.description.map((desc, index) => (
+                                    <li key={index}>{desc}</li>
+                                ))}
                             </p>
                         </div>
                     </div>

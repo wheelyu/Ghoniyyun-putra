@@ -30,7 +30,7 @@ const Partnership = () => {
                                 key={index}
                                 src={image.image_url}
                                 alt={`Partner ${index + 1}`}
-                                className="w-40 h-40 object-contain"
+                                className="w-40 h-40 object-contain mr-10"
                             />
                         ))}
                         
