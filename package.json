@@ -31,8 +31,10 @@
     "react-router-dom": "^6.26.2",
     "react-switch": "^7.1.0",
     "react-transition-group": "^4.4.5",
+    "react-type-animation": "^3.2.0",
     "sweetalert2": "^11.14.5",
     "swiper": "^11.1.15",
+    "typeit": "^8.8.7",
     "zustand": "^5.0.2"
   },
   "devDependencies": {

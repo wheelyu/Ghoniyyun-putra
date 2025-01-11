@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import Pertamina1 from "../../assets/Lowongan-Pertamina.webp"
@@ -6,12 +6,14 @@ import Pertamina2 from "../../assets/promo-pertamina.webp"
 import Pertamina3 from "../../assets/pertamina1.webp"
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import  TypeIt  from './typeIt';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const AboutUs = () => {
+    
     useEffect(() => {
         AOS.init({
             duration: 1000,
@@ -63,9 +65,9 @@ const AboutUs = () => {
             </div>
 
             {/* Description Text */}
-            <p className="mb-6 w-full md:max-w-[70%] lg:max-w-[50%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10 md:py-20">
-                "Ghoniyyun Petrol Teknik is a company specializing in providing innovative solutions and services in the oil and gas industry. Founded in early 2024, the company began as a small enterprise focusing on technical support and equipment maintenance for petroleum operations. Over the years, it expanded its portfolio to include engineering consultancy, installation of advanced technology systems, and supply chain services tailored to the energy sector."
-            </p>
+            <div className="mb-6 w-full md:max-w-[70%] lg:max-w-[50%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10 md:py-20 h-[300px]"  data-aos="fade-up">
+            <TypeIt />
+            </div>
 
             {/* Vision & Mission Section */}
             <div className='bg-gradient-to-l from-primary to-pink-500 bg-opacity-85 py-6 md:py-10'>

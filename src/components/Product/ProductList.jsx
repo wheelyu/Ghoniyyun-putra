@@ -2,25 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseConfig';
 import ProductDetail from './ProductDetail';
 import { formatIDR } from "../../hooks/useFormatIDR";
+import useCategoryStore from '../../stores/useCategoryStore';
 
 const ProductPage = () => {
   const [productData, setProductData] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const selectedCategory = useCategoryStore(state => state.selectedCategory);
+  const setSelectedCategory = useCategoryStore(state => state.setSelectedCategory);
   const [categories, setCategories] = useState([]);
 
+  // Fetch initial data
   useEffect(() => {
     getCategories();
     getProducts();
   }, []);
 
+  // Apply filters whenever productData, searchQuery, or selectedCategory changes
+  useEffect(() => {
+    if (productData.length > 0) {
+      filterProducts();
+    }
+  }, [productData, searchQuery, selectedCategory]);
+
   const getCategories = async () => {
     try {
       const { data, error } = await supabase
         .from('categories')
-        .select('id, name').eq('is_active', true);
+        .select('id, name')
+        .eq('is_active', true);
 
       if (error) {
         console.error('Failed to fetch categories:', error);
@@ -47,6 +58,7 @@ const ProductPage = () => {
 
       if (error) {
         console.error(error);
+        return;
       }
 
       const transformedProducts = products.map(product => ({
@@ -55,19 +67,16 @@ const ProductPage = () => {
       }));
 
       setProductData(transformedProducts);
-      setFilteredProducts(transformedProducts);
+      // Don't set filteredProducts here anymore as it will be handled by the useEffect
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  useEffect(() => {
-    filterProducts();
-  }, [searchQuery, selectedCategory]);
-
   const filterProducts = () => {
-    let filtered = productData;
+    let filtered = [...productData]; // Create a new array to avoid mutation
 
     // Filter berdasarkan pencarian
     if (searchQuery) {
@@ -158,7 +167,7 @@ const ProductPage = () => {
                       </span>
                     </div>
                     <div className="flex justify-between items-center w-1/2 ">
-                    <ProductDetail id={product.id}/>
+                      <ProductDetail id={product.id}/>
                     </div>
                   </div>
                 </div>
