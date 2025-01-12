@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Pertamina from "../../assets/Pertamina_Logo.png";
 import Marquee from "react-fast-marquee";
 import { supabase } from "../../services/supabaseConfig";
 const Partnership = () => {

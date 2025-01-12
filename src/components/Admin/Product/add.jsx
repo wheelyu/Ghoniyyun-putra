@@ -152,7 +152,8 @@ const AddProductModal = ({ onClose, onProductAdded }) => {
                         description: formData.description,
                         price: Number(formData.price),
                         image_url: imageUrl,
-                        category_id: formData.category_id
+                        category_id: formData.category_id,
+                        updated_at: new Date()
                     }
                 ]);
 

@@ -14,6 +14,7 @@ import {
     Handshake
 } from 'lucide-react';
 import { Link } from "react-router-dom";
+import Logo from "../../assets/Logo_company.png";
 const Sidebar = ({ active }) => {
     const navLink = [
         {
@@ -87,7 +88,7 @@ const Sidebar = ({ active }) => {
                     ${isSidebarOpen ? 'flex gap-2' : 'hidden'} 
                     text-xl font-bold
                 `}>
-                    <Settings className="w-8 h-8" />
+                    <img src={Logo} alt="Logo" className="w-10 h-10" />
                     Admin Panel
                 </h2>
                 </div>

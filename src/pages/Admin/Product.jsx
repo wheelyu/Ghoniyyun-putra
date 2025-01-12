@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { formatWIBTime } from "../../hooks/useFormatTime";
 import { Link } from "react-router-dom";
 import AddProductModal from "../../components/Admin/Product/add";
+import EditProductModal from "../../components/Admin/Product/edit";
 import { Toast } from "../../components/alert/toast";
 import { formatIDR } from "../../hooks/useFormatIDR";
 const Product = () => {
@@ -17,6 +18,7 @@ const Product = () => {
     const [loading, setLoading] = useState(true);
     const [modalAdd, setModalAdd] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
+    const [editID, setEditID] = useState(null);
     useEffect(() => {
         getProducts();
     }, []);
@@ -118,6 +120,10 @@ const Product = () => {
             ),
         },
     ];
+    const handleEdit = (row) => {
+        setEditID(row.id);
+        setModalEdit(true);
+    };
     const handleDelete = async (id) => {
         try {
             Swal.fire({
@@ -241,6 +247,11 @@ const Product = () => {
                     <AddProductModal 
                     onClose={() => setModalAdd(false)} 
                     onProductAdded={getProducts} /> }
+                    {modalEdit && 
+                    <EditProductModal 
+                    id={editID} 
+                    onClose={() => setModalEdit(false)} 
+                    onProductUpdated={getProducts} /> }
                 </main>
             </div>
         </div>
