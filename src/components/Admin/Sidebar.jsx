@@ -41,7 +41,12 @@ const Sidebar = ({ active }) => {
             path: "/admin/partnership",
             name: "Partnership",
             icon: <Handshake />
-        }
+        },
+        {
+            path: "/admin/topic",
+            name: "Topic",
+            icon: <Settings />,
+        },
     ]
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const navigate = useNavigate();

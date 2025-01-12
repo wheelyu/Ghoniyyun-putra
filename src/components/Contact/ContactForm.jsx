@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2'; 
 import emailjs from "@emailjs/browser";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faUser, faComment, faPaperPlane, faPhone, faNewspaper, faCity } from '@fortawesome/free-solid-svg-icons';
 import { supabase } from '../../services/supabaseConfig';
+import { use } from 'react';
 const ContactForm = () => {
     const [formData, setFormData] = useState({
         topic: '',
@@ -24,6 +25,22 @@ const ContactForm = () => {
         message: ''
     });
 
+    const [topics, setTopics] = useState([]);
+    useEffect(() => {
+        getTopics();
+    }, []);
+    const getTopics = async () => {
+        try {
+            const { data, error } = await supabase.from('topic').select('*');
+            if (error) {
+                console.error("Error fetching topics:", error.message);
+            } else {
+                setTopics(data);
+            }
+        } catch (error) {
+            console.error("Error fetching topics:", error.message);
+    }
+    };
     const validateForm = () => {
         let tempErrors = { topic: '', name: '', email: '',company: '', number: '', message: '' };
         let formIsValid = true;
@@ -206,11 +223,9 @@ const ContactForm = () => {
                                             ${errors.topic ? 'border-red-500' : 'focus:ring-2 focus:ring-blue-500'}`}
                                     >
                                         <option value="" disabled>Pilih Topic</option>
-                                        <option value="teknologi">Teknologi</option>
-                                        <option value="olahraga">Olahraga</option>
-                                        <option value="kesehatan">Kesehatan</option>
-                                        <option value="pendidikan">Pendidikan</option>
-                                        <option value="hiburan">Lainnya</option>
+                                        {topics.map((topic, index) => (
+                                            <option key={index} value={topic.name}>{topic.name}</option>
+                                        ))}
                                     </select>
                                     <FontAwesomeIcon 
                                         icon={faNewspaper} 

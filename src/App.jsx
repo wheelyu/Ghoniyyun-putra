@@ -9,8 +9,9 @@ import ProductAdmin from "./pages/Admin/Product";
 import CategoryAdmin from "./pages/Admin/Category";
 import Client from "./pages/Admin/Client";
 import Partnership from "./pages/Admin/Partnership";
+import Topic from "./pages/Admin/Topic";
 function App() {
- 
+
   return (
     
     <Router>
@@ -27,6 +28,7 @@ function App() {
           <Route path="/admin/category" element={<CategoryAdmin />} />
           <Route path="/admin/client" element={<Client />} />
           <Route path="/admin/partnership" element={<Partnership />} />
+          <Route path="/admin/topic" element={<Topic />} />
         </Route>
       </Routes>
       
