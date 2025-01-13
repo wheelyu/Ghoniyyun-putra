@@ -226,6 +226,7 @@ const ContactForm = () => {
                                         {topics.map((topic, index) => (
                                             <option key={index} value={topic.name}>{topic.name}</option>
                                         ))}
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                     <FontAwesomeIcon 
                                         icon={faNewspaper} 

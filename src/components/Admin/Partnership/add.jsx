@@ -154,7 +154,17 @@ const AddPartnership = ({ onClose, onPartnershipAdded }) => {
                             if (errors.image_url) setErrors({ ...errors, image_url: '' });
                         }}
                     />
+                    <small>Max file size: 200kb</small>
                     {errors.image_url && <p className="text-red-500 text-sm mt-1">{errors.image_url}</p>}
+                    {formData.image_url && (
+                            <div className="mt-2">
+                                <img
+                                    src={URL.createObjectURL(formData.image_url)}
+                                    alt="Preview"
+                                    className=" h-32 object-cover rounded-md"
+                                />
+                            </div>
+                        )}
                 </div>
                 <div className="flex items-center space-x-4 mb-4">
                     <label className="text-gray-600">Active:</label>

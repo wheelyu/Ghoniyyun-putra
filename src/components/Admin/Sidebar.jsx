@@ -11,7 +11,8 @@ import {
     ChevronLeft, 
     ChevronRight,
     Settings,
-    Handshake
+    Handshake,
+    Lightbulb
 } from 'lucide-react';
 import { Link } from "react-router-dom";
 import Logo from "../../assets/Logo_company.png";
@@ -23,20 +24,17 @@ const Sidebar = ({ active }) => {
             icon: <Home />,
         },
         {
-            path: "/admin/product",
-            name: "Product",
-            icon: <BoxIcon />,
-        },
-        {
             path: "/admin/category",
             name: "Category",
             icon: <ListCheckIcon />,
         },
         {
-            path: "/admin/client",
-            name: "Client",
-            icon: <Users />,
+            path: "/admin/product",
+            name: "Product",
+            icon: <BoxIcon />,
         },
+
+
         {
             path: "/admin/partnership",
             name: "Partnership",
@@ -45,7 +43,12 @@ const Sidebar = ({ active }) => {
         {
             path: "/admin/topic",
             name: "Topic",
-            icon: <Settings />,
+            icon: <Lightbulb />,
+        },
+        {
+            path: "/admin/client",
+            name: "Client",
+            icon: <Users />,
         },
     ]
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);

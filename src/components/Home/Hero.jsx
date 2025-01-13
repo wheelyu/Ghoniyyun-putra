@@ -28,7 +28,7 @@ const Hero = () => {
                     type: "spring", 
                     stiffness: 120 
                 }}
-                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-primary rounded-xl shadow-lg overflow-hidden w-full top-28 md:top-20 "
+                className="relative  text-center px-4 py-10 bg-white border-t-[10px] border-primary  shadow-lg overflow-hidden w-full top-28 md:top-20 "
                 >
                 <motion.h1 
                     initial={{ y: 50, opacity: 0 }}
@@ -49,7 +49,7 @@ const Hero = () => {
                         ease: "easeInOut" 
                     }}
                     style={{
-                        backgroundImage: 'linear-gradient(to right, transparent 0%, #f87171 0%)',
+                        backgroundImage: 'linear-gradient(to right, transparent 0%, #dc2626 0%)',
                         backgroundPosition: '100% 0',
                         backgroundRepeat: 'no-repeat',
                         WebkitBackgroundClip: 'text',

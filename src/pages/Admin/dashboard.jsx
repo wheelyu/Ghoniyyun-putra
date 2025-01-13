@@ -5,7 +5,8 @@ import {
     BoxIcon,
     ListCheckIcon,
     Users,
-    Handshake
+    Handshake,
+    Lightbulb
 } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { supabase } from "../../services/supabaseConfig";
@@ -16,21 +17,24 @@ const Dashboard = () => {
     const [totalCategories, setTotalCategories] = useState(0);
     const [totalClients, setTotalClients] = useState(0);
     const [totalPartnerships, setTotalPartnerships] = useState(0);
+    const [totalTopics, setTotalTopics] = useState(0);
 
     useEffect(() => {
         const fetchTotals = async () => {
             try {
-                const [{ count: productCount }, { count: categoryCount }, { count: clientCount }, { count: partnershipCount }] = await Promise.all([
+                const [{ count: productCount }, { count: categoryCount }, { count: clientCount }, { count: partnershipCount }, {count: topicCount}] = await Promise.all([
                     supabase.from("product").select("id", { count: "exact", head: true }),
                     supabase.from("categories").select("id", { count: "exact", head: true }),
                     supabase.from("client").select("id", { count: "exact", head: true }),
                     supabase.from("partnership").select("id", { count: "exact", head: true }),
+                    supabase.from("topic").select("id", { count: "exact", head: true })
                 ]);
 
                 setTotalProducts(productCount || 0);
                 setTotalCategories(categoryCount || 0);
                 setTotalClients(clientCount || 0);
                 setTotalPartnerships(partnershipCount || 0);
+                setTotalTopics(topicCount || 0);
             } catch (error) {
                 console.error("Error fetching data counts:", error);
             } finally {
@@ -76,6 +80,13 @@ const Dashboard = () => {
                                 <Handshake size={70} color="#f87171" />
                                 <h1 className="text-2xl">{loading ? "Loading..." : totalPartnerships}</h1>
                                 <h1 className="text-sm text-gray-400">Partnership</h1>
+                            </div>
+                        </Link>
+                        <Link to="/admin/topic">
+                            <div className="flex flex-col gap-1 hover:gap-7 transition-all duration-300 items-center justify-center bg-white p-4 w-[200px] h-[200px] cursor-pointer">
+                                <Lightbulb size={70} color="#f87171" />
+                                <h1 className="text-2xl">{loading ? "Loading..." : totalTopics}</h1>
+                                <h1 className="text-sm text-gray-400">Topic</h1>
                             </div>
                         </Link>
                     </div>

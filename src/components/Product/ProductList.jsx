@@ -151,7 +151,7 @@ const ProductPage = () => {
                   <img
                     src={product.image_url}
                     alt={product.name}
-                    className="w-full h-32 md:h-48 object-cover"
+                    className="w-full h-32 md:h-96 object-cover"
                   />
                 </div>
                 <div className="p-2 md:p-4">

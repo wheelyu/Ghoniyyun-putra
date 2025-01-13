@@ -4,29 +4,38 @@ import { Fuel } from "lucide-react";
 import useCategoryStore from "../../stores/useCategoryStore";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { Link, useNavigate } from "react-router-dom";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
+import Pertamina1 from "../../assets/Lowongan-Pertamina.webp"
+import Pertamina2 from "../../assets/promo-pertamina.webp"
+import Pertamina3 from "../../assets/pertamina1.webp"
 const OurProduct = () => {
     const [category, setCategory] = useState([]);
     const setSelectedCategory = useCategoryStore(state => state.setSelectedCategory);
     const navigate = useNavigate();
+    const [topic, setTopic] = useState([]);
     const fetchCategory = async () => {
         try {
             const { data, error } = await supabase
                 .from("categories")
                 .select("*")
                 .eq("is_active", true)
-    
+            
+            const { data: topicData, error: topicError } = await supabase
+                .from("topic")
+                .select("*")
+                .eq("is_active", true)
+
             if (error) {
                 throw error;
             }
     
             setCategory(data);
+            setTopic(topicData);
         } catch (error) {
             alert(error.message);
         }
@@ -40,13 +49,18 @@ const OurProduct = () => {
         setSelectedCategory(categoryName);
         navigate('/product');
     };
-
+    const images = [
+        Pertamina1,
+        Pertamina2,
+        Pertamina3,
+        Pertamina1,
+        Pertamina2,
+    ];
     return (
         <div className="bg-white bg-opacity-90 mb-56 pt-20 px-4 md:px-48">
             <h1 className="text-4xl font-bold mb-12 text-primary">
-                Our Products and services
+                Our category product
             </h1>
-            <small className="text-primary">category product</small>
             <div className="bg-white ">
                 <Swiper
                     modules={[Navigation, Pagination]}
@@ -96,6 +110,56 @@ const OurProduct = () => {
                         See More Product
                     </a>
                 </div>
+            </div>
+            <h1 className="text-4xl font-bold mb-12 text-primary">Our Services</h1>
+            <div className="flex flex-col md:flex-row gap-10 justify-center  items-center">
+            {topic.map((topic, index) => (
+            <div key={index} className="w-64 bg-white shadow-[0px_0px_15px_rgba(0,0,0,0.09)] p-9 space-y-3 relative overflow-hidden">
+                <div className="w-24 h-24 bg-primary rounded-full absolute -right-5 -top-7">
+                    <p className="absolute bottom-6 left-7 text-white text-2xl">{index + 1}</p>
+                </div>
+                <div className="fill-violet-500 w-12">
+                    
+                </div>
+                <div className="h-16">
+                <h1 className="font-bold text-xl">{topic.name}</h1>
+                </div>
+                <p className="text-sm text-zinc-500 leading-6">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse fuga
+                    adipisicing elit
+                </p>
+            </div>
+            ))}
+            </div>
+            <div className="text-6xl font-bold mt-20 text-primary text-center">
+                Documentations
+            </div>
+            <div className="w-full px-4 md:px-8 lg:px-16 mt-10">
+                <Swiper
+                    modules={[Navigation, Pagination, Autoplay]}
+                    spaceBetween={10}
+                    slidesPerView={1}
+                    navigation
+                    loop={true} 
+                    pagination={{ clickable: true }}
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    }}
+                    className="w-full max-w-[1500px] h-[300px] md:h-[400px] lg:h-[500px] mx-auto custom-swiper mb-6 md:mb-10"
+                >
+                    {images.map((image, index) => (
+                        <SwiperSlide key={index} className="flex items-center justify-center relative">
+                            {/* Dark overlay */}
+                            <div className="absolute inset-0 w-[90%] mx-auto  z-10"></div>
+                            <img
+                                src={image}
+                                alt={`Slide ${index + 1}`}
+                                className="w-full h-full object-cover object-center rounded-xl z-0 "
+                            />
+                        </SwiperSlide>  
+                    ))}
+                </Swiper>
             </div>
         </div>
     );

@@ -69,11 +69,17 @@ const AddProductModal = ({ onClose, onProductAdded }) => {
             isValid = false;
         } else {
             const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            const maxSize = 200 * 1024; // 200 KB in bytes
+        
             if (!allowedTypes.includes(formData.image.type)) {
-                tempErrors.image = 'Please select a valid image file (JPG, PNG)';
+                tempErrors.image = 'Please select a valid image file (JPG, PNG, or WEBP)';
+                isValid = false;
+            } else if (formData.image.size > maxSize) {
+                tempErrors.image = 'Image size must not exceed 200KB';
                 isValid = false;
             }
         }
+        
 
         // Category validation
         if (!formData.category_id) {
@@ -226,6 +232,16 @@ const AddProductModal = ({ onClose, onProductAdded }) => {
                             onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
                         />
                         {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
+                        <small>Max file size: 200kb</small>
+                        {formData.image && (
+                            <div className="mt-2">
+                                <img
+                                    src={URL.createObjectURL(formData.image)}
+                                    alt="Preview"
+                                    className=" h-32 object-cover rounded-md"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className="mb-4">

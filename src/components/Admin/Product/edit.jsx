@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../../../services/supabaseConfig";
 import Switch from "react-switch";
 import { Toast } from "../../alert/toast";
-
+import  Swal  from "sweetalert2";
 const EditProduct = ({ onClose, onProductUpdated, id }) => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -58,6 +58,46 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
                     });
                 }
             }
+            const validateForm = () => {
+                let tempErrors = {};
+                let isValid = true;
+        
+                // Name validation
+                if (!formData.name.trim()) {
+                    tempErrors.name = 'Name is required';
+                    isValid = false;
+                } else if (formData.name.length < 3) {
+                    tempErrors.name = 'Name must be at least 3 characters long';
+                    isValid = false;
+                }
+        
+                // Description validation
+                if (!formData.description.trim()) {
+                    tempErrors.description = 'Description is required';
+                    isValid = false;
+                }
+        
+                // Price validation
+                if (!formData.price) {
+                    tempErrors.price = 'Price is required';
+                    isValid = false;
+                } else if (isNaN(formData.price) || Number(formData.price) <= 0) {
+                    tempErrors.price = 'Price must be a positive number';
+                    isValid = false;
+                }
+        
+                // Image validation
+                
+        
+                // Category validation
+                if (!formData.category_id) {
+                    tempErrors.category_id = 'Please select a category';
+                    isValid = false;
+                }
+        
+                setErrors(tempErrors);
+                return isValid;
+            };
     const handleImageUpload = async (file) => {
         try {
             const fileExt = file.name.split('.').pop();
@@ -96,6 +136,14 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
     };
 
     const handleSaveEdit = async () => {
+        if (!validateForm()) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validasi Gagal',
+                        text: 'Mohon periksa kembali form anda',
+                    });
+                    return;
+                }
         setLoading(true);
         try {
             let imageUrl = formData.image_url;
@@ -191,6 +239,7 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
                             }
                         }}
                     />
+                    <small>Max file size: 200kb</small>
                     {formData.image_url && !(formData.image_url instanceof File) && (
                         <img 
                             src={formData.image_url} 

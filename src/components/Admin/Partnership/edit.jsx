@@ -151,6 +151,7 @@ const EditPartnership = ({ onClose, onPartnershipEdit, editID }) => {
                             }
                         }}
                     />
+                    <small>Max file size: 200kb</small>
                     {formData.image_url && !(formData.image_url instanceof File) && (
                         <img 
                             src={formData.image_url} 

@@ -1,16 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import Pertamina1 from "../../assets/Lowongan-Pertamina.webp"
-import Pertamina2 from "../../assets/promo-pertamina.webp"
-import Pertamina3 from "../../assets/pertamina1.webp"
+
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import  TypeIt  from './typeIt';
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+
 
 const AboutUs = () => {
     
@@ -21,13 +17,6 @@ const AboutUs = () => {
         });
     }, []);
 
-    const images = [
-        Pertamina1,
-        Pertamina2,
-        Pertamina3,
-        Pertamina1,
-        Pertamina2,
-    ];
 
     return (
         <div className="pt-24 md:pt-48 pb-6 md:pb-10">
@@ -36,33 +25,7 @@ const AboutUs = () => {
             </h1>
 
             {/* Swiper Container */}
-            <div className="w-full px-4 md:px-8 lg:px-16">
-                <Swiper
-                    modules={[Navigation, Pagination, Autoplay]}
-                    spaceBetween={10}
-                    slidesPerView={1}
-                    navigation
-                    loop={true} 
-                    pagination={{ clickable: true }}
-                    autoplay={{
-                        delay: 3000,
-                        disableOnInteraction: false,
-                    }}
-                    className="w-full max-w-[1500px] h-[300px] md:h-[400px] lg:h-[500px] mx-auto custom-swiper mb-6 md:mb-10"
-                >
-                    {images.map((image, index) => (
-                        <SwiperSlide key={index} className="flex items-center justify-center relative">
-                            {/* Dark overlay */}
-                            <div className="absolute inset-0 w-[90%] mx-auto  z-10"></div>
-                            <img
-                                src={image}
-                                alt={`Slide ${index + 1}`}
-                                className="w-full h-full object-cover object-center rounded-xl z-0 "
-                            />
-                        </SwiperSlide>  
-                    ))}
-                </Swiper>
-            </div>
+            
 
             {/* Description Text */}
             <div className="mb-6 w-full md:max-w-[70%] lg:max-w-[50%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10 md:py-20 h-[300px]"  data-aos="fade-up">
