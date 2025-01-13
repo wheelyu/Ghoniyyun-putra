@@ -21,7 +21,7 @@ const Profil = ({ scrollToSection, contactRef }) => {
 
             {/* Text Content Section */}
             <div className="w-full md:w-1/2 md:pt-28">
-                <div className="bg-white p-6 md:p-10 rounded-xl shadow-lg w-full md:w-[600px] min-h-[300px] md:h-[400px]">
+                <div className="bg-white p-6 md:p-10 rounded-xl shadow-lg w-full  min-h-[300px] md:h-[400px]">
                     <p className="mt-2 md:mt-4 mb-4 md:mb-6 text-justify text-sm md:text-base">
                     Ghoniyyun Petrol Teknik is a company specializing in providing innovative solutions and services in the oil and gas industry. Founded in early 2024, the company began as a small enterprise focusing on technical support and equipment maintenance for petroleum operations. Over the years, it expanded its portfolio to include engineering consultancy, installation of advanced technology systems, and supply chain services tailored to the energy sector.
                     </p>
