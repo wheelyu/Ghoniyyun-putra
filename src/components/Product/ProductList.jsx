@@ -97,7 +97,7 @@ const ProductPage = () => {
 
   return (
     <div>
-      <div className="bg-[#FAFAFA] border border-gray-200 shadow-sm rounded-xl p-4 md:p-5 md:w-[1500px] w-[390px] ml-3 md:mx-auto">
+      <div className="bg-[#FAFAFA] border border-gray-200 shadow-sm rounded-xl p-4 md:p-5 md:w-[1500px] w-[390px]  md:mx-auto">
         <form action="" className="flex md:flex-row flex-col items-center justify-center">
           <div className="w-full">
             <label htmlFor="search" className="block text-base font-bold mb-2">
@@ -113,7 +113,7 @@ const ProductPage = () => {
             />
           </div>
 
-          <div className="w-full ml-10">
+          <div className="w-full md:ml-10">
             <label htmlFor="category-select" className="block text-base font-bold mb-2">
               Kategori
             </label>
@@ -139,36 +139,32 @@ const ProductPage = () => {
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
         </div>
       ) : (
-        <div className='w-[1500px] mx-auto'>
-          <h1 className='text-2xl py-10'>Menampilkan {filteredProducts.length} dari {productData.length} produk</h1>
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className='md:w-[1500px] mx-auto '>
+          <h1 className='text-2xl md:py-10 my-10'>Menampilkan {filteredProducts.length} dari {productData.length} produk</h1>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {filteredProducts.map((product, index) => (
               <div
                 key={index}
-                className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300  hover:shadow-xl relative z-0"
+                className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-xl"
               >
                 <div className="relative">
                   <img
                     src={product.image_url}
                     alt={product.name}
-                    className="w-full h-32 md:h-96 object-cover"
+                    className="w-full h-56 md:h-72 object-cover"
                   />
                 </div>
                 <div className="p-2 md:p-4">
-                  <div className="flex justify-between items-center mb-1 md:mb-2">
+                  <div className="flex justify-between items-center mb-2">
                     <h3 className="text-sm md:text-lg font-semibold text-gray-800 truncate">
                       {product.name}
                     </h3>
                   </div>
-                  <div className='flex flex-row'>
-                    <div className="flex justify-between items-center w-full">
-                      <span className="text-sm md:text-xl font-bold text-blue-600">
-                        {formatIDR(product.price)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center w-1/2 ">
-                      <ProductDetail id={product.id}/>
-                    </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm md:text-xl font-bold text-blue-600">
+                      {formatIDR(product.price)}
+                    </span>
+                    <ProductDetail id={product.id} />
                   </div>
                 </div>
               </div>

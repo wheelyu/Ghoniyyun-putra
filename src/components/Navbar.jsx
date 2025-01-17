@@ -48,9 +48,11 @@ const Navbar = ({active}) => {
                 <div className={`text-xl font-bold transition-colors ${
                     isScrolled ? "text-black" : "text-white"
                 }`}>
-                    <Link to="/"><img src={Logo} alt="Logo" className={`${isScrolled ? "h-12" : "h-20"} rounded-xl transition-all duration-300`} /></Link>
+                    <Link to="/"><img src={Logo} alt="Logo" className={`${isScrolled ? "h-12" : "md:h-20 h-16"} rounded-xl transition-all duration-300`} /></Link>
                 </div>
-
+                <div className={`text-xl font-bold transition-colors md:hidden ${isScrolled ? "text-primary" : "text-white"}`}>
+                    Ghoniyyun Petrol
+                </div>
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex space-x-4 items-center">
                     {navLinks.map((link) => (
@@ -79,7 +81,7 @@ const Navbar = ({active}) => {
                     <button 
                         onClick={toggleMobileMenu}
                         className={`focus:outline-none ${
-                            isScrolled ? "text-black" : "text-white"
+                            isScrolled ? "text-primary" : "text-white"
                         }`}
                     >
                         <FontAwesomeIcon 

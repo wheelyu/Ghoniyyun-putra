@@ -11,6 +11,7 @@ import {
     ChevronLeft, 
     ChevronRight,
     Settings,
+    Link2,
     Handshake,
     Lightbulb
 } from 'lucide-react';
@@ -49,6 +50,11 @@ const Sidebar = ({ active }) => {
             path: "/admin/client",
             name: "Client",
             icon: <Users />,
+        },
+        {
+            path: "/admin/link",
+            name: "Link",
+            icon: <Link2 />,
         },
     ]
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);

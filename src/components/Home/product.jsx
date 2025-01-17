@@ -89,15 +89,15 @@ const OurProduct = () => {
                 >
                     {category.map((category, index) => (
                         <SwiperSlide key={index}>
-                            <div className="service-card w-full shadow-xl cursor-pointer snap-start shrink-0 py-8 px-6 bg-white flex flex-col items-start gap-3 transition-all duration-300 group hover:bg-primary">
+                            <div className="service-card w-full shadow-xl cursor-pointer snap-start shrink-0 py-8 px-6 bg-white flex flex-col items-start gap-3 transition-all duration-300 group md:hover:bg-primary">
                                 
-                                <p className="font-bold text-xl group-hover:text-white text-primary">
+                                <p className="font-bold text-xl md:group-hover:text-white text-primary">
                                 <Fuel className="" />
                                     {category.name}
                                 </p>
                                 <button 
                                     onClick={() => handleCategoryClick(category.name)}
-                                    className="text-white hover:text-white text-sm justify-end w-full hover:underline flex"
+                                    className="md:text-white md:hover:text-white text-sm justify-end w-full hover:underline flex text-primary"
                                 >
                                     See More
                                 </button>
@@ -124,14 +124,11 @@ const OurProduct = () => {
                 <div className="h-16">
                 <h1 className="font-bold text-xl">{topic.name}</h1>
                 </div>
-                <p className="text-sm text-zinc-500 leading-6">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse fuga
-                    adipisicing elit
-                </p>
+                
             </div>
             ))}
             </div>
-            <div className="text-6xl font-bold mt-20 text-primary text-center">
+            <div className="md:text-6xl text-3xl font-bold mt-20 text-primary text-center">
                 Documentations
             </div>
             <div className="w-full px-4 md:px-8 lg:px-16 mt-10">
