@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "../../services/supabaseConfig";
-
+import { X } from "lucide-react";
 const ProductDetailModal = ({ id, closeModal }) => {
     const [product, setProduct] = useState({});
     const [categoryName, setCategoryName] = useState("");
@@ -77,20 +77,38 @@ const ProductDetailModal = ({ id, closeModal }) => {
                 exit="exit"
             >
                 <motion.div
-                    className="bg-white w-[90%] p-4 rounded-lg"
+                    className="bg-white w-[40%] p-4 rounded-lg"
                     onClick={(e) => e.stopPropagation()}
                     variants={modalVariants}
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                 >
+                    <div className="flex justify-between">
+                    <motion.h1 className="text-xl font-bold text-gray-800    "
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}>{product.name}</motion.h1>
+                        <button onClick={closeModal}>
+                            <X size={24} />
+                        </button>
+                    </div>
+                    <div className="flex items-center mb-4  gap-4">
+                    <div className="w-1/2">
+                        <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="w-auto h-auto mb-4"
+                        />
+                    </div>
+                    <div className="w-1/2">
                     <motion.h3 
-                        className="text-xl font-bold text-gray-800 flex justify-between"
+                        className="text-xl font-bold text-gray-800 flex "
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
                     >
-                        <h1>{product.name}</h1>
+                       
                         <h1 className={`font-bold text-green-600`}>
                             Available
                         </h1>
@@ -109,32 +127,21 @@ const ProductDetailModal = ({ id, closeModal }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
+                        
                     >
                         Description:
                     </motion.small>
                     
                     <motion.p 
-                        className="text-gray-600 mb-4 h-16 text-sm"
+                        className="text-gray-600 mb-4 h-fit text-sm"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
                     >
                         {product.description}
                     </motion.p>
-                    
-                    <motion.div 
-                        className="mt-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7 }}
-                    >
-                        <button
-                            onClick={closeModal}
-                            className="px-4 py-2 bg-red-600 text-white rounded-md"
-                        >
-                            Close
-                        </button>
-                    </motion.div>
+                    </div>
+                    </div>
                 </motion.div>
             </motion.div>
         </AnimatePresence>

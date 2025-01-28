@@ -137,7 +137,7 @@ const Partnership = () => {
             
             }
 
-    return <div className="flex">
+    return <div className="flex min-h-screen">
         <Sidebar active="Partnership" />
         <div className="flex-1 flex flex-col">
             <Header />

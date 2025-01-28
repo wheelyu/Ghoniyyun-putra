@@ -113,7 +113,7 @@ const OurProduct = () => {
             </div>
             <h1 className="text-4xl font-bold mb-12 text-primary">Our Services</h1>
             <div className="flex flex-col md:flex-row gap-10 justify-center  items-center">
-            {topic.map((topic, index) => (
+            {topic.slice(0, 3).map((topic, index) => (
             <div key={index} className="w-64 bg-white shadow-[0px_0px_15px_rgba(0,0,0,0.09)] p-9 space-y-3 relative overflow-hidden">
                 <div className="w-24 h-24 bg-primary rounded-full absolute -right-5 -top-7">
                     <p className="absolute bottom-6 left-7 text-white text-2xl">{index + 1}</p>

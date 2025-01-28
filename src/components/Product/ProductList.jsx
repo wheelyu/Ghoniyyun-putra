@@ -3,7 +3,7 @@ import { supabase } from '../../services/supabaseConfig';
 import ProductDetail from './ProductDetail';
 import { formatIDR } from "../../hooks/useFormatIDR";
 import useCategoryStore from '../../stores/useCategoryStore';
-
+import ProductDetailModal from "./ProductDetailModal";  
 const ProductPage = () => {
   const [productData, setProductData] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -12,7 +12,16 @@ const ProductPage = () => {
   const selectedCategory = useCategoryStore(state => state.selectedCategory);
   const setSelectedCategory = useCategoryStore(state => state.setSelectedCategory);
   const [categories, setCategories] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [id, setId] = useState('');
+  const openModal = ( id ) => {
+    setId(id);
+    setIsModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   // Fetch initial data
   useEffect(() => {
     getCategories();
@@ -164,7 +173,12 @@ const ProductPage = () => {
                     <span className="text-sm md:text-xl font-bold text-blue-600">
                       {formatIDR(product.price)}
                     </span>
-                    <ProductDetail id={product.id} />
+                    <button
+                      onClick={() => openModal(product.id)}
+                      className="px-4 py-2 bg-primary text-white rounded-md"
+                    >
+                      View Details
+                    </button>
                   </div>
                 </div>
               </div>
@@ -177,6 +191,7 @@ const ProductPage = () => {
           )}
         </div>
       )}
+      {isModalOpen && <ProductDetailModal id={id} closeModal={closeModal} />}
     </div>
   );
 };

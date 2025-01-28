@@ -185,7 +185,7 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-4 rounded-lg w-96">
+            <div className="bg-white p-4 rounded-lg w-1/2">
                 <h2 className="text-lg font-semibold mb-4">Edit Product</h2>
                 <div className="mb-4">
                     <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name:</label>

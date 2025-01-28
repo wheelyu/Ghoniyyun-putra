@@ -11,6 +11,7 @@ import AddProductModal from "../../components/Admin/Product/add";
 import EditProductModal from "../../components/Admin/Product/edit";
 import { Toast } from "../../components/alert/toast";
 import { formatIDR } from "../../hooks/useFormatIDR";
+import { truncateContent } from "../../hooks/useTruncates";
 const Product = () => {
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState("");
@@ -71,7 +72,7 @@ const Product = () => {
         },
         {
             name: "Description",
-            selector: (row) => row.description,
+            selector: (row) => truncateContent(row.description,10),
             sortable: true,
         },
         {
@@ -126,7 +127,7 @@ const Product = () => {
     };
     const handleDelete = async (id) => {
         try {
-            Swal.fire({
+            const result = await Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
                 icon: "warning",
@@ -134,79 +135,82 @@ const Product = () => {
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, delete!",
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    // Step 1: Ambil data produk berdasarkan ID
-                    const { data: product, error: fetchError } = await supabase
-                        .from("product")
-                        .select("image_url") // Ambil hanya kolom image_url
-                        .eq("id", id)
-                        .single(); // Pastikan hanya satu produk yang diambil
-    
-                    if (fetchError) {
-                        console.error("Error fetching product:", fetchError);
-                        Swal.fire({
-                            icon: "error",
-                            title: "Failed to fetch product details",
-                            text: fetchError.message,
-                        });
-                        return;
-                    }
-    
-                    // Step 2: Hapus file gambar dari storage jika image_url tersedia
-                    if (product?.image_url) {
-                        // Ekstrak nama file dari URL publik (misalnya: path/to/file.jpg)
-                        const filePath = product.image_url.split('/').slice(-1)[0];
-                        const { error: deleteImageError } = await supabase.storage
-                            .from("product") // Sesuaikan nama bucket Anda
-                            .remove([filePath]); // Hapus file berdasarkan path
-    
-                        if (deleteImageError) {
-                            console.error("Error deleting image:", deleteImageError);
-                            Swal.fire({
-                                icon: "error",
-                                title: "Failed to delete product image",
-                                text: deleteImageError.message,
-                            });
-                            return;
-                        }
-                    }
-    
-                    // Step 3: Hapus data produk dari tabel
-                    const { error: deleteError } = await supabase
-                        .from("product")
-                        .delete()
-                        .eq("id", id);
-    
-                    if (deleteError) {
-                        console.error("Error deleting product:", deleteError);
-                        Swal.fire({
-                            icon: "error",
-                            title: "Failed to delete product",
-                            text: deleteError.message,
-                        });
-                    } else {
-                        Toast.fire({
-                            icon: "success",
-                            title: "Product deleted successfully",
-                        });
-                        getProducts(); // Refresh daftar produk
-                    }
-                }
             });
+    
+            if (!result.isConfirmed) {
+                return;
+            }
+    
+            // Step 1: Get product data by ID
+            const { data: product, error: fetchError } = await supabase
+                .from("product")
+                .select("image_url")
+                .eq("id", id)
+                .single();
+    
+            if (fetchError) {
+                console.error("Error fetching product:", fetchError);
+                throw new Error("Failed to fetch product details");
+            }
+    
+            // Step 2: Delete image from storage if exists
+            if (product?.image_url) {
+                try {
+                    // Extract file path from the full URL
+                    const urlParts = product.image_url.split('/');
+                    const lastSegments = urlParts.slice(-2); // Get last two segments
+                    const filePath = lastSegments.join('/'); // Combine them back
+                        
+                    console.log("Attempting to delete file:", filePath);
+    
+                    const { error: deleteStorageError } = await supabase.storage
+                        .from("product")
+                        .remove([filePath]);
+    
+                    if (deleteStorageError) {
+                        console.error("Error deleting file from storage:", deleteStorageError);
+                        throw new Error("Failed to delete image from storage");
+                    }
+                } catch (storageError) {
+                    console.error("Storage deletion error:", storageError);
+                    // Continue with product deletion even if storage deletion fails
+                    console.warn("Continuing with product deletion despite storage error");
+                }
+            }
+    
+            // Step 3: Delete product from database
+            const { error: deleteError } = await supabase
+                .from("product")
+                .delete()
+                .eq("id", id);
+    
+            if (deleteError) {
+                console.error("Error deleting product:", deleteError);
+                throw new Error("Failed to delete product from database");
+            }
+    
+            // Success
+            Toast.fire({
+                icon: "success",
+                title: "Product deleted successfully",
+            });
+            
+            // Refresh product list
+            await getProducts();
+    
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Error in deletion process:", error);
             Swal.fire({
                 icon: "error",
-                title: "An error occurred",
-                text: error.message,
+                title: "Delete Failed",
+                text: error.message || "An unexpected error occurred",
             });
         }
     };
     
 
     return (
-        <div className="flex h-screen">
+        <div className="flex min-h-screen">
             <Sidebar active="Product"/>
             <div className="flex-1 flex flex-col">
                 <Header />

@@ -153,7 +153,7 @@ const Category = () => {
             });
         }
     };
-    return <div className="flex h-screen">
+    return <div className="flex min-h-screen">
         <Sidebar active="Category"/>
         <div className="flex-1 flex flex-col">
             <Header />
