@@ -1,36 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa';
-
+import { supabase } from "../services/supabaseConfig";
 import { Link } from "react-router-dom";
 const Footer = () => {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        getLink();
+    }, []);
+
+    const getLink = async () => {
+        try {
+            const { data, error, status } = await supabase
+                .from("link")
+                .select("*")
+
+
+            if (error && status !== 406) {
+                throw error;
+            }
+
+            if (data) {
+                console.log(data)
+                setData(data);
+            } else {
+                throw new Error("Link not found");
+            }
+        } catch (error) {
+            console.error("Error fetching link:", error.message);
+        }
+            }
     const social = [
         {
             icon: <FaFacebook />,
-            link: "https://facebook.com",
+            link: data[2].link,
             color: "hover:text-[#3b5998]",
         },
         {
             icon: <FaTwitter />,
-            link: "https://twitter.com",
+            link: data[3].link,
             color: "hover:text-[#1da1f2]",
         },
         {
             icon: <FaInstagram />,
-            link: "https://instagram.com",
+            link: data[1].link,
             color: "hover:text-[#c13584]",
         },
-        {
-            icon: <FaLinkedin />,
-            link: "https://linkedin.com",
-            color: "hover:text-[#0077b5]",
-        },
-        {
-            icon: <FaGithub />,
-            link: "https://github.com",
-            color: "#333333",
-        },
+
     ]
     return (
         <footer className="bg-white  text-black py-8">
@@ -56,9 +74,7 @@ const Footer = () => {
                 {/* Navigation Links */}
                 <nav className="flex space-x-4 text-sm">
                 <Link to="/" className="text-gray-700 hover:text-primary">Home</Link>
-                <Link to="/about" className="text-gray-700 hover:text-primary">About</Link>
-                <Link to="/services" className="text-gray-700 hover:text-primary">Services</Link>
-                <Link to="/contact" className="text-gray-700 hover:text-primary">Contact</Link>
+                <Link to="/Product" className="text-gray-700 hover:text-primary">Product</Link>
                 <Link to="/login" className="text-gray-700 hover:text-primary">Login</Link>
                 </nav>
             </div>
