@@ -11,7 +11,7 @@ import Client from "./pages/Admin/Client";
 import Partnership from "./pages/Admin/Partnership";
 import Topic from "./pages/Admin/Topic";
 import Link from "./pages/Admin/Link";
-import Founder from "./pages/Admin/Founder";
+import Founder from "./pages/Admin/founder";
 function App() {
 
   return (
