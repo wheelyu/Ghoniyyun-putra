@@ -121,8 +121,42 @@ const EditFounder = ({ onClose, onFounderAdd, editID }) => {
             
             // Only update image if a new file is selected
             if (formData.image_url instanceof File) {
-                imageUrl = await handleImageUpload(formData.image_url);
-            }
+                    // First, get the current product data to get the old image URL
+                    const { data: currentPartnership, error: fetchError } = await supabase
+                        .from('founder')
+                        .select('image_url')
+                        .eq('id', editID)
+                        .single();
+        
+                    if (fetchError) {
+                        throw new Error('Error fetching current founder data');
+                    }
+        
+                    // Delete old image if it exists
+                    if (currentPartnership?.image_url) {
+                        try {
+                            // Extract file path from the full URL
+                            const oldFilePath = currentPartnership.image_url.split('/').slice(-1)[0];
+        
+                            console.log("Attempting to delete old file:", oldFilePath);
+        
+                            const { error: deleteError } = await supabase.storage
+                                .from("founder")
+                                .remove([oldFilePath]);
+        
+                            if (deleteError) {
+                                console.warn("Error deleting old image:", deleteError);
+                                // Continue with update even if deletion fails
+                            }
+                        } catch (storageError) {
+                            console.warn("Error in storage deletion:", storageError);
+                            // Continue with update even if deletion fails
+                        }
+                    }
+        
+                    // Upload new image
+                    imageUrl = await handleImageUpload(formData.image_url);
+                }
             const { data, error } = await supabase
                 .from("founder")
                 .update({ 
@@ -181,7 +215,7 @@ const EditFounder = ({ onClose, onFounderAdd, editID }) => {
                             }
                         }}
                     />
-                    <small>Max file size: 200kb</small>
+                    <small>Max file size: 500kb</small>
                     {formData.image_url && !(formData.image_url instanceof File) && (
                         <img 
                             src={formData.image_url} 
