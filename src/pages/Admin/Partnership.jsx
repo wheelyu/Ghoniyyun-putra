@@ -17,7 +17,7 @@ const Partnership = () => {
     const [modalAdd, setModalAdd] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
     const [editID, setEditID] = useState(null);
-
+    const [selectedRows, setSelectedRows] = useState([]);
     useEffect(() => {
             getPartnership();
         }, []);
@@ -98,6 +98,9 @@ const Partnership = () => {
                 ),
             },
         ]
+        const handleSelectedRowsChange = ({ selectedRows }) => {
+            setSelectedRows(selectedRows);
+        };
         const handleEdit = (row) => {
             setEditID(row.id);
             setModalEdit(true);
@@ -182,6 +185,83 @@ const Partnership = () => {
                     });
                 }
             };
+            const handleBulkDelete = async () => {
+                try {
+                    // If no rows selected, return early
+                    if (selectedRows.length === 0) {
+                        Toast.fire({
+                            icon: "warning",
+                            title: "Please select products to delete",
+                        });
+                        return;
+                    }
+        
+                    // Show confirmation dialog
+                    const result = await Swal.fire({
+                        title: "Are you sure?",
+                        text: `You are about to delete ${selectedRows.length} product(s). This action cannot be undone!`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete all!",
+                    });
+        
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+        
+                    // Process each selected row
+                    for (const partnership of selectedRows) {
+                        // Step 1: Delete image from storage if exists
+                        if (partnership.image_url) {
+                            try {
+                                const filePath = partnership.image_url.split('/').slice(-1)[0];
+                                const { error: deleteStorageError } = await supabase.storage
+                                    .from("partnership-image")
+                                    .remove([filePath]);
+        
+                                if (deleteStorageError) {
+                                    console.error("Error deleting file from storage:", deleteStorageError);
+                                }
+                            } catch (storageError) {
+                                console.error("Storage deletion error for product:", product.id, storageError);
+                            }
+                        }
+        
+                        // Step 2: Delete product from database
+                        const { error: deleteError } = await supabase
+                            .from("partnership")
+                            .delete()
+                            .eq("id", partnership.id);
+        
+                        if (deleteError) {
+                            console.error("Error deleting partnership:", partnership.id, deleteError);
+                            throw new Error(`Failed to delete partnership ${partnership.id}`);
+                        }
+                    }
+        
+                    // Success notification
+                    Toast.fire({
+                        icon: "success",
+                        title: `Successfully deleted ${selectedRows.length} product(s)`,
+                    });
+        
+                    // Reset selected rows
+                    setSelectedRows([]);
+        
+                    // Refresh product list
+                    await getPartnership();
+        
+                } catch (error) {
+                    console.error("Error in bulk deletion process:", error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Delete Failed",
+                        text: error.message || "An unexpected error occurred during bulk deletion",
+                    });
+                }
+            };
 
     return <div className="flex min-h-screen">
         <Sidebar active="Partnership" />
@@ -208,6 +288,14 @@ const Partnership = () => {
                     <button className="w-[150px] bg-green-500 text-white p-2  rounded hover:bg-green-600" onClick={() => setModalAdd(true)}>
                             Add Partnership
                     </button>
+                    {selectedRows.length > 0 && (
+                            <button 
+                                className="w-[150px] bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                                onClick={handleBulkDelete}
+                            >
+                                Delete Selected ({selectedRows.length})
+                            </button>
+                        )}
                     </div>
                     <DataTable
                         title="List Partner"
@@ -218,7 +306,7 @@ const Partnership = () => {
                         highlightOnHover
                         selectableRows
                         responsive
-                        
+                        onSelectedRowsChange={handleSelectedRowsChange}
                     />
                     {/* Modal Add */}
                     {modalAdd && (
