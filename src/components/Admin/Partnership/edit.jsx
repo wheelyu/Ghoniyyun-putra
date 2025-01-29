@@ -80,16 +80,53 @@ const EditPartnership = ({ onClose, onPartnershipEdit, editID }) => {
     };
 
     const handleSaveEdit = async () => {
-        setLoading(true);
-        try {
-            let imageUrl = formData.image_url;
-            
-            // Only update image if a new file is selected
-            if (formData.image_url instanceof File) {
-                imageUrl = await handleImageUpload(formData.image_url);
-            }
-
-            const { error } = await supabase
+        
+            setLoading(true);
+            try {
+                let imageUrl = formData.image_url;
+        
+                // If there's a new image file selected
+                if (formData.image_url instanceof File) {
+                    // First, get the current product data to get the old image URL
+                    const { data: currentPartnership, error: fetchError } = await supabase
+                        .from('partnership')
+                        .select('image_url')
+                        .eq('id', editID)
+                        .single();
+        
+                    if (fetchError) {
+                        throw new Error('Error fetching current product data');
+                    }
+        
+                    // Delete old image if it exists
+                    if (currentPartnership?.image_url) {
+                        try {
+                            // Extract file path from the full URL
+                            const oldFilePath = currentPartnership.image_url.split('/').slice(-1)[0];
+        
+                            console.log("Attempting to delete old file:", oldFilePath);
+        
+                            const { error: deleteError } = await supabase.storage
+                                .from("partnership-image")
+                                .remove([oldFilePath]);
+        
+                            if (deleteError) {
+                                console.warn("Error deleting old image:", deleteError);
+                                // Continue with update even if deletion fails
+                            }
+                        } catch (storageError) {
+                            console.warn("Error in storage deletion:", storageError);
+                            // Continue with update even if deletion fails
+                        }
+                    }
+        
+                    // Upload new image
+                    imageUrl = await handleImageUpload(formData.image_url);
+                }
+        
+                // Update product data
+                const { error: updateError } = await supabase
+                const { error } = await supabase
                 .from('partnership')
                 .update({
                     name: formData.name,
@@ -97,24 +134,25 @@ const EditPartnership = ({ onClose, onPartnershipEdit, editID }) => {
                     is_active: active
                 })
                 .eq("id", editID);
-
-            if (error) throw error;
-
-            Toast.fire({
-                icon: "success",
-                title: "Partnership Updated successfully"
-            });
-            onPartnershipEdit();
-            onClose();
-        } catch (error) {
-            Toast.fire({
-                icon: "error",
-                title: "Error Updating partnership"
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+        
+                if (updateError) throw updateError;
+        
+                Toast.fire({
+                    icon: "success",
+                    title: "Partnership updated successfully"
+                });
+                onPartnershipEdit();
+                onClose();
+            } catch (error) {
+                console.error("Error updating partnership:", error);
+                Toast.fire({
+                    icon: "error",
+                    title: error.message || "Error updating partnership"
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
