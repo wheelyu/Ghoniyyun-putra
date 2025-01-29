@@ -13,7 +13,8 @@ import {
     Settings,
     Link2,
     Handshake,
-    Lightbulb
+    Lightbulb,
+    User
 } from 'lucide-react';
 import { Link } from "react-router-dom";
 import Logo from "../../assets/Logo_company.png";
@@ -34,8 +35,6 @@ const Sidebar = ({ active }) => {
             name: "Product",
             icon: <BoxIcon />,
         },
-
-
         {
             path: "/admin/partnership",
             name: "Partnership",
@@ -56,6 +55,11 @@ const Sidebar = ({ active }) => {
             name: "Link",
             icon: <Link2 />,
         },
+        {
+            path: "/admin/founder",
+            name: "Founder",
+            icon: <User />,
+        }
     ]
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const navigate = useNavigate();
