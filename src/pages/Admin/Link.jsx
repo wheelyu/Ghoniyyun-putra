@@ -8,7 +8,7 @@ import DataTable from "react-data-table-component"; // Import library data table
 import Swal from "sweetalert2";
 import { Toast } from "../../components/alert/toast";
 import EditLinkModal from "../../components/Admin/Link/edit";
-const Dashboard = () => {
+const LinkAdmin = () => {
     const [loading, setLoading] = useState(true);
     const [link, setLink] = useState([]);
     const [modalEdit, setModalEdit] = useState(false);
@@ -114,4 +114,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default LinkAdmin;
