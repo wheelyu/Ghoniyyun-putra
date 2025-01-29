@@ -8,6 +8,7 @@ import DataTable from "react-data-table-component"; // Import library data table
 import Swal from "sweetalert2";
 import { Toast } from "../../components/alert/toast";
 import EditFounderModal from "../../components/Admin/Founder/edit";
+
 const Founder = () => {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -81,7 +82,7 @@ const Founder = () => {
             <div className="flex-1 flex flex-col">
                 <Header />
                 <main className="flex-1 p-6 bg-gray-100">
-                <div className="flex items-center space-x-4 mb-3">
+                    <div className="flex items-center space-x-4 mb-3">
                         <Link
                             to="/admin/dashboard"
                             >
@@ -101,6 +102,8 @@ const Founder = () => {
                         selectableRows
                         responsive
                     />
+
+
                     {/* Modal Edit */}
                     {modalEdit && (
                         <EditFounderModal
