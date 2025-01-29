@@ -105,13 +105,13 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
             const filePath = `${fileName}`;
 
             const { error: uploadError } = await supabase.storage
-                .from('partnership-image')
+                .from('product')
                 .upload(filePath, file);
 
             if (uploadError) throw uploadError;
 
             const { data: urlData } = await supabase.storage
-                .from('partnership-image')
+                .from('product')
                 .getPublicUrl(filePath);
 
             return urlData.publicUrl;
@@ -137,23 +137,59 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
 
     const handleSaveEdit = async () => {
         if (!validateForm()) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Validasi Gagal',
-                        text: 'Mohon periksa kembali form anda',
-                    });
-                    return;
-                }
+            Swal.fire({
+                icon: 'error',
+                title: 'Validasi Gagal',
+                text: 'Mohon periksa kembali form anda',
+            });
+            return;
+        }
+    
         setLoading(true);
         try {
             let imageUrl = formData.image_url;
-            
-            // Only update image if a new file is selected
+    
+            // If there's a new image file selected
             if (formData.image_url instanceof File) {
+                // First, get the current product data to get the old image URL
+                const { data: currentProduct, error: fetchError } = await supabase
+                    .from('product')
+                    .select('image_url')
+                    .eq('id', id)
+                    .single();
+    
+                if (fetchError) {
+                    throw new Error('Error fetching current product data');
+                }
+    
+                // Delete old image if it exists
+                if (currentProduct?.image_url) {
+                    try {
+                        // Extract file path from the full URL
+                        const oldFilePath = currentProduct.image_url.split('/').slice(-1)[0];
+    
+                        console.log("Attempting to delete old file:", oldFilePath);
+    
+                        const { error: deleteError } = await supabase.storage
+                            .from("product")
+                            .remove([oldFilePath]);
+    
+                        if (deleteError) {
+                            console.warn("Error deleting old image:", deleteError);
+                            // Continue with update even if deletion fails
+                        }
+                    } catch (storageError) {
+                        console.warn("Error in storage deletion:", storageError);
+                        // Continue with update even if deletion fails
+                    }
+                }
+    
+                // Upload new image
                 imageUrl = await handleImageUpload(formData.image_url);
             }
-
-            const { error } = await supabase
+    
+            // Update product data
+            const { error: updateError } = await supabase
                 .from('product')
                 .update({
                     name: formData.name,
@@ -164,19 +200,20 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
                     updated_at: new Date()
                 })
                 .eq("id", id);
-
-            if (error) throw error;
-
+    
+            if (updateError) throw updateError;
+    
             Toast.fire({
                 icon: "success",
-                title: "Partnership Updated successfully"
+                title: "Product updated successfully"
             });
             onProductUpdated();
             onClose();
         } catch (error) {
+            console.error("Error updating product:", error);
             Toast.fire({
                 icon: "error",
-                title: "Error Updating partnership"
+                title: error.message || "Error updating product"
             });
         } finally {
             setLoading(false);
