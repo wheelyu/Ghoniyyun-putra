@@ -111,7 +111,7 @@ const AddProductModal = ({ onClose, onProductAdded }) => {
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `${fileName}`;
-
+            console.log('add product image path: ' + filePath);
             const { data, error } = await supabase.storage
                 .from('product')
                 .upload(filePath, file);
