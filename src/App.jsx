@@ -11,6 +11,7 @@ import Client from "./pages/Admin/Client";
 import Partnership from "./pages/Admin/Partnership";
 import Topic from "./pages/Admin/Topic";
 import Link from "./pages/Admin/Link";
+import Founder from "./pages/Admin/Founder";
 function App() {
 
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/admin/partnership" element={<Partnership />} />
           <Route path="/admin/topic" element={<Topic />} />
           <Route path="/admin/link" element={<Link />} />
+          <Route path="/admin/founder" element={<Founder />} />
         </Route>
       </Routes>
       
