@@ -17,6 +17,7 @@ const Category = () => {
     const [modalAdd, setModalAdd] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
     const [editID, setEditID] = useState(null);
+    const [selectedRows, setSelectedRows] = useState([]);
     useEffect(() => {
         getCategory();
     }, []);
@@ -85,6 +86,9 @@ const Category = () => {
             ),
         },
     ]
+    const handleSelectedRowsChange = ({ selectedRows }) => {
+        setSelectedRows(selectedRows);
+    };
     const handleEdit = (row) => {
         setEditID(row.id);
         setModalEdit(true);
@@ -153,6 +157,96 @@ const Category = () => {
             });
         }
     };
+    const handleBulkDelete = async () => {
+        try {
+            // If no rows selected, return early
+            if (selectedRows.length === 0) {
+                Toast.fire({
+                    icon: "warning",
+                    title: "Please select categories to delete",
+                    confirmButtonColor: "#3085d6",
+                });
+                return;
+            }
+    
+            // Show confirmation dialog
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: `You are about to delete ${selectedRows.length} category(ies). This action cannot be undone!`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete all!",
+            });
+    
+            if (result.isConfirmed) {
+                // Check if any of the selected categories are being used by products
+                for (const category of selectedRows) {
+                    const { data: products, error: checkError } = await supabase
+                        .from("product")
+                        .select("id")
+                        .eq("category_id", category.id);
+    
+                    if (products && products.length > 0) {
+                        // If category is being used, show error and stop the deletion process
+                        Toast.fire({
+                            icon: "error",
+                            title: "Cannot Delete Categories",
+                            text: `Category "${category.name}" is still being used by some products. Please remove or update those products first.`,
+                            confirmButtonColor: "#3085d6",
+                        });
+                        return;
+                    }
+                }
+    
+                // If no categories are being used, proceed with deletion
+                let hasError = false;
+                for (const category of selectedRows) {
+                    const { error: deleteError } = await supabase
+                        .from("categories")
+                        .delete()
+                        .eq("id", category.id);
+    
+                    if (deleteError) {
+                        hasError = true;
+                        console.log(`Error deleting category ${category.id}:`, deleteError);
+                    }
+                }
+    
+                // Show appropriate notification based on operation result
+                if (hasError) {
+                    Toast.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "An error occurred while deleting some categories.",
+                        confirmButtonColor: "#3085d6",
+                    });
+                } else {
+                    Toast.fire({
+                        icon: "success",
+                        title: "Deleted!",
+                        text: `${selectedRows.length} categories have been deleted successfully.`,
+                        confirmButtonColor: "#3085d6",
+                    });
+    
+                    // Reset selected rows
+                    setSelectedRows([]);
+                    
+                    // Refresh category list
+                    getCategory();
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "An unexpected error occurred.",
+                confirmButtonColor: "#3085d6",
+            });
+        }
+    };
     return <div className="flex min-h-screen">
         <Sidebar active="Category"/>
         <div className="flex-1 flex flex-col">
@@ -179,6 +273,14 @@ const Category = () => {
                     <button className="w-[150px] bg-green-500 text-white p-2  rounded hover:bg-green-600" onClick={() => setModalAdd(true)}>
                             Add Category
                     </button>
+                    {selectedRows.length > 0 && (
+                        <button 
+                            className="w-[150px] text-xs bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                            onClick={handleBulkDelete}
+                        >
+                            Delete Selected ({selectedRows.length})
+                        </button>
+                    )}
                     </div>
                     <DataTable
                         title="List Categories"
@@ -189,6 +291,7 @@ const Category = () => {
                         highlightOnHover
                         selectableRows
                         responsive
+                        onSelectedRowsChange={handleSelectedRowsChange}
                     />
                     {/* Modal Add */}
                     {modalAdd && (

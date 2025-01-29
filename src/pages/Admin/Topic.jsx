@@ -17,6 +17,7 @@ const Dashboard = () => {
     const [modalAdd, setModalAdd] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
     const [editID, setEditID] = useState(null);
+    const [selectedRows, setSelectedRows] = useState([]);
     useEffect(() => {
         getTopic();
     }, []);
@@ -86,6 +87,9 @@ const Dashboard = () => {
             ),
         },
     ]
+    const handleSelectedRowsChange = ({ selectedRows }) => {
+        setSelectedRows(selectedRows);
+    };
     const handleEdit = (row) => {
         setEditID(row.id);
         setModalEdit(true);
@@ -124,7 +128,69 @@ const Dashboard = () => {
             })
             }
     };
+        const handleBulkDelete = async () => {
+                try {
+                    // If no rows selected, return early
+                    if (selectedRows.length === 0) {
+                        Toast.fire({
+                            icon: "warning",
+                            title: "Please select products to delete",
+                        });
+                        return;
+                    }
         
+                    // Show confirmation dialog
+                    const result = await Swal.fire({
+                        title: "Are you sure?",
+                        text: `You are about to delete ${selectedRows.length} product(s). This action cannot be undone!`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete all!",
+                    });
+        
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+        
+                    // Process each selected row
+                    for (const topic of selectedRows) {
+        
+                        // Step 2: Delete product from database
+                        const { error: deleteError } = await supabase
+                            .from("topic")
+                            .delete()
+                            .eq("id", topic.id);
+        
+                        if (deleteError) {
+                            console.error("Error deleting topic:", topic.id, deleteError);
+                            throw new Error(`Failed to delete topic ${topic.id}`);
+                        }
+                    }
+        
+                    // Success notification
+                    Toast.fire({
+                        icon: "success",
+                        title: `Successfully deleted ${selectedRows.length} product(s)`,
+                    });
+        
+                    // Reset selected rows
+                    setSelectedRows([]);
+        
+                    // Refresh client list
+                    await getTopic();
+        
+                } catch (error) {
+                    console.error("Error in bulk deletion process:", error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Delete Failed",
+                        text: error.message || "An unexpected error occurred during bulk deletion",
+                    });
+                }
+            };
+
     return (
         <div className="flex min-h-screen">
             <Sidebar active="Topic" />
@@ -151,6 +217,14 @@ const Dashboard = () => {
                     <button className="w-[150px] bg-green-500 text-white p-2  rounded hover:bg-green-600" onClick={() => setModalAdd(true)}>
                             Add Topic
                     </button>
+                    {selectedRows.length > 0 && (
+                            <button 
+                                className="w-[150px] text-xs bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                                onClick={handleBulkDelete}
+                            >
+                                Delete Selected ({selectedRows.length})
+                            </button>
+                    )}
                     </div>
                     <DataTable
                         title="List Topics"
@@ -161,6 +235,7 @@ const Dashboard = () => {
                         highlightOnHover
                         selectableRows
                         responsive
+                        onSelectedRowsChange={handleSelectedRowsChange}
                     />
                     {/* Modal Add */}
                     {modalAdd && (

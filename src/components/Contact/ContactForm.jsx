@@ -24,14 +24,14 @@ const ContactForm = () => {
         number: '',
         message: ''
     });
-
+    const [isLoading, setIsLoading] = useState(false);
     const [topics, setTopics] = useState([]);
     useEffect(() => {
         getTopics();
     }, []);
     const getTopics = async () => {
         try {
-            const { data, error } = await supabase.from('topic').select('*');
+            const { data, error } = await supabase.from('topic').select('*').eq('is_active', true);
             if (error) {
                 console.error("Error fetching topics:", error.message);
             } else {
@@ -116,6 +116,7 @@ const ContactForm = () => {
     
         // Simpan data ke Supabase
         try {
+            setIsLoading(true);
             const { data, error } = await supabase.from('client').insert([formData]);
     
             if (error) {
@@ -158,6 +159,7 @@ const ContactForm = () => {
                             number: '',
                             message: ''
                         });
+                        setIsLoading(false);
                     },
                     (error) => {
                         console.error("EmailJS Error:", error.text);
@@ -167,6 +169,7 @@ const ContactForm = () => {
                             text: 'There was an error sending your message. Please try again later.',
                             confirmButtonColor: '#FF0000'
                         });
+                        setIsLoading(false);
                     }
                 );
         } catch (error) {
@@ -177,6 +180,7 @@ const ContactForm = () => {
                 text: 'An unexpected error occurred. Please try again later.',
                 confirmButtonColor: '#FF0000'
             });
+            setIsLoading(false);
         }
     };
     
@@ -358,16 +362,28 @@ const ContactForm = () => {
                         </div>
 
                         {/* Submit Button */}
-                        <div className='w-full flex justify-end mt-6'>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                type="submit"
-                                className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 sm:py-3 px-6 sm:px-10 rounded-md hover:opacity-90 transition-all"
-                            >
+                        <div className="w-full flex justify-end mt-6">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            type="submit"
+                            disabled={isLoading}
+                            className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 sm:py-3 px-6 sm:px-10 rounded-md hover:opacity-90 transition-all relative"
+                        >
+                            {isLoading ? (
+                            <div className="flex items-center">
+                                <div className="animate-spin h-5 w-5 mr-2">
+                                <div className="h-full w-full rounded-full border-2 border-white border-t-transparent" />
+                                </div>
+                                Loading...
+                            </div>
+                            ) : (
+                            <>
                                 <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
                                 Send Message
-                            </motion.button>
+                            </>
+                            )}
+                        </motion.button>
                         </div>
                     </form>
                 </motion.div>

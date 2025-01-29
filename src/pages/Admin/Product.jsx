@@ -315,7 +315,7 @@ const Product = () => {
                         </button>
                         {selectedRows.length > 0 && (
                             <button 
-                                className="w-[150px] bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                                className="w-[150px] text-xs bg-red-500 text-white p-2 rounded hover:bg-red-600"
                                 onClick={handleBulkDelete}
                             >
                                 Delete Selected ({selectedRows.length})
