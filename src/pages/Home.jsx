@@ -8,6 +8,7 @@ import Founder from "../components/Home/Founder";
 import Story from "../components/AboutUs/story";
 import Partnership from "../components/Home/Partnership";
 import ContactForm from "../components/Contact/ContactForm";
+import Service from "../components/Home/Services";
 export default function Home() {
 
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <AboutUs />
       <Partnership />
       <Product />
+      <Service />
       <Founder />
       <Story />
       <div >

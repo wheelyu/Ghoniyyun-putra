@@ -12,6 +12,7 @@ export default {
           secondary: "#bd2020",
           third: "#E0E0E0",
       },
+      
   },
   },
 

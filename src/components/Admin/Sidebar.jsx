@@ -14,7 +14,8 @@ import {
     Link2,
     Handshake,
     Lightbulb,
-    User
+    User,
+    Wrench
 } from 'lucide-react';
 import { Link } from "react-router-dom";
 import Logo from "../../assets/Logo_company.png";
@@ -34,6 +35,11 @@ const Sidebar = ({ active }) => {
             path: "/admin/product",
             name: "Product",
             icon: <BoxIcon />,
+        },
+        {
+            path: "/admin/service",
+            name: "Service",
+            icon: <Wrench />,
         },
         {
             path: "/admin/partnership",
