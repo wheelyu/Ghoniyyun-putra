@@ -89,7 +89,7 @@ const OurProduct = () => {
                                 </p>
                                 <button 
                                     onClick={() => handleCategoryClick(category.name)}
-                                    className="md:text-white md:hover:text-white text-sm justify-end w-full hover:underline flex text-primary"
+                                    className=" md:group-hover:text-white text-sm justify-end w-full hover:underline flex text-primary"
                                 >
                                     See More
                                 </button>
