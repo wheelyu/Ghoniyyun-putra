@@ -9,8 +9,7 @@ import { supabase } from "../../services/supabaseConfig";
 
 const Services = () => {
     const [services, setServices] = useState([]);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
+    const [hoveredIndex, setHoveredIndex] = useState(null);
 
     const getServices = async () => {
         try {
@@ -30,59 +29,45 @@ const Services = () => {
     useEffect(() => {
         getServices();
     }, []);
-
-    const slideVariants = {
-        inactive: {
-            marginTop: 150,
-            height: 300,
-            transition: { duration: 0.3, ease: "easeInOut" }
-        },
-        active: {
-            marginTop: 0,
-            height: 600,
-            transition: { duration: 0.3, ease: "easeInOut" }
-        }
-    };
-
     const overlayVariants = {
         initial: {
             backgroundColor: "rgba(220, 38, 38, 0.2)",
+            transition: { duration: 0.5 },
             padding: "1rem"
         },
         hover: {
             backgroundColor: "rgba(220, 38, 38, 0.9)",
             padding: "1.5rem",
-            transition: { duration: 0.2 },
+            transition: { duration: 0.5 },
             cursor: "pointer"
         }
     };
-
     const descriptionVariants = {
         initial: { 
             opacity: 0, 
             y: 10,
-            height: 0 
+            transition: {
+                duration: 0.5,
+                ease: "easeOut"
+            }
         },
         animate: { 
             opacity: 1, 
             y: 0,
-            height: "auto",
             transition: {
-                duration: 0.3,
+                duration: 0.5,
                 ease: "easeOut"
             }
         },
         exit: { 
             opacity: 0,
             y: 10,
-            height: 0,
             transition: {
                 duration: 0.2,
                 ease: "easeIn"
             }
         }
     };
-
     return (
         <div className="bg-white bg-opacity-90 mb-56 pt-20 px-4 md:px-48">
             <h1 className="text-4xl font-bold mb-12 text-primary">Our Services</h1>
@@ -91,20 +76,15 @@ const Services = () => {
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={30}
                     slidesPerView={1}
-                    loop={true}
                     pagination={{ clickable: true }}
                     navigation={true}
-                    onSlideChange={(swiper) => {
-                        setActiveIndex(swiper.realIndex);
-                        setIsHovered(false);
-                    }}
+                    observer={true} 
+                    observeParents={true} 
                     className="w-full h-[600px]"
                     breakpoints={{
-                        // when window width is >= 640px
                         640: {
                             slidesPerView: 2,
                         },
-                        // when window width is >= 1024px
                         1024: {
                             slidesPerView: 3,
                         },
@@ -112,32 +92,29 @@ const Services = () => {
                 >
                     {services.map((service, index) => (
                         <SwiperSlide key={service.id}>
-                            <motion.div 
-                                className="relative h-full"
-                                variants={slideVariants}
-                                initial="inactive"
-                                animate={index === activeIndex ? "active" : "inactive"}
-                                onMouseEnter={() => index === activeIndex && setIsHovered(true)}
-                                onMouseLeave={() => setIsHovered(false)}
+                            <div 
+                                className="relative h-[600px] rounded-lg overflow-hidden"
+                                onMouseEnter={() => setHoveredIndex(index)}
+                                onMouseLeave={() => setHoveredIndex(null)}
                             >
                                 <img
                                     src={service.image_url}
                                     alt={service.name}
-                                    className="w-full h-full object-cover rounded-lg"
+                                    className="w-full h-full object-cover rounded-lg cursor-pointer"
                                 />
                                 <motion.div 
                                     className="absolute bottom-0 left-0 right-0 rounded-b-lg"
                                     variants={overlayVariants}
                                     initial="initial"
-                                    animate={index === activeIndex && isHovered ? "hover" : "initial"}
+                                    animate={hoveredIndex === index ? "hover" : "initial"}
                                 >
                                     <h3 className="text-white text-xl font-semibold text-center">
                                         {service.name}
                                     </h3>
                                     <AnimatePresence>
-                                        {index === activeIndex && isHovered && (
+                                        {hoveredIndex === index && (
                                             <motion.p
-                                                className="text-white text-sm mt-2 text-justify overflow-hidden"
+                                                className="text-white text-sm mt-2 text-justify max-h-[200px] overflow-y-auto"
                                                 variants={descriptionVariants}
                                                 initial="initial"
                                                 animate="animate"
@@ -148,7 +125,7 @@ const Services = () => {
                                         )}
                                     </AnimatePresence>
                                 </motion.div>
-                            </motion.div>
+                            </div>
                         </SwiperSlide>
                     ))}
                 </Swiper>
