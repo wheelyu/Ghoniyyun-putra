@@ -6,7 +6,8 @@ import {
     ListCheckIcon,
     Users,
     Handshake,
-    Lightbulb
+    Lightbulb,
+    Wrench
 } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { supabase } from "../../services/supabaseConfig";
@@ -14,6 +15,7 @@ import { supabase } from "../../services/supabaseConfig";
 const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [totalProducts, setTotalProducts] = useState(0);
+    const [totalServices, setTotalServices] = useState(0);
     const [totalCategories, setTotalCategories] = useState(0);
     const [totalClients, setTotalClients] = useState(0);
     const [totalPartnerships, setTotalPartnerships] = useState(0);
@@ -22,8 +24,9 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchTotals = async () => {
             try {
-                const [{ count: productCount }, { count: categoryCount }, { count: clientCount }, { count: partnershipCount }, {count: topicCount}] = await Promise.all([
+                const [{ count: productCount },{ count: serviceCount }, { count: categoryCount }, { count: clientCount }, { count: partnershipCount }, {count: topicCount}] = await Promise.all([
                     supabase.from("product").select("id", { count: "exact", head: true }),
+                    supabase.from("service").select("id", { count: "exact", head: true }),
                     supabase.from("categories").select("id", { count: "exact", head: true }),
                     supabase.from("client").select("id", { count: "exact", head: true }),
                     supabase.from("partnership").select("id", { count: "exact", head: true }),
@@ -31,6 +34,7 @@ const Dashboard = () => {
                 ]);
 
                 setTotalProducts(productCount || 0);
+                setTotalServices(serviceCount || 0);
                 setTotalCategories(categoryCount || 0);
                 setTotalClients(clientCount || 0);
                 setTotalPartnerships(partnershipCount || 0);
@@ -54,13 +58,6 @@ const Dashboard = () => {
                     <h1 className="text-2xl font-bold mb-4">Welcome to Dashboard Admin</h1>
                     <small className="text-sm text-gray-400 ">Manage all things on your website</small>
                     <div className="flex flex-wrap gap-4 mt-5">
-                        <Link to="/admin/product">
-                            <div className="flex flex-col gap-1 hover:gap-7 transition-all duration-300 items-center justify-center bg-white p-4 w-[200px] h-[200px] cursor-pointer">
-                                <BoxIcon size={70} color="#f87171" />
-                                <h1 className="text-2xl">{loading ? "Loading..." : totalProducts}</h1>
-                                <h1 className="text-sm text-gray-400">Product</h1>
-                            </div>
-                        </Link>
                         <Link to="/admin/category">
                             <div className="flex flex-col gap-1 hover:gap-7 transition-all duration-300 items-center justify-center bg-white p-4 w-[200px] h-[200px] cursor-pointer">
                                 <ListCheckIcon size={70} color="#f87171" />
@@ -68,6 +65,21 @@ const Dashboard = () => {
                                 <h1 className="text-sm text-gray-400">Categories</h1>
                             </div>
                         </Link>
+                        <Link to="/admin/product">
+                            <div className="flex flex-col gap-1 hover:gap-7 transition-all duration-300 items-center justify-center bg-white p-4 w-[200px] h-[200px] cursor-pointer">
+                                <BoxIcon size={70} color="#f87171" />
+                                <h1 className="text-2xl">{loading ? "Loading..." : totalProducts}</h1>
+                                <h1 className="text-sm text-gray-400">Product</h1>
+                            </div>
+                        </Link>
+                        <Link to="/admin/service">
+                            <div className="flex flex-col gap-1 hover:gap-7 transition-all duration-300 items-center justify-center bg-white p-4 w-[200px] h-[200px] cursor-pointer">
+                                <Wrench size={70} color="#f87171" />
+                                <h1 className="text-2xl">{loading ? "Loading..." : totalServices}</h1>
+                                <h1 className="text-sm text-gray-400">Service</h1>
+                            </div>
+                        </Link>
+                        
                         <Link to="/admin/client">
                             <div className="flex flex-col gap-1 hover:gap-7 transition-all duration-300 items-center justify-center bg-white p-4 w-[200px] h-[200px] cursor-pointer">
                                 <Users size={70} color="#f87171" />
