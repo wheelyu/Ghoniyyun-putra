@@ -9,11 +9,13 @@ import Story from "../components/AboutUs/story";
 import Partnership from "../components/Home/Partnership";
 import ContactForm from "../components/Contact/ContactForm";
 import Service from "../components/Home/Services";
+
 export default function Home() {
 
   return (
     <div>
       <Hero/>
+
       <Profil  />
       <AboutUs />
       <Partnership />

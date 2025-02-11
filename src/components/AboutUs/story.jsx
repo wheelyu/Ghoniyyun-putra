@@ -19,8 +19,8 @@ const AboutUs = () => {
 
 
     return (
-        <div className="pt-24 md:pt-48 pb-6 md:pb-10">
-            <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold text-primary text-center relative mt-20 md:mt-0 py-6 md:py-10'>
+        <div className="pt-24 lg:pt-48 md:pt-40 pb-6 lg:pb-10">
+            <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold text-primary text-center relative mt-20 md:mt-0 py-6 lg:py-10'>
                 Our Story
             </h1>
 
@@ -28,7 +28,7 @@ const AboutUs = () => {
             
 
             {/* Description Text */}
-            <div className="mb-6 w-full md:max-w-[70%] lg:max-w-[50%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10 md:py-20 h-[300px]"  data-aos="fade-up">
+            <div className="mb-20 w-full md:max-w-[80%] lg:max-w-[60%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10  lg:py-20 h-[300px]"  data-aos="fade-up">
             <TypeIt />
             </div>
 

@@ -68,83 +68,87 @@ const ProductDetailModal = ({ id, closeModal }) => {
 
     return (
         <AnimatePresence>
-            <motion.div
-                className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50"
-                onClick={closeModal}
-                variants={backdropVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-            >
-                <motion.div
-                    className="bg-white w-[40%] p-4 rounded-lg"
-                    onClick={(e) => e.stopPropagation()}
-                    variants={modalVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
+    <motion.div
+        className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 p-4"
+        onClick={closeModal}
+        variants={backdropVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+    >
+        <motion.div
+            className="bg-white w-full md:w-[80%] lg:w-[60%] p-4 rounded-lg max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+        >
+            <div className="flex justify-between items-center mb-4">
+                <motion.h1 
+                    className="text-lg md:text-xl font-bold text-gray-800 truncate"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
                 >
-                    <div className="flex justify-between">
-                    <motion.h1 className="text-xl font-bold text-gray-800    "
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}>{product.name}</motion.h1>
-                        <button onClick={closeModal}>
-                            <X size={24} />
-                        </button>
-                    </div>
-                    <div className="flex items-center mb-4  gap-4">
-                    <div className="w-1/2">
-                        <img
-                            src={product.image_url}
-                            alt={product.name}
-                            className="w-auto h-auto mb-4"
-                        />
-                    </div>
-                    <div className="w-1/2">
+                    {product.name}
+                </motion.h1>
+                <button 
+                    onClick={closeModal}
+                    className="hover:bg-gray-100 p-1 rounded-full transition-colors"
+                >
+                    <X size={24} />
+                </button>
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-4">
+                <div className="w-full md:w-1/2">
+                    <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="w-full h-auto rounded-lg object-cover"
+                    />
+                </div>
+                <div className="w-full md:w-1/2 space-y-3">
                     <motion.h3 
-                        className="text-xl font-bold text-gray-800 flex "
+                        className="text-lg md:text-xl font-bold text-gray-800"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
                     >
-                       
-                        <h1 className={`font-bold text-green-600`}>
+                        <h1 className="font-bold text-green-600">
                             Available
                         </h1>
                     </motion.h3>
                     
-                    <motion.small
+                    <motion.div
+                        className="space-y-2"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
                     >
-                        {categoryName}
-                    </motion.small> 
-                    
-                    <br/>
-                    <motion.small
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
+                        <small className="block text-sm md:text-base">
+                            {categoryName}
+                        </small>
                         
-                    >
-                        Description:
-                    </motion.small>
-                    
-                    <motion.p 
-                        className="text-gray-600 mb-4 h-fit text-sm"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                    >
-                        {product.description}
-                    </motion.p>
-                    </div>
-                    </div>
-                </motion.div>
-            </motion.div>
-        </AnimatePresence>
+                        <small className="block font-medium text-sm md:text-base">
+                            Description:
+                        </small>
+                        
+                        <motion.p 
+                            className="text-gray-600 text-sm md:text-base"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 }}
+                        >
+                            {product.description}
+                        </motion.p>
+                    </motion.div>
+                </div>
+            </div>
+        </motion.div>
+    </motion.div>
+</AnimatePresence>
     );
 };
 

@@ -12,6 +12,12 @@ export default {
           secondary: "#bd2020",
           third: "#E0E0E0",
       },
+      screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+      },
       
   },
   },

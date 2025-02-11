@@ -105,8 +105,10 @@ const ProductPage = () => {
   };
 
   return (
-    <div>
-      <div className="bg-[#FAFAFA] border border-gray-200 shadow-sm rounded-xl p-4 md:p-5 md:w-[1500px] w-[390px]  md:mx-auto">
+    <div className=''>
+      <h1 className='text-4xl md:py-10 my-10 mx-auto lg:w-[1500px] md:w-[700px] w-[300px]'>Our Product</h1>
+      <div className="bg-[#FAFAFA] border border-gray-200 shadow-sm rounded-xl p-4 md:p-5 lg:w-[1500px] md:w-[700px] w-[340px] mx-auto">
+      
         <form action="" className="flex md:flex-row flex-col items-center justify-center">
           <div className="w-full">
             <label htmlFor="search" className="block text-base font-bold mb-2">
@@ -144,53 +146,53 @@ const ProductPage = () => {
       </div>
 
       {loading ? (
-        <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-        </div>
-      ) : (
-        <div className='md:w-[1500px] mx-auto '>
-          <h1 className='text-2xl md:py-10 my-10'>Menampilkan {filteredProducts.length} dari {productData.length} produk</h1>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {filteredProducts.map((product, index) => (
-              <div
-                key={index}
-                className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-xl"
-              >
-                <div className="relative">
-                  <img
-                    src={product.image_url}
-                    alt={product.name}
-                    className="w-full h-56 md:h-72 object-cover"
-                  />
-                </div>
-                <div className="p-2 md:p-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-sm md:text-lg font-semibold text-gray-800 truncate">
-                      {product.name}
-                    </h3>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm md:text-xl font-bold text-blue-600">
-                      {formatIDR(product.price)}
-                    </span>
-                    <button
-                      onClick={() => openModal(product.id)}
-                      className="px-4 py-2 bg-primary text-white rounded-md"
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+  <div className="flex justify-center items-center h-screen">
+    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+  </div>
+) : (
+  <div className='lg:w-[1500px] md:w-[700px] w-[300px] lg:mx-auto md:mx-auto mx-auto'>
+    <h1 className='text-2xl md:py-10 my-10'>Menampilkan {filteredProducts.length} dari {productData.length} produk</h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {filteredProducts.map((product, index) => (
+        <div
+          key={index}
+          className="bg-[#fafafa] rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-xl"
+        >
+          <div className="relative">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="w-full h-56 md:h-72 object-cover"
+            />
           </div>
-          {filteredProducts.length === 0 && (
-            <div className="text-center text-gray-500 mt-10">
-              Tidak ada produk yang ditemukan.
+          <div className="p-2 md:p-4">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-sm md:text-lg font-semibold text-gray-800 truncate">
+                {product.name}
+              </h3>
             </div>
-          )}
+            <div className="flex justify-between items-center">
+              <span className="text-sm md:text-xl font-bold text-blue-600">
+                {formatIDR(product.price)}
+              </span>
+              <button
+                onClick={() => openModal(product.id)}
+                className="px-4 py-2 bg-primary text-white rounded-md"
+              >
+                View Details
+              </button>
+            </div>
+          </div>
         </div>
-      )}
+      ))}
+    </div>
+    {filteredProducts.length === 0 && (
+      <div className="text-center text-gray-500 mt-10">
+        Tidak ada produk yang ditemukan.
+      </div>
+    )}
+  </div>
+)}
       {isModalOpen && <ProductDetailModal id={id} closeModal={closeModal} />}
     </div>
   );
