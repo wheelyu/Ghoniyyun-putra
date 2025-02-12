@@ -79,11 +79,6 @@ const Product = () => {
             sortable: true,
         },
         {
-            name: "Price",
-            selector: (row) => formatIDR(row.price),
-            sortable: true,
-        },
-        {
             name: "Image",
             selector: (row) => (
                 <img

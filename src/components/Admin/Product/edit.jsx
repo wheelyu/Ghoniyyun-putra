@@ -10,7 +10,6 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        price: '',
         image: null,
         category_id: ''
     });
@@ -52,7 +51,6 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
                     setFormData({
                         name: data.name,
                         description: data.description,
-                        price: data.price,
                         category_id: data.category_id,
                         image_url: data.image_url,
                     });
@@ -77,14 +75,6 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
                     isValid = false;
                 }
         
-                // Price validation
-                if (!formData.price) {
-                    tempErrors.price = 'Price is required';
-                    isValid = false;
-                } else if (isNaN(formData.price) || Number(formData.price) <= 0) {
-                    tempErrors.price = 'Price must be a positive number';
-                    isValid = false;
-                }
         
                 // Image validation
                 
@@ -194,7 +184,6 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
                 .update({
                     name: formData.name,
                     description: formData.description,
-                    price: Number(formData.price),
                     category_id: formData.category_id,
                     image_url: imageUrl,
                     updated_at: new Date()
@@ -244,17 +233,6 @@ const EditProduct = ({ onClose, onProductUpdated, id }) => {
                             onChange={handleInputChange}
                         ></textarea>
                         {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="price" className="block text-gray-700 font-bold mb-2">Price:</label>
-                        <input
-                            type="number"
-                            id="price"
-                            className={`w-full p-2 border rounded-md ${errors.price ? 'border-red-500' : ''}`}
-                            value={formData.price}
-                            onChange={handleInputChange}
-                        />
-                        {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
                     </div>
                 <div className="mb-4">
                     <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Image:</label>

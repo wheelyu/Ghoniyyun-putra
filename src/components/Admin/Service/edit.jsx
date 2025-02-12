@@ -235,6 +235,27 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
             <div className="bg-white p-4 rounded-lg w-1/2">
                 <h2 className="text-lg font-semibold mb-4">Edit Service</h2>
                 <div className="mb-4">
+                    <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name:</label>
+                    <input
+                        type="text"
+                        id="name"
+                        className={`w-full p-2 border rounded-md ${errors.name ? 'border-red-500' : ''}`}
+                        value={formData.name}
+                        onChange={handleInputChange}
+                    />
+                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                </div>
+                <div className="mb-4">
+                        <label htmlFor="description" className="block text-gray-700 font-bold mb-2">Description:</label>
+                        <textarea
+                            id="description"
+                            className={`w-full p-2 border rounded-md `}
+                            rows="4"
+                            value={formData.description}
+                            onChange={handleInputChange}
+                        ></textarea>
+                    </div>
+                    <div className="mb-4">
                     <label htmlFor="image" className="block text-gray-700 font-bold mb-2">
                         Image:
                     </label>
@@ -280,27 +301,6 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
 
                     {errors.image_url && <p className="text-red-500 text-sm mt-1">{errors.image_url}</p>}
                 </div>
-
-                <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name:</label>
-                    <input
-                        type="text"
-                        id="name"
-                        className={`w-full p-2 border rounded-md ${errors.name ? 'border-red-500' : ''}`}
-                        value={formData.name}
-                        onChange={handleInputChange}
-                    />
-                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-                </div>
-                <div className="mb-4">
-                        <label htmlFor="description" className="block text-gray-700 font-bold mb-2">Description:</label>
-                        <textarea
-                            id="description"
-                            className={`w-full p-2 border rounded-md `}
-                            value={formData.description}
-                            onChange={handleInputChange}
-                        ></textarea>
-                    </div>
                     <div className="flex items-center space-x-4 mb-4">
                         <label className="text-gray-600">Active:</label>
                         <Switch
@@ -328,6 +328,7 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
                         Cancel
                     </button>
                 </div>
+                
             </div>
         </div>
     );

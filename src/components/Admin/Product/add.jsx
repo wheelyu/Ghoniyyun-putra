@@ -7,7 +7,6 @@ const AddProductModal = ({ onClose, onProductAdded }) => {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        price: '',
         image: null,
         category_id: ''
     });
@@ -51,15 +50,6 @@ const AddProductModal = ({ onClose, onProductAdded }) => {
         // Description validation
         if (!formData.description.trim()) {
             tempErrors.description = 'Description is required';
-            isValid = false;
-        }
-
-        // Price validation
-        if (!formData.price) {
-            tempErrors.price = 'Price is required';
-            isValid = false;
-        } else if (isNaN(formData.price) || Number(formData.price) <= 0) {
-            tempErrors.price = 'Price must be a positive number';
             isValid = false;
         }
 
@@ -156,7 +146,6 @@ const AddProductModal = ({ onClose, onProductAdded }) => {
                     {
                         name: formData.name,
                         description: formData.description,
-                        price: Number(formData.price),
                         image_url: imageUrl,
                         category_id: formData.category_id,
                         updated_at: new Date()
@@ -208,18 +197,6 @@ const AddProductModal = ({ onClose, onProductAdded }) => {
                             onChange={handleInputChange}
                         ></textarea>
                         {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
-                    </div>
-
-                    <div className="mb-4">
-                        <label htmlFor="price" className="block text-gray-700 font-bold mb-2">Price:</label>
-                        <input
-                            type="number"
-                            id="price"
-                            className={`w-full p-2 border rounded-md ${errors.price ? 'border-red-500' : ''}`}
-                            value={formData.price}
-                            onChange={handleInputChange}
-                        />
-                        {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
                     </div>
 
                     <div className="mb-4">
