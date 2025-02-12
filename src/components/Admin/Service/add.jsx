@@ -34,10 +34,7 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
             const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
             const maxSize = 200 * 1024; // 200 KB in bytes
         
-            if (!allowedTypes.includes(formData.image.type)) {
-                tempErrors.image = 'Please select a valid image file (JPG, PNG, or WEBP)';
-                isValid = false;
-            } else if (formData.image.size > maxSize) {
+            if (formData.image.size > maxSize) {
                 tempErrors.image = 'Image size must not exceed 200KB';
                 isValid = false;
             }
@@ -63,30 +60,41 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
 
     const handleImageUpload = async (file) => {
         try {
-            const fileExt = file.name.split('.').pop();
+            if (!file) {
+                throw new Error("No file provided");
+            }
+    
+            const fileExt = file.name?.split('.').pop(); // Pastikan file.name ada
+            if (!fileExt) {
+                throw new Error("Invalid file name");
+            }
+    
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `${fileName}`;
             console.log('add service image path: ' + filePath);
+    
             const { data, error } = await supabase.storage
                 .from('service')
                 .upload(filePath, file);
-
+    
             if (error) {
                 throw error;
             }
-
-            const { data: { publicUrl } } = supabase.storage
+    
+            const { publicUrl } = supabase.storage
                 .from('service')
-                .getPublicUrl(filePath);
-
+                .getPublicUrl(filePath).data;
+    
             return publicUrl;
         } catch (error) {
             console.error('Error uploading image:', error.message);
             throw error;
         }
     };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
         if (!validateForm()) {
             Swal.fire({
                 icon: 'error',
@@ -95,32 +103,53 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
             });
             return;
         }
-
+    
         setLoading(true);
         try {
-            // Handle image upload first
-            let imageUrl = null;
-            if (formData.image) {
-                imageUrl = await handleImageUpload(formData.image);
-            }
-
-            // Insert product data
-            const { error: insertError } = await supabase
+            // Insert service data first
+            const { data: serviceData, error: insertError } = await supabase
                 .from('service')
                 .insert([
                     {
                         name: formData.name,
                         description: formData.description,
-                        image_url: imageUrl,
                         is_active: true
                     }
-                ]);
-
+                ])
+                .select('id')
+                .single(); // Mengambil ID service yang baru dimasukkan
+    
             if (insertError) {
                 console.error('Error inserting service:', insertError.message);
                 return;
             }
-
+    
+            const serviceId = serviceData.id; // Ambil ID dari service yang baru ditambahkan
+    
+            // Pastikan formData.image adalah array
+            if (Array.isArray(formData.image) && formData.image.length > 0) {
+                const uploadPromises = formData.image.map(async (file) => {
+                    const imageUrl = await handleImageUpload(file);
+                    return {
+                        service_id: serviceId,
+                        image_url: imageUrl
+                    };
+                });
+    
+                // Tunggu semua upload selesai
+                const imageRecords = await Promise.all(uploadPromises);
+    
+                // Masukkan semua gambar ke dalam tabel serviceImage
+                const { error: imageInsertError } = await supabase
+                    .from('service_image')
+                    .insert(imageRecords);
+    
+                if (imageInsertError) {
+                    console.error('Error inserting service images:', imageInsertError.message);
+                    return;
+                }
+            }
+    
             Toast.fire({
                 icon: 'success',
                 title: 'Service added successfully',
@@ -129,11 +158,11 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
             onServiceAdded();
         } catch (error) {
             console.error('Error:', error);
-            
         } finally {
             setLoading(false);
         }
     };
+    
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -141,26 +170,36 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
                 <h2 className="text-lg font-semibold mb-2">Add New Service</h2>
                 <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                        <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Image:</label>
+                        <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Images:</label>
                         <input
                             type="file"
                             id="image"
                             accept="image/*"
+                            multiple
                             className={`w-full p-2 border rounded-md ${errors.image ? 'border-red-500' : ''}`}
-                            onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+                            onChange={(e) => setFormData({ 
+                                ...formData, 
+                                image: [...e.target.files] // Menyimpan semua file dalam array
+                            })}
                         />
                         {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
-                        <small>Max file size: 200kb</small>
-                        {formData.image && (
-                            <div className="mt-2">
-                                <img
-                                    src={URL.createObjectURL(formData.image)}
-                                    alt="Preview"
-                                    className=" h-32 object-cover rounded-md"
-                                />
+                        <small>Max file size: 200kb per file</small>
+
+                        {/* Menampilkan preview dari semua gambar yang dipilih */}
+                        {formData.image && formData.image.length > 0 && (
+                            <div className="mt-2 grid grid-cols-3 gap-2">
+                                {formData.image.map((image, index) => (
+                                    <img
+                                        key={index}
+                                        src={URL.createObjectURL(image)}
+                                        alt={`Preview ${index + 1}`}
+                                        className="h-32 object-cover rounded-md"
+                                    />
+                                ))}
                             </div>
                         )}
                     </div>
+
                     <div className="mb-4">
                         <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name:</label>
                         <input

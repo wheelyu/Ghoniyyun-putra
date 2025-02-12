@@ -170,11 +170,6 @@ const ProductPage = () => {
               <h3 className="text-sm md:text-lg font-semibold text-gray-800 truncate">
                 {product.name}
               </h3>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm md:text-xl font-bold text-blue-600">
-                {formatIDR(product.price)}
-              </span>
               <button
                 onClick={() => openModal(product.id)}
                 className="px-4 py-2 bg-primary text-white rounded-md"
