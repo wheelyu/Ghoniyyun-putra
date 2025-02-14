@@ -150,24 +150,31 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
                 throw new Error('Error fetching current service images');
             }
     
-            // Jika ada gambar lama, hapus dari Supabase Storage
-            if (oldImages.length > 0) {
-                const oldFilePaths = oldImages.map(img => img.image_url.split('/').slice(-1)[0]);
+            const oldImageUrls = oldImages.map(img => img.image_url);
+            const newImageFiles = formData.image_url.filter(file => file instanceof File);
+            const newImageUrls = formData.image_url.filter(url => typeof url === "string");
     
-                console.log("Attempting to delete old files:", oldFilePaths);
+            // Tentukan gambar yang perlu dihapus
+            const imagesToDelete = oldImageUrls.filter(url => !newImageUrls.includes(url));
+            if (imagesToDelete.length > 0) {
+                const filePathsToDelete = imagesToDelete.map(url => url.split('/').slice(-1)[0]);
     
+                console.log("Deleting old files:", filePathsToDelete);
+    
+                // Hapus file dari Supabase Storage
                 const { error: deleteError } = await supabase.storage
                     .from("service")
-                    .remove(oldFilePaths);
+                    .remove(filePathsToDelete);
     
                 if (deleteError) {
                     console.warn("Error deleting old images:", deleteError);
                 }
     
-                // Hapus semua record lama dari tabel service_image
+                // Hapus gambar lama dari database
                 const { error: deleteDBError } = await supabase
                     .from('service_image')
                     .delete()
+                    .in('image_url', imagesToDelete)
                     .eq('service_id', id);
     
                 if (deleteDBError) {
@@ -175,25 +182,27 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
                 }
             }
     
-            let uploadedImages = [];
+            let uploadedImages = [...newImageUrls];
     
-            // Upload file baru jika ada
-            if (Array.isArray(formData.image_url) && formData.image_url.length > 0) {
-                const uploadPromises = formData.image_url.map(async (file) => {
+            // Upload gambar baru jika ada
+            if (newImageFiles.length > 0) {
+                const uploadPromises = newImageFiles.map(async (file) => {
                     const imageUrl = await handleImageUpload(file);
-                    return {
-                        service_id: id,
-                        image_url: imageUrl
-                    };
+                    return imageUrl;
                 });
     
-                // Tunggu semua upload selesai
-                uploadedImages = await Promise.all(uploadPromises);
+                const uploadedUrls = await Promise.all(uploadPromises);
+                uploadedImages = [...uploadedImages, ...uploadedUrls];
     
-                // Masukkan semua gambar baru ke dalam tabel service_image
+                // Simpan gambar baru ke database
+                const newImageRecords = uploadedUrls.map(url => ({
+                    service_id: id,
+                    image_url: url
+                }));
+    
                 const { error: insertImageError } = await supabase
                     .from('service_image')
-                    .insert(uploadedImages);
+                    .insert(newImageRecords);
     
                 if (insertImageError) {
                     console.error("Error inserting new images:", insertImageError);
@@ -228,6 +237,7 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
             setLoading(false);
         }
     };
+    
     
 
     return (
