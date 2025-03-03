@@ -7,9 +7,9 @@ import Hero from "../components/Home/Hero";
 import Founder from "../components/Home/Founder";
 import Story from "../components/AboutUs/story";
 import Partnership from "../components/Home/Partnership";
-import ContactForm from "../components/Contact/ContactForm";
+import ContactForm from "../components/Home/ContactForm";
 import Service from "../components/Home/Services";
-
+import ProjectDigital from "../components/Home/ProjectDigital";
 export default function Home() {
 
   return (
@@ -21,6 +21,7 @@ export default function Home() {
       <Partnership />
       <Product />
       <Service />
+      <ProjectDigital />
       <Founder />
       <Story />
       <div >
