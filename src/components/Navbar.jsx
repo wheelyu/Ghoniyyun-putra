@@ -159,46 +159,30 @@ const Navbar = ({active}) => {
                         }}
                         className={`md:hidden absolute left-0 w-full overflow-hidden ${
                             isScrolled 
-                                ? "bg-white shadow-md top-5 -z-10 rounded-xl" 
-                                : "bg-black bg-opacity-90 "
+                                ? "bg-white shadow-md top-5 -z-10 rounded-xl border-b-8 border-primary" 
+                                : "bg-primary bg-opacity-70 border-b-8 border-primary "
                         }`}
                     >
                         <div className="flex flex-col space-y-4 p-4 mt-10">
-                            {navLinks.map((link, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ 
-                                        opacity: 1, 
-                                        x: 0,
-                                        transition: { 
-                                            delay: index * 0.1,
-                                            type: "spring",
-                                            stiffness: 300
-                                        }
-                                    }}
-                                    exit={{
-                                        opacity: 0,
-                                        x: -20,
-                                        transition: {
-                                            duration: 0.2
-                                        }
-                                    }}
-                                >
-                                    <a
-                                        href={link.to}
-                                        onClick={link.action}
-                                        className={`w-full py-3 rounded transition space-x-2 flex items-center ${
-                                            isScrolled 
-                                                ? "text-black hover:bg-gray-200" 
-                                                : "text-white hover:bg-gray-800"
-                                        }`}
-                                    >
-                                        <FontAwesomeIcon icon={link.icon} className="mx-4"/>
-                                        <span>{link.label}</span>
-                                    </a>
-                                </motion.div>
-                            ))}
+                        {navLinks.map((link) => (
+                        <a
+                            key={link.id}
+                            href={link.to}
+                            onClick={link.action}
+                            className={`
+                                px-4 py-2 rounded transition 
+                                flex items-center space-x-2 
+                                ${link.active 
+                                    ? "bg-primary text-white" 
+                                    : isScrolled 
+                                        ? "text-gray-800 hover:bg-gray-200" 
+                                        : "text-white hover:bg-white/20"
+                                }
+                            `}
+                        >
+                            <span>{link.label}</span>
+                        </a>
+                    ))}
                         </div>
                     </motion.div>
                 )}
