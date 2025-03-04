@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes, faHome, faInfoCircle, faBox, faTools, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes, faHome, faInfoCircle, faBox, faTools, faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from "../assets/Logo_company.png";
+
 const Navbar = ({active}) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const location = useLocation();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -28,9 +30,55 @@ const Navbar = ({active}) => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
+    const scrollToContact = (e) => {
+        e.preventDefault();
+        // Jika berada di halaman Home, scroll ke bagian Contact
+        if (location.pathname === '/') {
+            const contactSection = document.getElementById('contact-section');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+                setIsMobileMenuOpen(false);
+            }
+        } else {
+            // Jika berada di halaman lain, arahkan ke Home dan tambahkan hash #contact
+            window.location.href = '/#contact-section';
+        }
+    };
+    const scrollToAbout = (e) => {
+        e.preventDefault();
+        // Jika berada di halaman Home, scroll ke bagian Contact
+        if (location.pathname === '/') {
+            const aboutSection = document.getElementById('about-section');
+            if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+                setIsMobileMenuOpen(false);
+            }
+        } else {
+            // Jika berada di halaman lain, arahkan ke Home dan tambahkan hash #contact
+            window.location.href = '/#about-section';
+        }
+    }
+    const scrollToService = (e) => {
+        e.preventDefault();
+        // Jika berada di halaman Home, scroll ke bagian Contact
+        if (location.pathname === '/') {
+            const serviceSection = document.getElementById('service-section');
+            if (serviceSection) {
+                serviceSection.scrollIntoView({ behavior: 'smooth' });
+                setIsMobileMenuOpen(false);
+            }
+        } else {
+            // Jika berada di halaman lain, arahkan ke Home dan tambahkan hash #contact
+            window.location.href = '/#service-section';
+        }
+    }
     const navLinks = [
-        { id: 1, to: "/",          label: "Home",      icon: faHome,       active: active === "Home" },
-        { id: 2, to: "/Product",   label: "Product",   icon: faBox,        active: active === "Product" },
+        { id: 1, to: "/",          label: "Home",      icon: faHome,       active: active === "Home", action: null },
+        {id: 2, to: "#about-section", label: "About Us", icon: faInfoCircle, active: active === "About Us", action: scrollToAbout },
+        { id: 3, to: "/Product",   label: "Product",   icon: faBox,        active: active === "Product", action: null },
+        {id: 4, to: "#service-section", label: "Service", icon: faTools, active: active === "Service", action: scrollToService },
+        { id: 5, to: "#contact-section", label: "Contact", icon: faPhone,  active: active === "Contact", action: scrollToContact },
+        
     ];
 
     return (
@@ -50,15 +98,16 @@ const Navbar = ({active}) => {
                 }`}>
                     <Link to="/"><img src={Logo} alt="Logo" className={`${isScrolled ? "h-12" : "md:h-20 h-16"} rounded-xl transition-all duration-300`} /></Link>
                 </div>
-                <div className={`text-base font-bold  md:bg-white md:text-primary md:p-8 md:rounded-xl transition-all duration-300   ${isScrolled ? "text-primary md:text-2xl" : "text-white md:text-5xl"}`}>
+                <div className={`text-base font-bold  md:bg-white md:text-primary  md:rounded-xl transition-all duration-300   ${isScrolled ? "text-primary md:text-2xl md:p-3" : "text-white md:text-5xl md:p-8"}`}>
                     Ghoniyyun Petrol Teknik 
                 </div>
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex space-x-4 items-center">
                     {navLinks.map((link) => (
-                        <Link
-                            key={link.to}
-                            to={link.to}
+                        <a
+                            key={link.id}
+                            href={link.to}
+                            onClick={link.action}
                             className={`
                                 px-4 py-2 rounded transition 
                                 flex items-center space-x-2 
@@ -70,9 +119,8 @@ const Navbar = ({active}) => {
                                 }
                             `}
                         >
-                            
                             <span>{link.label}</span>
-                        </Link>
+                        </a>
                     ))}
                 </div>
 
@@ -137,9 +185,9 @@ const Navbar = ({active}) => {
                                         }
                                     }}
                                 >
-                                    <Link
-                                        to={link.to}
-                                        onClick={toggleMobileMenu}
+                                    <a
+                                        href={link.to}
+                                        onClick={link.action}
                                         className={`w-full py-3 rounded transition space-x-2 flex items-center ${
                                             isScrolled 
                                                 ? "text-black hover:bg-gray-200" 
@@ -148,7 +196,7 @@ const Navbar = ({active}) => {
                                     >
                                         <FontAwesomeIcon icon={link.icon} className="mx-4"/>
                                         <span>{link.label}</span>
-                                    </Link>
+                                    </a>
                                 </motion.div>
                             ))}
                         </div>

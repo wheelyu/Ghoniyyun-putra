@@ -20,9 +20,9 @@ const About = () => {
             iconColor: "text-blue-500",
             title: "Measurable Target",
             description:[
-                "Maintain a customer satisfaction score of 90% or higher based on regular feedback surveys.",
-                "We provide our clients with high-quality products.",
-                "We innovate to become a national supplier across various regions in Indonesia."
+                "Menjaga skor kepuasan pelanggan 90% atau lebih tinggi berdasarkan survei umpan balik secara reguler.",
+                "Kami menyediakan produk berkualitas tinggi kepada setiap klien.",
+                "Kami selalu berinovasi untuk menjadi pemasok nasional di berbagai wilayah di Indonesia."
             ]
         },
         {
@@ -31,9 +31,9 @@ const About = () => {
             iconColor: "text-green-500", 
             title: "Best Partnership",
             description:[
-                "Partner with leading manufacturers and suppliers of petroleum equipment to ensure high-quality and cost-effective solutions",
-                "Build strong relationships with international companies to exchange knowledge and enhance service offerings.",
-                "Collaborate with Pertamina to support the digitalization program of gas stations in this digital era."
+                "Bermitra dengan produsen dan pemasok peralatan perminyakan terkemuka untuk memastikan solusi berkualitas tinggi dan hemat biaya.",
+                "Membangun hubungan yang kuat dengan perusahaan internasional untuk bertukar pengetahuan dan meningkatkan penawaran layanan.",
+                "Berkolaborasi dengan Pertamina untuk mendukung program digitalisasi stasiun pengisian bahan bakar di era digital ini."
             ]
         },
         {
@@ -42,8 +42,8 @@ const About = () => {
             iconColor: "text-yellow-500",
             title: "High Commitment", 
             description:[
-                "Maintain open communication with clients to ensure their needs are met promptly and effectively, fostering long-term relationships.",
-                "Commit to maintaining the highest quality standards in all services and products provided to clients.",
+                "Mempertahankan komunikasi terbuka dengan klien untuk memastikan kebutuhan mereka dipenuhi dengan cepat dan efektif, serta membina hubungan jangka panjang.",
+                "Bertanggung jawab untuk menjaga standar kualitas tertinggi dalam semua layanan dan produk yang diberikan kepada klien.",
             ]
         },
     ];

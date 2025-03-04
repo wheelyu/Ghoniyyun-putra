@@ -17,17 +17,25 @@ export default function Home() {
       <Hero/>
 
       <Profil  />
-      <AboutUs />
+      <section id="about-section" className="...">
+        <div className="h-20"></div>
+        <AboutUs />
+      </section>
       <Partnership />
       <Product />
-      <Service />
+      <section id="service-section" className="...">
+      <div className="h-20"></div>
+        <Service />
+      </section>
+
       <ProjectDigital />
       <Founder />
       <Story />
-      <div >
-      
-      <ContactForm  /> 
-      </div>
+      <section id="contact-section" className="...">
+      <div className="h-20"></div>
+        <ContactForm  /> 
+      </section>
+
       <Footer />
     </div>
   );
