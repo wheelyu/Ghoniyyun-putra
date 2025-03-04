@@ -75,30 +75,63 @@ const Services = () => {
                             
                             {/* Swiper Component */}
                             {services[activeTab].images.length > 0 && (
-                                <div className="mb-8">
-                                    <Swiper
-                                        modules={[Pagination, Navigation, Autoplay]}
-                                        spaceBetween={20}
-                                        slidesPerView={1}
-                                        pagination={{ clickable: true }}
-                                        navigation
-                                        autoplay={{
-                                            delay: 3000,
-                                            disableOnInteraction: false,
-                                        }}
-                                        className="w-full"
-                                    >
-                                        {services[activeTab].images.map((image, index) => (
-                                            <SwiperSlide key={index} className="flex justify-center">
-                                                <img 
-                                                    src={image}
-                                                    alt={`Service Image ${index + 1}`}
-                                                    className="w-full h-[400px] object-cover rounded-lg shadow-md"
-                                                />
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
-                                </div>
+                            <div>
+                            <div className="mb-8 hidden md:flex">
+                                <Swiper
+                                modules={[Pagination, Navigation, Autoplay]}
+                                spaceBetween={20}
+                                slidesPerView={services[activeTab].images.length === 1 ? 1 : 
+                                                services[activeTab].images.length === 2 ? 2 : 3}
+                                pagination={{ clickable: true }}
+                                navigation
+                                autoplay={{
+                                    delay: 3000,
+                                    disableOnInteraction: false,
+                                }}
+                                className="w-full"
+                                >
+                                {services[activeTab].images.map((image, index) => (
+                                    <SwiperSlide key={index} className="flex justify-center">
+                                    <img 
+                                        src={image}
+                                        alt={`Service Image ${index + 1}`}
+                                        className={`h-[400px] object-cover rounded-lg shadow-md ${
+                                        services[activeTab].images.length === 1 ? 'w-full' : 
+                                        services[activeTab].images.length === 2 ? 'w-full' : 'w-full'
+                                        }`}
+                                    />
+                                    </SwiperSlide>
+                                ))}
+                                </Swiper>
+                            </div>
+                            <div className="mb-8  md:hidden">
+                                <Swiper
+                                modules={[Pagination, Navigation, Autoplay]}
+                                spaceBetween={20}
+                                slidesPerView={1}
+                                pagination={{ clickable: true }}
+                                navigation
+                                autoplay={{
+                                    delay: 3000,
+                                    disableOnInteraction: false,
+                                }}
+                                className="w-full"
+                                >
+                                {services[activeTab].images.map((image, index) => (
+                                    <SwiperSlide key={index} className="flex justify-center">
+                                    <img 
+                                        src={image}
+                                        alt={`Service Image ${index + 1}`}
+                                        className={`h-[400px] object-cover rounded-lg shadow-md ${
+                                        services[activeTab].images.length === 1 ? 'w-full' : 
+                                        services[activeTab].images.length === 2 ? 'w-full' : 'w-full'
+                                        }`}
+                                    />
+                                    </SwiperSlide>
+                                ))}
+                                </Swiper>
+                            </div>
+                            </div>
                             )}
                             <p className="text-gray-700 leading-relaxed mb-4">
                                 {services[activeTab].description}

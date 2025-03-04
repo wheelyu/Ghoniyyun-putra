@@ -15,6 +15,7 @@ const About = () => {
 
     const cardData = [
         {
+            id: 1,
             icon: faBullseye,
             iconColor: "text-blue-500",
             title: "Measurable Target",
@@ -25,6 +26,7 @@ const About = () => {
             ]
         },
         {
+            id: 2,
             icon: faHandshake,
             iconColor: "text-green-500", 
             title: "Best Partnership",
@@ -35,6 +37,7 @@ const About = () => {
             ]
         },
         {
+            id: 3,
             icon: faAward,
             iconColor: "text-yellow-500",
             title: "High Commitment", 
@@ -50,7 +53,7 @@ const About = () => {
     {/* Header */}
     <div className="w-full md:w-2/3 lg:w-1/2 mx-auto mb-6 sm:mb-8 md:mb-10">
         <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-bold text-center text-whit">
-        <div className="relative lg:h-[150px] h-[100px]">
+        <div className="relative lg:h-[200px] h-[80px]">
             <TextPressure
             text="Why Choose us?"
             flex={true}
@@ -75,7 +78,7 @@ const About = () => {
             <div>
                 <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(220, 38, 38, 1)">   
             <div 
-                key={index} 
+                key={card.id} 
                 className="bg-white 
                           transition-all duration-300 ease-in-outhover:cursor-pointer
                           group"

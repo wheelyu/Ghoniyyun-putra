@@ -50,8 +50,8 @@ const Navbar = ({active}) => {
                 }`}>
                     <Link to="/"><img src={Logo} alt="Logo" className={`${isScrolled ? "h-12" : "md:h-20 h-16"} rounded-xl transition-all duration-300`} /></Link>
                 </div>
-                <div className={`text-xl font-bold transition-colors md:hidden ${isScrolled ? "text-primary" : "text-white"}`}>
-                    Ghoniyyun Petrol
+                <div className={`text-base font-bold  md:bg-white md:text-primary md:p-8 md:rounded-xl transition-all duration-300   ${isScrolled ? "text-primary md:text-2xl" : "text-white md:text-5xl"}`}>
+                    Ghoniyyun Petrol Teknik 
                 </div>
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex space-x-4 items-center">

@@ -2,11 +2,11 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductList from "../components/Product/ProductList";
-import Bg from "../assets/bg.webp";
+import Bg from "../assets/bg.jpeg";
 export default function Product() {
   return (
     <div className="">
-        <div className="relative h-[200px] flex items-center justify-center overflow-hidden">
+        <div className="relative md:h-[200px] h-[100px] flex items-center justify-center overflow-hidden">
           {/* Background Image with Darkness Overlay */}
           <div className="absolute inset-0 overflow-hidden">
               <img 

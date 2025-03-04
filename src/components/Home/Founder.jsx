@@ -17,7 +17,6 @@ const Founder = () => {
         if (error) {
             console.log(error);
         } else {
-            console.log(data)
             setFounders(data);
         }
         setLoading(false);

@@ -26,7 +26,6 @@ const Footer = () => {
             }
 
             if (data) {
-                console.log(data);
                 setData(data);
                 setIsLoading(false);
             } else {
@@ -121,7 +120,7 @@ const Footer = () => {
             <p>PT. GHONIYYUN PUTRA © {new Date().getFullYear()} All rights reserved.</p>
         </div>
     </div>
-</footer>
+    </footer>
     );
 };
 

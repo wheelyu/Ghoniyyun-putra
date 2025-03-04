@@ -1,11 +1,9 @@
 import React from "react";
 import Navbar from "../Navbar";
-import { motion, AnimatePresence } from 'framer-motion';
-import Bg from '../../assets/bg.webp'
-import RotatingText from "../RotatingText";
+import Bg from '../../assets/bg.jpeg'
 const Hero = () => {
     return (
-        <div className="relative h-[200px] flex items-center justify-center overflow-hidden">
+        <div className="relative h-[100px] md:h-[200px] flex items-center justify-center overflow-hidden">
     {/* Background Image with Darkness Overlay */}
     <div className="absolute inset-0 overflow-hidden">
         <img 

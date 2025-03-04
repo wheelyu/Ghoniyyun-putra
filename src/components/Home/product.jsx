@@ -103,7 +103,7 @@ const OurProduct = () => {
                                   group hover:bg-primary">
                         <div className="flex items-center gap-2">
                             <Fuel className="w-5 h-5 sm:w-6 sm:h-6 text-primary group-hover:text-white" />
-                            <p className="font-bold text-lg sm:text-xl text-primary group-hover:text-white">
+                            <p className="font-bold text-sm sm:text-base text-primary group-hover:text-white">
                                 {category.name}
                             </p>
                         </div>
