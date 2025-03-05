@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "helvetica";
+  src: url("../assets//helvetica.ttf");
+}
 body {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "helvetica";
 }
 
 .custom-swiper .swiper-button-next,

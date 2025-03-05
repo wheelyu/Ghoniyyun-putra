@@ -18,7 +18,7 @@ export default function Home() {
 
       <Profil  />
       <section id="about-section" className="...">
-        <div className="h-20"></div>
+        
         <AboutUs />
       </section>
       <Partnership />

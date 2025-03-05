@@ -8,11 +8,11 @@ const TypeItComponent = () => {
     <div >
       <TypeAnimation
         sequence={[
-          '"Ghoniyyun Petrol Teknik is a company specializing in providing innovative solutions and services in the oil and gas industry.',
+          '"Ghoniyyun Petrol Teknik adalah perusahaan yang memiliki spesialisasi dalam menyediakan solusi dan layanan inovatif di industri minyak dan gas.',
           1000,
-          '"Ghoniyyun Petrol Teknik is a company specializing in providing innovative solutions and services in the oil and gas industry. Founded in early 2024, the company began as a small enterprise focusing on technical support and equipment maintenance for petroleum operations.',
+          '"Ghoniyyun Petrol Teknik adalah perusahaan yang memiliki spesialisasi dalam menyediakan solusi dan layanan inovatif di industri minyak dan gas. Didirikan pada awal tahun 2024, perusahaan ini dimulai sebagai usaha kecil yang fokus pada dukungan teknis dan pemeliharaan peralatan untuk operasi perminyakan.',
           1000,
-          '"Ghoniyyun Petrol Teknik is a company specializing in providing innovative solutions and services in the oil and gas industry. Founded in early 2024, the company began as a small enterprise focusing on technical support and equipment maintenance for petroleum operations. Over the years, it expanded its portfolio to include engineering consultancy, installation of advanced technology systems, and supply chain services tailored to the energy sector."',
+          '"Ghoniyyun Petrol Teknik adalah perusahaan yang memiliki spesialisasi dalam menyediakan solusi dan layanan inovatif di industri minyak dan gas. Didirikan pada awal tahun 2024, perusahaan ini dimulai sebagai usaha kecil yang fokus pada dukungan teknis dan pemeliharaan peralatan untuk operasi perminyakan. Seiring berjalannya waktu, perusahaan ini memperluas portofolionya untuk mencakup konsultasi rekayasa, instalasi sistem teknologi canggih, dan layanan rantai pasokan yang disesuaikan untuk sektor energi.',
           3000,
         ]}
         wrapper="span"

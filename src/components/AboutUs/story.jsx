@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-
+import Bg from '../../assets/bg_our_story.jpg'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import  TypeIt  from './typeIt';
@@ -19,19 +19,20 @@ const AboutUs = () => {
 
 
     return (
-        <div className="pt-24 lg:pt-48 md:pt-40 pb-6 lg:pb-10">
-            <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold text-primary text-center relative mt-20 md:mt-0 py-6 lg:py-10'>
+        <div className="pt-24 lg:pt-48 md:pt-40">
+            <div className="bg-cover bg-center bg-no-repeat bg-black bg-opacity-20 w-full flex flex-col justify-center h-[800px] "
+                        style={{
+                            backgroundImage: `url(${Bg})`,
+                            backgroundBlendMode: 'overlay'
+                        }}>
+            <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold text-white text-center relative mt-20 md:mt-0 py-6 lg:py-10 '>
                 Our Story
             </h1>
-
-            {/* Swiper Container */}
-            
-
             {/* Description Text */}
-            <div className="mb-20 w-full md:max-w-[80%] lg:max-w-[60%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10  lg:py-20 h-[300px]"  data-aos="fade-up">
+            <div className="mb-20 w-full md:max-w-[80%] lg:max-w-[60%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10  lg:py-20 h-[300px] bg-white bg-opacity-95 rounded-xl"  data-aos="fade-up">
             <TypeIt />
             </div>
-
+            </div>
             {/* Vision & Mission Section */}
             <div className='bg-gradient-to-l from-primary to-pink-500 bg-opacity-85 py-6 md:py-10'>
                 <div className='flex flex-col md:flex-row w-full max-w-[1500px] mx-auto gap-5 px-4 md:px-8 lg:px-16'>
@@ -41,7 +42,8 @@ const AboutUs = () => {
                          data-aos-delay="300">
                         <h1 className='text-2xl md:text-3xl font-bold mb-3'>Vision</h1>
                         <p className='hover:text-primary transition duration-300 text-base md:text-lg lg:text-xl'>
-                        To be a leading company in the oil and gas industry, recognized for innovation, quality, and dedication to creating value for our clients, employees, and communities
+                        Menjadi perusahaan terdepan dalam menyediakan produk dan layanan berkualitas tinggi, serta solusi digitalisasi SPBU Pertamina yang inovatif. 
+                        Kami berkomitmen untuk membangun hubungan jangka panjang dengan mitra bisnis, mengutamakan keberlanjutan, dan memberikan dampak positif bagi lingkungan
                         </p>
                     </div>
 
@@ -51,11 +53,10 @@ const AboutUs = () => {
                          data-aos-delay="800">
                         <h1 className='text-2xl md:text-3xl font-bold mb-3'>Mission</h1>
                         <ul className='hover:text-primary transition duration-300 text-base md:text-lg lg:text-xl space-y-2'>
-                            <li>- To provide top-tier products and services that meet the evolving needs of our clients.</li>
-                            <li>- To foster a culture of innovation and continuous improvement in all aspects of our business.</li>
-                            <li>- To establish long-term relationships with stakeholders based on trust, integrity, and mutual success.</li>
-                            <li>- To prioritize sustainability and social responsibility in all operations, contributing positively to the environment and society.
-                            </li>
+                            <li>- Menyediakan produk dan layanan terbaik yang memenuhi kebutuhan klien kami yang terus berkembang.</li>
+                            <li>- Mendorong budaya inovasi dan perbaikan berkelanjutan dalam semua aspek bisnis kami.</li>
+                            <li>- Membangun hubungan jangka panjang dengan pemangku kepentingan yang didasarkan pada kepercayaan, integritas, dan kesuksesan bersama.</li>
+                            <li>- Mengutamakan keberlanjutan dan tanggung jawab sosial dalam semua operasi, memberikan kontribusi positif bagi lingkungan dan masyarakat.</li>
                         </ul>
                     </div>
                 </div>

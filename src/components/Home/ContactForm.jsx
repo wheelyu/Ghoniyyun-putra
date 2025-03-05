@@ -197,7 +197,7 @@ const ContactForm = () => {
             >
                 <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 italic">Get in Touch</h2>
                 <p className="mb-6 text-gray-400 pl-0 sm:pl-5 md:pl-10 text-sm sm:text-base">
-                    Have a question or want to work together? Fill out the form and we'll get back to you as soon as possible.
+                    punya pertanyaan? jangan ragu untuk menghubungi kami!
                 </p>
 
                 {/* Form Section */}

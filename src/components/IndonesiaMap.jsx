@@ -144,10 +144,10 @@ const IndonesiaMap = () => {
   }, []);
 
   return (
-    <div className="map-container relative w-full">
-      <div id="map" className="w-full h-[700px]"></div>
+    <div className="map-container relative w-full z-10">
+      <div id="map" className="w-full h-[300px] md:h-[700px]"></div>
       {activeLocation && (
-        <div className="location-info absolute bottom-4 left-4 bg-white px-4 py-2 rounded-lg shadow-md z-10">
+        <div className="location-info absolute bottom-4 left-4 bg-white px-4 py-2 rounded-lg shadow-md ">
           <p className="font-semibold">{locations.find(loc => loc.id === activeLocation)?.name}</p>
         </div>
       )}

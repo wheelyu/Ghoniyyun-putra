@@ -98,7 +98,7 @@ const Navbar = ({active}) => {
                 }`}>
                     <Link to="/"><img src={Logo} alt="Logo" className={`${isScrolled ? "h-12" : "md:h-20 h-16"} rounded-xl transition-all duration-300`} /></Link>
                 </div>
-                <div className={`text-base font-bold  md:bg-white md:text-primary  md:rounded-xl transition-all duration-300   ${isScrolled ? "text-primary md:text-2xl md:p-3" : "text-white md:text-5xl md:p-8"}`}>
+                <div className={`text-base font-bold  md:bg-white md:text-primary  md:rounded-xl transition-all duration-300   ${isScrolled ? "text-primary md:text-2xl md:p-3" : "text-white  lg:text-3xl lg:p-8"}`}>
                     Ghoniyyun Petrol Teknik 
                 </div>
                 {/* Desktop Navigation */}

@@ -40,15 +40,15 @@ const Services = () => {
     useEffect(() => {
         getServices();
     }, []);
-    
+    const serviceLength = services.length/2;
     return (
-        <div className="bg-white bg-opacity-90  pt-12 sm:pt-16 md:pt-20 px-4 sm:px-8 md:px-16 lg:px-48">
+        <div className="bg-white bg-opacity-90  sm:pt-16  px-4 sm:px-8 md:px-16 lg:px-48">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-12 text-primary">
                 Our Services
             </h1>
             
             {/* Tabs Navigation */}
-            <div className="flex flex-wrap gap-2 mb-8 justify-center">
+            <div className={`grid grid-cols-2 md:grid-cols-${serviceLength} gap-3 mb-8 justify-center`}>
                 {services.map((service, index) => (
                     <button
                         key={service.id}
