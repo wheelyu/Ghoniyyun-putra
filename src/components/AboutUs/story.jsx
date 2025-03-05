@@ -20,7 +20,7 @@ const AboutUs = () => {
 
     return (
         <div className="pt-24 lg:pt-48 md:pt-40">
-            <div className="bg-cover bg-center bg-no-repeat bg-black bg-opacity-20 w-full flex flex-col justify-center h-[800px] "
+            <div className="bg-cover bg-top  bg-no-repeat bg-black bg-opacity-20 w-full flex flex-col justify-center h-[800px] "
                         style={{
                             backgroundImage: `url(${Bg})`,
                             backgroundBlendMode: 'overlay'
