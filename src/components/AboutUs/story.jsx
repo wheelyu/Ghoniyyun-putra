@@ -29,7 +29,7 @@ const AboutUs = () => {
                 Our Story
             </h1>
             {/* Description Text */}
-            <div className="mb-20 w-full md:max-w-[80%] lg:max-w-[60%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10  lg:py-20 h-[300px] bg-white bg-opacity-95 rounded-xl"  data-aos="fade-up">
+            <div className="mb-20 w-full md:max-w-[80%] lg:max-w-[60%] text-center mx-auto text-base md:text-lg lg:text-xl px-4 py-10  lg:py-20 min-h-[300px] bg-white bg-opacity-95 rounded-xl"  data-aos="fade-up">
             <TypeIt />
             </div>
             </div>
