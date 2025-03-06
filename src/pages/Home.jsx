@@ -9,34 +9,38 @@ import Story from "../components/AboutUs/story";
 import Partnership from "../components/Home/Partnership";
 import ContactForm from "../components/Home/ContactForm";
 import Service from "../components/Home/Services";
+import VisiMisi from "../components/Home/VisiMisi";
 import ProjectDigital from "../components/Home/ProjectDigital";
 export default function Home() {
-
   return (
-    <div>
-      <Hero/>
-
-      <Profil  />
+    <div className="relative">
+      <Hero />
+      <Profil />
       <section id="about-section" className="...">
-        
         <AboutUs />
       </section>
       <Partnership />
       <Product />
       <section id="service-section" className="...">
-      <div className="h-20"></div>
+        <div className="h-20"></div>
         <Service />
       </section>
-
       <ProjectDigital />
       <Founder />
       <Story />
-      <section id="contact-section" className="...">
-      <div className="h-20"></div>
-        <ContactForm  /> 
-      </section>
-
-      <Footer />
+      {/* Story component dengan sticky positioning */}
+      <div className="sticky top-0 z-10 h-screen flex flex-col justify-center">
+        <VisiMisi />
+      </div>
+      
+      {/* Contact form dan Footer dengan z-index lebih tinggi */}
+      <div className="relative z-20 bg-white border-t-8 shadow-lg border-primary">
+        <section id="contact-section" className="...">
+          <div className="h-20"></div>
+          <ContactForm />
+        </section>
+        <Footer />
+      </div>
     </div>
   );
 }

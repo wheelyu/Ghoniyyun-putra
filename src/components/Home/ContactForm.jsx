@@ -186,7 +186,7 @@ const ContactForm = () => {
     
 
     return (
-        <div className="w-full lg:w-4/5 xl:w-1/2 mx-auto px-4 py-8">
+        <div className="w-full lg:w-4/5 xl:w-1/2 mx-auto px-4 py-8 ">
         <div className="container mx-auto bg-white rounded-xl overflow-hidden">
             {/* Contact Information Section */}
             <motion.div 
