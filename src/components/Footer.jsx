@@ -93,10 +93,10 @@ const Footer = () => {
                         </div>
                     )}
                     <nav className="flex space-x-6 text-sm">
-                <Link to="/" className="text-gray-700 hover:text-primary transition-colors duration-300">Beranda</Link>
-                <Link to="/Product" className="text-gray-700 hover:text-primary transition-colors duration-300">Produk</Link>
-                <Link to="/login" className="text-gray-700 hover:text-primary transition-colors duration-300">Login</Link>
-            </nav>
+                        <Link to="/" className="text-gray-700 hover:text-primary transition-colors duration-300">Beranda</Link>
+                        <Link to="/Product" className="text-gray-700 hover:text-primary transition-colors duration-300">Produk</Link>
+                        <Link to="/login" className="text-gray-700 hover:text-primary transition-colors duration-300">Login</Link>
+                    </nav>
             </div>
 
             {/* Google Map */}
