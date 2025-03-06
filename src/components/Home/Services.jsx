@@ -133,7 +133,7 @@ const Services = () => {
                             </div>
                             </div>
                             )}
-                            <p className="text-gray-700 leading-relaxed mb-4">
+                            <p className="text-gray-700 leading-relaxed mb-4 text-justify">
                                 {services[activeTab].description}
                             </p>
                         </div>
