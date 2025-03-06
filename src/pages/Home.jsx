@@ -29,12 +29,14 @@ export default function Home() {
       <Founder />
       <Story />
       {/* Story component dengan sticky positioning */}
-      <div className="sticky top-0 z-10 h-screen flex flex-col justify-center">
+      <div className="sticky top-0 z-10 h-screen md:flex justify-center hidden">
         <VisiMisi />
       </div>
-      
+      <div className="md:hidden">
+      <VisiMisi />
+      </div>
       {/* Contact form dan Footer dengan z-index lebih tinggi */}
-      <div className="relative z-20 bg-white border-t-8 shadow-lg border-primary">
+      <div className="relative z-20 bg-white border-t-4 border-primary">
         <section id="contact-section" className="...">
           <div className="h-20"></div>
           <ContactForm />

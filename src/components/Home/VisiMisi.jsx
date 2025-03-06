@@ -14,18 +14,8 @@ const VisiMisi = () => {
        
     return (
         <div>
-            <div className='bg-gradient-to-l from-primary to-pink-500 bg-opacity-85 py-6 md:py-10 h-screen items-center justify-center flex'>
+            <div className='bg-gradient-to-l from-primary to-pink-500 bg-opacity-85 py-6 md:py-10 min-h-screen items-center justify-center flex'>
                 <div className='flex flex-col md:flex-row w-full  mx-auto gap-5 px-4 md:px-8 lg:px-16'>
-                    {/* Vision Card */}
-                    {/* <div className='bg-white shadow-xl p-6 md:p-10 w-full md:w-1/2 hover:cursor-pointer rounded-xl' 
-                         data-aos="fade-up" 
-                         data-aos-delay="300">
-                        <h1 className='text-2xl md:text-3xl font-bold mb-3'>Vision</h1>
-                        <p className='hover:text-primary transition duration-300 text-base md:text-lg lg:text-xl'>
-                        Menjadi perusahaan terdepan dalam menyediakan produk dan layanan berkualitas tinggi, serta solusi digitalisasi SPBU Pertamina yang inovatif. 
-                        Kami berkomitmen untuk membangun hubungan jangka panjang dengan mitra bisnis, mengutamakan keberlanjutan, dan memberikan dampak positif bagi lingkungan
-                        </p>
-                    </div> */}
                     <FlipCard text={textVision}
                         title="Vision"
                         image={Bg_Vision}/>
@@ -37,22 +27,7 @@ const VisiMisi = () => {
                     title="Mission"
                     image={Bg_Values}
                     />
-                    {/* Mission Card */}
-                    {/* <div className='bg-white bg-opacity-95 bg-no-repeat bg-contain bg-center shadow-xl p-6 md:p-10 w-full md:w-1/2 hover:cursor-pointer rounded-xl' 
-                    style={{
-                        backgroundImage: `url(${Bg_Mission})`,
-                        backgroundBlendMode: 'overlay'
-                    }}
-                         data-aos="fade-up" 
-                         data-aos-delay="800">
-                        <h1 className='text-2xl md:text-3xl font-bold mb-3'>Mission</h1>
-                        <ul className='hover:text-primary transition duration-300 text-base md:text-lg lg:text-xl space-y-2'>
-                            <li>- Menyediakan produk dan layanan terbaik yang memenuhi kebutuhan klien kami yang terus berkembang.</li>
-                            <li>- Mendorong budaya inovasi dan perbaikan berkelanjutan dalam semua aspek bisnis kami.</li>
-                            <li>- Membangun hubungan jangka panjang dengan pemangku kepentingan yang didasarkan pada kepercayaan, integritas, dan kesuksesan bersama.</li>
-                            <li>- Mengutamakan keberlanjutan dan tanggung jawab sosial dalam semua operasi, memberikan kontribusi positif bagi lingkungan dan masyarakat.</li>
-                        </ul>
-                    </div> */}
+
                 </div>
             </div>
         </div>
