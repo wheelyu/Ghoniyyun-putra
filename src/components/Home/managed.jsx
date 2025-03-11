@@ -4,7 +4,7 @@ const Managed = () => {
         {
             id: 1,
             name: "Spbu 44.531.29 Kab. Banyumas, Jawa Tengah",
-            link: "hhttps://maps.app.goo.gl/tN7gvodnMQaaPMjr5",
+            link: "https://maps.app.goo.gl/dCTY3HnSDmk9hxuD9",
             address: "Jl. Nasional III, Pegadungan, Rawalo, Kec. Rawalo, Kabupaten Banyumas, Jawa Tengah 53172",
             year: 2010
         },

@@ -3,7 +3,7 @@ import { supabase } from "../../../services/supabaseConfig";
 import Switch from "react-switch";
 import { Toast } from "../../alert/toast";
 import  Swal  from "sweetalert2";
-
+import axios from "axios";
 const EditServices = ({ onClose, onServiceUpdated, id }) => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -83,28 +83,18 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
                             throw new Error("No file provided");
                         }
                 
-                        const fileExt = file.name?.split('.').pop(); // Pastikan file.name ada
-                        if (!fileExt) {
-                            throw new Error("Invalid file name");
-                        }
+                        const formData = new FormData();
+                        formData.append('image', file);
                 
-                        const fileName = `${Math.random()}.${fileExt}`;
-                        const filePath = `${fileName}`;
-                        console.log('add service image path: ' + filePath);
+                        const response = await axios.post('https://image.miheelyu.my.id/upload', formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
                 
-                        const { data, error } = await supabase.storage
-                            .from('service')
-                            .upload(filePath, file);
-                
-                        if (error) {
-                            throw error;
-                        }
-                
-                        const { publicUrl } = supabase.storage
-                            .from('service')
-                            .getPublicUrl(filePath).data;
-                
-                        return publicUrl;
+                        const fileName = response.data.image.filename;
+                        const id = response.data.image.id;
+                        return { id, image_url: `https://image.miheelyu.my.id/uploads/${fileName}` };
                     } catch (error) {
                         console.error('Error uploading image:', error.message);
                         throw error;
@@ -128,6 +118,20 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
     const handleSwitchChange = () => {
         setActive(!active);
     };
+    const handleDeleteImage = async (imageId) => {
+        try {
+            await axios.delete(`https://image.miheelyu.my.id/delete/${imageId}`);
+    
+            const { error: deleteDBError } = await supabase
+                .from('service_image')
+                .delete()
+                .eq('id_image', imageId);
+    
+            if (deleteDBError) throw new Error('Error deleting image from database');
+        } catch (error) {
+            console.error("Error deleting image:", error.message);
+        }
+    };
     const handleSaveEdit = async () => {
         if (!validateForm()) {
             Swal.fire({
@@ -140,64 +144,38 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
     
         setLoading(true);
         try {
-            // Ambil semua gambar lama dari tabel service_image berdasarkan service_id
             const { data: oldImages, error: fetchError } = await supabase
                 .from('service_image')
-                .select('image_url')
+                .select('image_url, id_image')
                 .eq('service_id', id);
     
             if (fetchError) {
                 throw new Error('Error fetching current service images');
             }
     
-            const oldImageUrls = oldImages.map(img => img.image_url);
+            const oldImageRecords = oldImages.map(img => ({ id_image: img.id_image, url: img.image_url }));
             const newImageFiles = formData.image_url.filter(file => file instanceof File);
             const newImageUrls = formData.image_url.filter(url => typeof url === "string");
     
-            // Tentukan gambar yang perlu dihapus
-            const imagesToDelete = oldImageUrls.filter(url => !newImageUrls.includes(url));
+            const imagesToDelete = oldImageRecords.filter(img => !newImageUrls.includes(img.url));
             if (imagesToDelete.length > 0) {
-                const filePathsToDelete = imagesToDelete.map(url => url.split('/').slice(-1)[0]);
-    
-                console.log("Deleting old files:", filePathsToDelete);
-    
-                // Hapus file dari Supabase Storage
-                const { error: deleteError } = await supabase.storage
-                    .from("service")
-                    .remove(filePathsToDelete);
-    
-                if (deleteError) {
-                    console.warn("Error deleting old images:", deleteError);
-                }
-    
-                // Hapus gambar lama dari database
-                const { error: deleteDBError } = await supabase
-                    .from('service_image')
-                    .delete()
-                    .in('image_url', imagesToDelete)
-                    .eq('service_id', id);
-    
-                if (deleteDBError) {
-                    console.warn("Error deleting old image records:", deleteDBError);
-                }
+                await Promise.all(imagesToDelete.map(img => handleDeleteImage(img.id_image)));
             }
     
             let uploadedImages = [...newImageUrls];
-    
-            // Upload gambar baru jika ada
             if (newImageFiles.length > 0) {
                 const uploadPromises = newImageFiles.map(async (file) => {
-                    const imageUrl = await handleImageUpload(file);
-                    return imageUrl;
+                    const { id, image_url } = await handleImageUpload(file);
+                    return { id_image: id, image_url: image_url };
                 });
     
-                const uploadedUrls = await Promise.all(uploadPromises);
-                uploadedImages = [...uploadedImages, ...uploadedUrls];
+                const uploadedData = await Promise.all(uploadPromises);
+                uploadedImages = [...uploadedImages, ...uploadedData.map(data => data.image_url)];
     
-                // Simpan gambar baru ke database
-                const newImageRecords = uploadedUrls.map(url => ({
+                const newImageRecords = uploadedData.map(({ id_image, image_url }) => ({
                     service_id: id,
-                    image_url: url
+                    id_image: id_image,
+                    image_url: image_url
                 }));
     
                 const { error: insertImageError } = await supabase
@@ -209,19 +187,18 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
                 }
             }
     
-            // Update data service
             const { error: updateError } = await supabase
                 .from('service')
                 .update({
                     name: formData.name,
                     description: formData.description,
-                    is_active: active
+                    is_active: formData.is_active
                 })
                 .eq("id", id);
     
             if (updateError) throw updateError;
     
-            Toast.fire({
+            Swal.fire({
                 icon: "success",
                 title: "Service updated successfully"
             });
@@ -229,7 +206,7 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
             onClose();
         } catch (error) {
             console.error("Error updating service:", error);
-            Toast.fire({
+            Swal.fire({
                 icon: "error",
                 title: error.message || "Error updating service"
             });

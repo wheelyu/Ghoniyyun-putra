@@ -13,6 +13,7 @@ import { Toast } from "../../components/alert/toast";
 import { formatIDR } from "../../hooks/useFormatIDR";
 import { truncateContent } from "../../hooks/useTruncates";
 import { data } from "autoprefixer";
+import axios from "axios";
 const Service = () => {
     const [services, setServices] = useState([]);
     const [search, setSearch] = useState("");
@@ -104,19 +105,27 @@ const Service = () => {
         setEditID(row.id);
         setModalEdit(true);
     };
+    const handleDeleteImage = async (imageId) => {
+        try {
+            await axios.delete(`https://image.miheelyu.my.id/delete/${imageId}`);
+            console.log(imageId);
+            const { error: deleteDBError } = await supabase
+                .from('service_image')
+                .delete()
+                .eq('id_image', imageId);
+    
+            if (deleteDBError) throw new Error('Error deleting image from database');
+        } catch (error) {
+            console.error("Error deleting image:", error.message);
+        }
+    };
     const handleDelete = async (id) => {
         try {
-            // Cek jumlah total service yang tersedia
             const { count, error: countError } = await supabase
                 .from("service")
-                .select('*', { count: 'exact' });
+                .select("*", { count: "exact" });
     
-            if (countError) {
-                console.error("Error counting records:", countError);
-                throw new Error("Failed to check total records");
-            }
-    
-            // Jika jumlah service kurang dari atau sama dengan 3, cegah penghapusan
+            if (countError) throw new Error("Failed to check total records");
             if (count <= 3) {
                 Swal.fire({
                     icon: "warning",
@@ -126,7 +135,6 @@ const Service = () => {
                 return;
             }
     
-            // Konfirmasi sebelum menghapus
             const result = await Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -137,68 +145,35 @@ const Service = () => {
                 confirmButtonText: "Yes, delete!",
             });
     
-            if (!result.isConfirmed) {
-                return;
-            }
+            if (!result.isConfirmed) return;
     
-            // Ambil semua gambar yang terkait dari service_image
             const { data: serviceImages, error: fetchImageError } = await supabase
                 .from("service_image")
-                .select("id, image_url")
+                .select("id_image")
                 .eq("service_id", id);
     
-            if (fetchImageError) {
-                console.error("Error fetching service images:", fetchImageError);
-                throw new Error("Failed to fetch service images");
-            }
+            if (fetchImageError) throw new Error("Failed to fetch service images");
     
-            // Hapus semua gambar dari storage jika ada
             if (serviceImages?.length > 0) {
-                const imagePaths = serviceImages.map(img => img.image_url.split('/').slice(-1)[0]);
-    
-                console.log("Attempting to delete files:", imagePaths);
-    
-                const { error: deleteStorageError } = await supabase.storage
-                    .from("service")
-                    .remove(imagePaths);
-    
-                if (deleteStorageError) {
-                    console.error("Error deleting files from storage:", deleteStorageError);
-                    throw new Error("Failed to delete images from storage");
-                }
+                await Promise.all(serviceImages.map(({ id_image }) => handleDeleteImage(id_image)));
             }
     
-            // Hapus semua entri gambar dari service_image sebelum menghapus service
             const { error: deleteImagesError } = await supabase
                 .from("service_image")
                 .delete()
                 .eq("service_id", id);
     
-            if (deleteImagesError) {
-                console.error("Error deleting service images:", deleteImagesError);
-                throw new Error("Failed to delete service images from database");
-            }
+            if (deleteImagesError) throw new Error("Failed to delete service images from database");
     
-            // Hapus service dari database
             const { error: deleteServiceError } = await supabase
                 .from("service")
                 .delete()
                 .eq("id", id);
     
-            if (deleteServiceError) {
-                console.error("Error deleting service:", deleteServiceError);
-                throw new Error("Failed to delete service from database");
-            }
+            if (deleteServiceError) throw new Error("Failed to delete service from database");
     
-            // Berhasil
-            Toast.fire({
-                icon: "success",
-                title: "Service deleted successfully",
-            });
-    
-            // Refresh data service setelah penghapusan
+            Swal.fire({ icon: "success", title: "Service deleted successfully" });
             await getServices();
-    
         } catch (error) {
             console.error("Error in deletion process:", error);
             Swal.fire({
@@ -262,21 +237,25 @@ const Service = () => {
             // Process each selected row
             for (const service of selectedRows) {
                 // Step 1: Delete image from storage if exists
-                if (service.image_url) {
-                    try {
-                        const filePath = service.image_url.split('/').slice(-1)[0];
-                        const { error: deleteStorageError } = await supabase.storage
-                            .from("service")
-                            .remove([filePath]);
+                const {data:serviceImages, error:imageError} = await supabase
+                .from('service_image')
+                .select('image_url, id_image')
+                .eq('service_id', service.id);
     
-                        if (deleteStorageError) {
-                            console.error("Error deleting file from storage:", deleteStorageError);
-                        }
-                    } catch (storageError) {
-                        console.error("Storage deletion error for service:", service.id, storageError);
-                    }
+                if (imageError) {
+                    console.error("Error fetching service images:", imageError);
+                    throw new Error(`Failed to fetch service images for service ${service.id}`);
                 }
-    
+
+                if (serviceImages?.length > 0) {
+                await Promise.all(serviceImages.map(({ id_image }) => handleDeleteImage(id_image)));
+            }
+                const { error: deleteImagesError } = await supabase
+                .from("service_image")
+                .delete()
+                .eq("service_id", service.id);
+
+                if (deleteImagesError) throw new Error("Failed to delete service images from database");
                 // Step 2: Delete product from database
                 const { error: deleteError } = await supabase
                     .from("service")

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { supabase } from "../../../services/supabaseConfig";
 import { Toast } from "../../alert/toast";
+import axios from "axios";
 const AddServiceModal = ({ onClose, onServiceAdded }) => {
     const [categories, setCategories] = useState([]);
+    const [idImage, setIdImage] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -23,21 +25,6 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
         } else if (formData.name.length < 3) {
             tempErrors.name = 'Name must be at least 3 characters long';
             isValid = false;
-        }
-
-
-        // Image validation
-        if (!formData.image) {
-            tempErrors.image = 'Image is required';
-            isValid = false;
-        } else {
-            const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-            const maxSize = 200 * 1024; // 200 KB in bytes
-        
-            if (formData.image.size > maxSize) {
-                tempErrors.image = 'Image size must not exceed 200KB';
-                isValid = false;
-            }
         }
         setErrors(tempErrors);
         return isValid;
@@ -64,28 +51,18 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
                 throw new Error("No file provided");
             }
     
-            const fileExt = file.name?.split('.').pop(); // Pastikan file.name ada
-            if (!fileExt) {
-                throw new Error("Invalid file name");
-            }
+            const formData = new FormData();
+            formData.append('image', file);
     
-            const fileName = `${Math.random()}.${fileExt}`;
-            const filePath = `${fileName}`;
-            console.log('add service image path: ' + filePath);
+            const response = await axios.post('https://image.miheelyu.my.id/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
     
-            const { data, error } = await supabase.storage
-                .from('service')
-                .upload(filePath, file);
-    
-            if (error) {
-                throw error;
-            }
-    
-            const { publicUrl } = supabase.storage
-                .from('service')
-                .getPublicUrl(filePath).data;
-    
-            return publicUrl;
+            const fileName = response.data.image.filename;
+            const id = response.data.image.id;
+            return { id, image_url: `https://image.miheelyu.my.id/uploads/${fileName}` };
         } catch (error) {
             console.error('Error uploading image:', error.message);
             throw error;
@@ -117,29 +94,29 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
                     }
                 ])
                 .select('id')
-                .single(); // Mengambil ID service yang baru dimasukkan
+                .single();
     
             if (insertError) {
                 console.error('Error inserting service:', insertError.message);
                 return;
             }
     
-            const serviceId = serviceData.id; // Ambil ID dari service yang baru ditambahkan
+            const serviceId = serviceData.id;
     
-            // Pastikan formData.image adalah array
+            // Ensure formData.image is an array
             if (Array.isArray(formData.image) && formData.image.length > 0) {
                 const uploadPromises = formData.image.map(async (file) => {
-                    const imageUrl = await handleImageUpload(file);
+                    const { id, image_url } = await handleImageUpload(file);
                     return {
                         service_id: serviceId,
-                        image_url: imageUrl
+                        id_image: id,
+                        image_url: image_url
                     };
                 });
     
-                // Tunggu semua upload selesai
                 const imageRecords = await Promise.all(uploadPromises);
     
-                // Masukkan semua gambar ke dalam tabel serviceImage
+                // Insert images into service_image table
                 const { error: imageInsertError } = await supabase
                     .from('service_image')
                     .insert(imageRecords);
@@ -150,7 +127,7 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
                 }
             }
     
-            Toast.fire({
+            Swal.fire({
                 icon: 'success',
                 title: 'Service added successfully',
             });
@@ -169,36 +146,7 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
             <div className="bg-white p-4 rounded-lg w-1/2 max-h-[90vh] overflow-y-auto">
                 <h2 className="text-lg font-semibold mb-2">Add New Service</h2>
                 <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                        <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Images:</label>
-                        <input
-                            type="file"
-                            id="image"
-                            accept="image/*"
-                            multiple
-                            className={`w-full p-2 border rounded-md ${errors.image ? 'border-red-500' : ''}`}
-                            onChange={(e) => setFormData({ 
-                                ...formData, 
-                                image: [...e.target.files] // Menyimpan semua file dalam array
-                            })}
-                        />
-                        {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
-                        <small>Max file size: 200kb per file</small>
-
-                        {/* Menampilkan preview dari semua gambar yang dipilih */}
-                        {formData.image && formData.image.length > 0 && (
-                            <div className="mt-2 grid grid-cols-3 gap-2">
-                                {formData.image.map((image, index) => (
-                                    <img
-                                        key={index}
-                                        src={URL.createObjectURL(image)}
-                                        alt={`Preview ${index + 1}`}
-                                        className="h-32 object-cover rounded-md"
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                
 
                     <div className="mb-4">
                         <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name:</label>
@@ -221,7 +169,35 @@ const AddServiceModal = ({ onClose, onServiceAdded }) => {
                             onChange={handleInputChange}
                         ></textarea>
                     </div>
+                    <div className="mb-4">
+                        <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Images:</label>
+                        <input
+                            type="file"
+                            id="image"
+                            accept="image/*"
+                            multiple
+                            className={`w-full p-2 border rounded-md ${errors.image ? 'border-red-500' : ''}`}
+                            onChange={(e) => setFormData({ 
+                                ...formData, 
+                                image: [...e.target.files] // Menyimpan semua file dalam array
+                            })}
+                        />
+                        {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
 
+                        {/* Menampilkan preview dari semua gambar yang dipilih */}
+                        {formData.image && formData.image.length > 0 && (
+                            <div className="mt-2 grid grid-cols-3 gap-2">
+                                {formData.image.map((image, index) => (
+                                    <img
+                                        key={index}
+                                        src={URL.createObjectURL(image)}
+                                        alt={`Preview ${index + 1}`}
+                                        className="h-32 object-cover rounded-md"
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                     <div className="flex justify-end gap-2">
                     <button
                         disabled={loading || formData.name === ""}
