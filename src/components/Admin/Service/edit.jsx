@@ -266,7 +266,6 @@ const EditServices = ({ onClose, onServiceUpdated, id }) => {
                             }
                         }}
                     />
-                    <small>Max file size: 200kb</small>
 
                     {/* Tampilkan Preview untuk Semua Gambar */}
                     {formData.image_url && Array.isArray(formData.image_url) && (
